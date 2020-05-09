@@ -1,7 +1,7 @@
 import os
 import sys
 
-branches = ["master", "asaf", "kirsh", " evyatar", "avihai", "shani"]
+branches = ["asaf", "kirsh", " evyatar", "avihai", "shani"]
 
 
 def for_branch(*commands: str):
@@ -20,9 +20,7 @@ def push():
 
 
 def rebase(to: str):
-    pull()
-    for_branch(f"git rebase {to}")
-    push()
+    for_branch("git pull", f"git rebase {to}", "git push")
 
 
 if __name__ == '__main__':
@@ -33,3 +31,4 @@ if __name__ == '__main__':
         push()
     elif command == "rebase":
         rebase("master")
+    os.system("git checkout master")
