@@ -20,6 +20,7 @@ def push():
 
 
 def rebase(to: str):
+    pull()
     for_branch(f"git rebase {to}")
     push()
 
@@ -31,4 +32,4 @@ if __name__ == '__main__':
     elif command == "push":
         push()
     elif command == "rebase":
-        rebase("asaf")
+        rebase("master")
