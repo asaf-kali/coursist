@@ -23,7 +23,7 @@ def rebase(to: str):
     for_branch("git pull", f"git rebase {to}", "git push")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     command = sys.argv[1]
     if command == "pull":
         pull()

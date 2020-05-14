@@ -1,4 +1,7 @@
 from django.contrib import admin
-from reviews.models import User
 
-admin.register(User)
+from reviews.models.extended_user import ExtendedUser
+from reviews.models.course import Course
+
+admin.site.register(ExtendedUser)
+admin.site.register(Course)
