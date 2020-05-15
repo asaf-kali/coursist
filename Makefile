@@ -16,6 +16,7 @@ rebase:
 	python scripts/gits.py rebase
 
 com:
+	make black
 	git add .
 	git commit -m "Auto commit"
 	git push
