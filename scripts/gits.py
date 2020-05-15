@@ -9,10 +9,15 @@ def execute(cmd: str):
     os.system(cmd)
 
 
+def clear_cache():
+    execute(f"rm -f .git/FETCH_HEAD")
+
+
 def for_branch(*commands: str):
     for branch in branches:
-        execute(f"rm -f .git/FETCH_HEAD")
+        clear_cache()
         execute(f"git checkout {branch}")
+        clear_cache()
         for cmd in commands:
             cmd = cmd.replace("<branch>", branch)
             execute(cmd)
