@@ -11,6 +11,7 @@ def execute(cmd: str):
 
 def for_branch(*commands: str):
     for branch in branches:
+        execute(f"rm -f .git/FETCH_HEAD")
         execute(f"git checkout {branch}")
         for cmd in commands:
             cmd = cmd.replace("<branch>", branch)

@@ -14,3 +14,8 @@ push:
 
 rebase:
 	python scripts/gits.py rebase
+
+com:
+	git add .
+	git commit -m "Auto commit"
+	git push
