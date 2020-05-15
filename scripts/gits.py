@@ -28,7 +28,8 @@ def push():
 def rebase(to: str):
     execute(f"git checkout {to}")
     execute(f"git push")
-    for_branch("git pull", f"git rebase {to}", "git push")
+    pull()
+    for_branch(f"git rebase {to}", "git push")
 
 
 if __name__ == "__main__":
