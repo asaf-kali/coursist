@@ -4,11 +4,16 @@ import sys
 branches = ["asaf", "kirsh", " evyatar", "avihai", "shani"]
 
 
+def execute(cmd: str):
+    print(cmd)
+    os.system(cmd)
+
+
 def for_branch(*commands: str):
     for branch in branches:
-        os.system(f"git checkout {branch}")
-        for command in commands:
-            os.system(command.replace("<branch>", branch))
+        execute(f"git checkout {branch}")
+        for cmd in commands:
+            execute(cmd.replace("<branch>", branch))
 
 
 def pull():
@@ -31,4 +36,4 @@ if __name__ == "__main__":
         push()
     elif command == "rebase":
         rebase("master")
-    os.system("git checkout master")
+    execute("git checkout master")
