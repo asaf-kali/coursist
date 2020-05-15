@@ -13,7 +13,8 @@ def for_branch(*commands: str):
     for branch in branches:
         execute(f"git checkout {branch}")
         for cmd in commands:
-            execute(cmd.replace("<branch>", branch))
+            cmd = cmd.replace("<branch>", branch)
+            execute(cmd)
 
 
 def pull():
@@ -25,6 +26,8 @@ def push():
 
 
 def rebase(to: str):
+    execute(f"git checkout {to}")
+    execute(f"git push")
     for_branch("git pull", f"git rebase {to}", "git push")
 
 
