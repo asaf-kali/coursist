@@ -1,0 +1,13 @@
+<html lang="">
+{% load static %}
+<head>
+    <title>Open Cards</title>
+    <link href="{% static 'styles/master.css' %}" rel="stylesheet">
+    <script src="{% static 'scripts/jquery-3.5.1.js' %}"></script>
+    {% block head %}{% endblock %}
+</head>
+<body>
+<br><br><br>
+{% block content %} {% endblock %}
+</body>
+</html>

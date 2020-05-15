@@ -1,0 +1,44 @@
+{% extends "master.html" %}
+{% block head %}
+    <script>
+        $(document).ready(() => {
+            $("#ajax-btn").click(function (e) {
+                e.preventDefault();
+                const val = $("#ajax-text").val();
+                $.ajax({
+                    type: 'POST',
+                    url: "{% url 'index' %}",
+                    data: {
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        value: val
+                    },
+                    success: function (response) {
+                        alert(JSON.stringify(response));
+                    },
+                    error: function (response) {
+                        alert(JSON.stringify(response))
+                    }
+                });
+            });
+        });
+
+    </script>
+{% endblock %}
+{% block content %}
+    Posted: {{ value }}<br><br>
+    This is Ajax form:<br>
+    <label>
+        Ajax input:
+        <input type="text" id="ajax-text"/>
+    </label><br>
+    <input type="button" id="ajax-btn" value="Ajax it"/><br><br><br>
+    This is POST form:
+    <form method="post">
+        <label>
+            POST input:
+            <input type="text" name="post-text"/>
+        </label><br>
+        <input type="submit" value="POST it">
+        {% csrf_token %}
+    </form>
+{% endblock %}
