@@ -1,44 +1,36 @@
 {% extends "master.html" %}
+{% load static %}
 {% block head %}
+    <script src="{% static 'scripts/ajax.js' %}">alert("hi");</script>
     <script>
-        $(document).ready(() => {
-            $("#ajax-btn").click(function (e) {
-                e.preventDefault();
-                const val = $("#ajax-text").val();
-                $.ajax({
-                    type: 'POST',
-                    url: "{% url 'index' %}",
-                    data: {
-                        csrfmiddlewaretoken: '{{ csrf_token }}',
-                        value: val
-                    },
-                    success: function (response) {
-                        alert(JSON.stringify(response));
-                    },
-                    error: function (response) {
-                        alert(JSON.stringify(response))
-                    }
-                });
-            });
-        });
-
+        bindInput("ajax-text", (r) => {
+            $("#server-response").html("Server response: " + r.value);
+        }, null, `{{ csrf_token }}`);
+        bindButton("ajax-btn",
+            (e) => {
+                return {value: $("#ajax-text").val()}
+            }, (response) => {
+                alert(`Success!\n${JSON.stringify(response)}`);
+            }, (response) => {
+                alert(`Failed!\n${JSON.stringify(response)}`);
+            }, `{{ csrf_token }}`);
     </script>
 {% endblock %}
 {% block content %}
     Posted: {{ value }}<br><br>
-    This is Ajax form:<br>
+    This is an Ajax form:<br>
     <label>
         Ajax input:
         <input type="text" id="ajax-text"/>
-    </label><br>
+    </label><span id="server-response"></span><br>
     <input type="button" id="ajax-btn" value="Ajax it"/><br><br><br>
-    This is POST form:
-    <form method="post">
+    This is a POST form:
+    <form method="post" id="post-form">
         <label>
             POST input:
             <input type="text" name="post-text"/>
         </label><br>
-        <input type="submit" value="POST it">
+        <input type="submit" id="post-btn" value="POST it">
         {% csrf_token %}
     </form>
 {% endblock %}

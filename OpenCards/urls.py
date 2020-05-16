@@ -18,4 +18,4 @@ from django.urls import path
 
 from reviews.views import IndexView
 
-urlpatterns = [path("admin/", admin.site.urls), path("index", IndexView.as_view(), name="index")]
+urlpatterns = [path("admin/", admin.site.urls), path("", IndexView.as_view(), name="index")]

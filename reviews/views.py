@@ -17,6 +17,10 @@ class IndexView(TemplateView):
 
     def post(self, request: WSGIRequest, *args, **kwargs):
         if request.is_ajax():
-            return JsonResponse({"success": True, "value": request.POST["value"]})
+            value = request.POST["value"]
+            print(f"User sent {value} via Ajax")
+            return JsonResponse({"success": True, "value": value})
         else:
-            return self.render_to_response(context={"value": request.POST["post-text"]})
+            value = request.POST["post-text"]
+            print(f"User sent {value} via POST")
+            return self.render_to_response(context={"value": value})
