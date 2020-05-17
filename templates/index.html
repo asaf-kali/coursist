@@ -1,13 +1,14 @@
 {% extends "master.html" %}
 {% load static %}
 {% block head %}
-    <script src="{% static 'scripts/ajax.js' %}">alert("hi");</script>
+    <script src="{% static 'scripts/ajax.js' %}"></script>
     <script>
         bindInput("ajax-text", (r) => {
             $("#server-response").html("Server response: " + r.value);
         }, null, `{{ csrf_token }}`);
         bindButton("ajax-btn",
             (e) => {
+                console.log("Im in data getter");
                 return {value: $("#ajax-text").val()}
             }, (response) => {
                 alert(`Success!\n${JSON.stringify(response)}`);
@@ -16,14 +17,9 @@
             }, `{{ csrf_token }}`);
     </script>
 {% endblock %}
-{% block content %}
-    Posted: {{ value }}<br><br>
-    This is an Ajax form:<br>
-    <label>
-        Ajax input:
-        <input type="text" id="ajax-text"/>
-    </label><span id="server-response"></span><br>
-    <input type="button" id="ajax-btn" value="Ajax it"/><br><br><br>
+{% block content %}<br><br>
+    {% if value %}Response from server: {{ value }}
+    {% else %}No response from server yet.{% endif %}<br><br>
     This is a POST form:
     <form method="post" id="post-form">
         <label>
@@ -32,5 +28,11 @@
         </label><br>
         <input type="submit" id="post-btn" value="POST it">
         {% csrf_token %}
-    </form>
+    </form><br><br><br>
+    This is an Ajax form:<br>
+    <label>
+        Ajax input:
+        <input type="text" id="ajax-text"/>
+    </label><span id="server-response"></span><br>
+    <input type="button" id="ajax-btn" value="Ajax it"/>
 {% endblock %}

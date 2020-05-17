@@ -8,8 +8,8 @@ from reviews.models.base import Base
 
 
 class Course(Base):
-    course_number: int = IntegerField()
-    title: str = CharField(max_length=100)
+    course_number: int = IntegerField(unique=True)
+    title: str = CharField(max_length=100, unique=True)
 
     def save(self, *args, **kwargs):
         self.title = self.title.title()
