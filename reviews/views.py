@@ -32,4 +32,4 @@ class IndexView(TemplateView):
 
 class CourseView(DetailView):
     model = Course
-    template_name = "course-view.html"
+    template_name = "course-details.html"
