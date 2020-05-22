@@ -1,0 +1,15 @@
+{% extends "master.html" %}
+{% load static %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+    <div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v7.0&appId=1129461710764059&autoLogAppEvents=1"></script>
+
+    <h1>{{ course.title }}</h1>
+    <p>This course number is {{ course.course_number }}.</p>
+    <br><br>
+    <div class="fb-comments" data-href="{{ request.build_absolute_uri }}" data-numposts="5" data-width=""></div>
+{% endblock %}
