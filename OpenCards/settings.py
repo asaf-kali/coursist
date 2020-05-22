@@ -32,10 +32,17 @@ INSTALLED_APPS = [
     "reviews",
     "django.contrib.admin",
     "django.contrib.auth",
+    'django.contrib.sites',
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+
+    # for facebook login
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.facebook',
 ]
 
 MIDDLEWARE = [
@@ -105,3 +112,12 @@ STATICFILES_DIRS = [
 ]
 
 STATIC_URL = "/static/"
+
+AUTHENTICATION_BACKEND = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+SITE_ID = 1
+
+LOGIN_REDIRECT_URL = '/'

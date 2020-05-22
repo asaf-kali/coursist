@@ -1,4 +1,7 @@
 <html lang="">
+{% load socialaccount %}
+{%  providers_media_js %}
+
 {% load static %}
 
 <head>
@@ -9,6 +12,8 @@
 </head>
 <body>
 <h1>This is our site title</h1>
+user = {{ user }}
+<a href="{% provider_login_url "facebook" method="js_sdk" %}">Facebook Connect</a>
 <br><br><br>
 {% block content %} {% endblock %}
 </body>
