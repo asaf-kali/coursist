@@ -1,0 +1,16 @@
+{% extends "master.html" %}
+{% load static %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+    <h3>Courses list</h3>
+    <ul>
+        {% for course in object_list %}
+            <li>{{ course.course_number }}:
+                <a href="{% url 'course-details' course.course_number %}">{{ course.title }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

@@ -1,20 +1,60 @@
 <html lang="">
 {% load socialaccount %}
-{%  providers_media_js %}
+{% providers_media_js %}
 
 {% load static %}
 
 <head>
     <title>Open Cards</title>
-    <link href="{% static 'styles/master.css' %}" rel="stylesheet">
+    {#  Styles  #}
+    <link rel="stylesheet" href="{% static 'styles/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/master.css' %}">
+    <link rel="stylesheet" href="{% static 'star-ratings/css/star-ratings.css' %}">
+    {# Scripts #}
     <script src="{% static 'scripts/jquery-3.5.1.js' %}"></script>
+    <script src="{% static 'star-ratings/js/dist/star-ratings.min.js' %}"></script>
+    {# Curent page #}
     {% block head %}{% endblock %}
 </head>
 <body>
-<h1>This is our site title</h1>
-user = {{ user }}
-<a href="{% provider_login_url "facebook" method="js_sdk" %}">Facebook Connect</a>
-<br><br><br>
+{# TODO: Put navbar inside template #}
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="#"><h2>Open Cards</h2></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01"
+            aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarColor01">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Home<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'courses' %}">Courses</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Pricing</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">About</a>
+            </li>
+        </ul>
+        {#        <form class="form-inline my-2 my-lg-0">#}
+        {#            <input class="form-control mr-sm-2" type="text" placeholder="Search">#}
+        {#            <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>#}
+        {#        </form>#}
+        <span style="color: white;">
+        {% if user.is_anonymous %}
+            <a href="{% provider_login_url "facebook" method="js_sdk" %}" style="color: white;">Log in with Facebook</a>
+        {% else %}
+            Logged in as: {{ user }}
+        {% endif %}</span>
+    </div>
+</nav>
+<br><br>
+<div id="content-main" style="margin-left: 35px;">
 {% block content %} {% endblock %}
+</div>
 </body>
 </html>

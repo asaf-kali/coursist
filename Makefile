@@ -1,10 +1,18 @@
+install:
+	pip install -r requirements.txt
+	pip install -r requirements-dev.txt
+	python manage.py migrate
+
+run:
+	python manage.py runserver
+
+black:
+	black ./ -l 120
+
 migrate:
 	python manage.py makemigrations
 	make black
 	python manage.py migrate
-
-black:
-	black ./ -l 120
 
 pull:
 	python scripts/gits.py pull

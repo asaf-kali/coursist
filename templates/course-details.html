@@ -1,5 +1,6 @@
 {% extends "master.html" %}
 {% load static %}
+{% load ratings %}
 
 {% block head %}
 {% endblock %}
@@ -8,8 +9,12 @@
     <div id="fb-root"></div>
 <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v7.0&appId=1129461710764059&autoLogAppEvents=1"></script>
 
-    <h1>{{ course.title }}</h1>
-    <p>This course number is {{ course.course_number }}.</p>
-    <br><br>
+    <h2>{{ course.title }}</h2>
+    <p>Course number {{ course.course_number }}.</p>
+    <br><br><br>
+    <h4>Ratings</h4>
+    {% ratings object %}
+    <br><br><br>
+    <h4>Facebook reviews</h4>
     <div class="fb-comments" data-href="{{ request.build_absolute_uri }}" data-numposts="5" data-width=""></div>
 {% endblock %}

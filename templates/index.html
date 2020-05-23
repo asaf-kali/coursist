@@ -1,39 +1,8 @@
 {% extends "master.html" %}
-
 {% load static %}
+
 {% block head %}
-    <script src="{% static 'scripts/ajax.js' %}"></script>
-    <script>
-        bindInput("ajax-text", (r) => {
-            $("#server-response").html("Server response: " + r.value);
-        }, null, `{{ csrf_token }}`);
-        bindButton("ajax-btn",
-            (e) => {
-                console.log("Im in data getter");
-                return {value: $("#ajax-text").val()}
-            }, (response) => {
-                alert(`Success!\n${JSON.stringify(response)}`);
-            }, (response) => {
-                alert(`Failed!\n${JSON.stringify(response)}`);
-            }, `{{ csrf_token }}`);
-    </script>
 {% endblock %}
-{% block content %}<br><br>
-    {% if value %}Response from server: {{ value }}
-    {% else %}No response from server yet.{% endif %}<br><br>
-    This is a POST form:
-    <form method="post" id="post-form">
-        <label>
-            POST input:
-            <input type="text" name="post-text"/>
-        </label><br>
-        <input type="submit" id="post-btn" value="POST it">
-        {% csrf_token %}
-    </form><br><br><br>
-    This is an Ajax form:<br>
-    <label>
-        Ajax input:
-        <input type="text" id="ajax-text"/>
-    </label><span id="server-response"></span><br>
-    <input type="button" id="ajax-btn" value="Ajax it"/>
+
+{% block content %}
 {% endblock %}

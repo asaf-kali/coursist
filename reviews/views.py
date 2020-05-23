@@ -1,18 +1,22 @@
 from django.core.handlers.wsgi import WSGIRequest
 from django.http import JsonResponse
-from django.views.generic import TemplateView
+from django.shortcuts import render
+from django.views.generic import TemplateView, ListView
 from django.views.generic.detail import DetailView
 
 from reviews.models.course import Course
 
 
-# def index(request):
-#     all_courses = Course.all_courses()
-#     return render(request, "index.html", context={"courses": all_courses, "my_number": 8, "now": timezone.now()})
+def index(request):
+    return render(request, "index.html")
 
 
-class IndexView(TemplateView):
-    template_name = "index.html"
+class ExtendedView(TemplateView):
+    pass
+
+
+class AjaxView(ExtendedView):
+    template_name = "ajax.html"
 
     def get(self, request: WSGIRequest, *args, **kwargs):
         print("We are in GET")
@@ -33,3 +37,15 @@ class IndexView(TemplateView):
 class CourseView(DetailView):
     model = Course
     template_name = "course-details.html"
+
+    def get_object(self, queryset=None):
+        return Course.objects.filter(course_number=self.kwargs["course_number"]).first()
+
+
+class CoursesView(ListView, ExtendedView):
+    model = Course
+    template_name = "courses.html"
+
+    @property
+    def object_list(self):
+        return Course.objects.all()

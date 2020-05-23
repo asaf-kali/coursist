@@ -11,6 +11,9 @@ class Course(Base):
     course_number: int = IntegerField(unique=True)
     title: str = CharField(max_length=100, unique=True)
 
+    class Meta:
+        ordering = ["course_number"]
+
     def save(self, *args, **kwargs):
         self.title = self.title.title()
         super().save(*args, **kwargs)
