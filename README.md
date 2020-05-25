@@ -22,6 +22,8 @@ TBD
 ## Related Docs
 1. Styles template: https://bootswatch.com/litera/
 1. Rating system: https://github.com/wildfish/django-star-ratings
+1. DB backup: https://django-dbbackup.readthedocs.io/en/stable/index.html
+1. Cron jobs: https://django-cron.readthedocs.io/en/latest/index.html
 
 ## Disclaimer
 This project is part of the Open Source Workshop (67118) course team project.

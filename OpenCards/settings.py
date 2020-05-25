@@ -30,7 +30,7 @@ ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
 INSTALLED_APPS = [
     # Our app
-    "reviews",
+    "academic_helper",
     # Django base
     "django.contrib.admin",
     "django.contrib.auth",
@@ -46,6 +46,10 @@ INSTALLED_APPS = [
     "allauth.socialaccount.providers.facebook",
     # Rating
     "star_ratings",
+    # Cron
+    "django_cron",
+    # Db backup,
+    "dbbackup",
 ]
 
 MIDDLEWARE = [
@@ -96,7 +100,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
-AUTH_USER_MODEL = "reviews.ExtendedUser"
+AUTH_USER_MODEL = "academic_helper.ExtendedUser"
 
 LANGUAGE_CODE = "en-us"
 
@@ -121,11 +125,20 @@ AUTHENTICATION_BACKEND = (
     "allauth.account.auth_backends.AuthenticationBackend",
 )
 
+# Auth
 SITE_ID = 1
-
 LOGIN_REDIRECT_URL = "/"
+
+# DB Backup
+DBBACKUP_STORAGE = "django.core.files.storage.FileSystemStorage"
+DBBACKUP_STORAGE_OPTIONS = {"location": "./backups"}
 
 # Star rating
 STAR_RATINGS_ANONYMOUS = True
 STAR_RATINGS_STAR_HEIGHT = 16
-STAR_RATINGS_RATING_MODEL = "reviews.ExtendedRating"
+# STAR_RATINGS_RATING_MODEL = "academic_helper.ExtendedRating"
+
+# Cron
+CRON_CLASSES = [
+    "academic_helper.logic.crons.BackupCron",
+]

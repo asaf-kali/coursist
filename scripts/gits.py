@@ -1,11 +1,13 @@
 import os
 import sys
 
+from academic_helper.utils.logger import log
+
 branches = ["asaf", "kirsh", " evyatar", "avihai", "shani"]
 
 
 def execute(cmd: str):
-    print(cmd)
+    log.info(cmd)
     os.system(cmd)
 
 

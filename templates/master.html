@@ -1,11 +1,11 @@
 <html lang="">
 {% load socialaccount %}
-{% providers_media_js %}
+{#{% providers_media_js %}#}
 
 {% load static %}
 
 <head>
-    <title>Open Cards</title>
+    <title>{{ title }}</title>
     {#  Styles  #}
     <link rel="stylesheet" href="{% static 'styles/bootstrap.css' %}">
     <link rel="stylesheet" href="{% static 'styles/master.css' %}">
@@ -19,7 +19,7 @@
 <body>
 {# TODO: Put navbar inside template #}
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <a class="navbar-brand" href="#"><h2>Open Cards</h2></a>
+    <a class="navbar-brand" href="{% url 'index' %}"><h2>Open Cards</h2></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01"
             aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -28,16 +28,16 @@
     <div class="collapse navbar-collapse" id="navbarColor01">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" href="#">Home<span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="{% url 'index' %}">Home</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'courses' %}">Courses</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Pricing</a>
+                <a class="nav-link" href="{% url 'about' %}">About</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">About</a>
+                <a class="nav-link" href="{% url 'admin:index' %}">Admin</a>
             </li>
         </ul>
         {#        <form class="form-inline my-2 my-lg-0">#}
@@ -54,7 +54,7 @@
 </nav>
 <br><br>
 <div id="content-main" style="margin-left: 35px;">
-{% block content %} {% endblock %}
+    {% block content %} {% endblock %}
 </div>
 </body>
 </html>

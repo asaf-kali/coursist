@@ -9,7 +9,7 @@
     <ul>
         {% for course in object_list %}
             <li>{{ course.course_number }}:
-                <a href="{% url 'course-details' course.course_number %}">{{ course.title }}</a>
+                <a href="{% url 'course-details' course.course_number %}">{{ course.name }}</a>
             </li>
         {% endfor %}
     </ul>
