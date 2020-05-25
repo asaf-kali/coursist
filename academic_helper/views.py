@@ -2,7 +2,7 @@ import re
 
 from django.core.handlers.wsgi import WSGIRequest
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views.generic import TemplateView, ListView, DetailView
 
 from academic_helper.models.course import Course
@@ -58,7 +58,8 @@ class CourseDetailsView(DetailView, ExtendedViewMixin):
 
     @property
     def object(self):
-        return Course.objects.filter(course_number=self.kwargs["course_number"]).first()
+        query = Course.objects.filter(course_number=self.kwargs["course_number"])
+        return get_object_or_404(query)
 
 
 class CoursesView(ExtendedViewMixin, ListView):

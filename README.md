@@ -11,7 +11,7 @@ The main features that this project contains are:
 1. Clone the project.
 1. Create a virtual environment.
 1. Run `make install`.
-1. Open `127.0.0.1:8000` in you preferred web browser.
+1. Open `127.0.0.1:8000` in your preferred web browser.
 
 ## Contribution
 Before committing any change, please run `make black` in the terminal. 
