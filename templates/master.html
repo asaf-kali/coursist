@@ -1,7 +1,6 @@
 <html lang="">
+{% load i18n %}
 {% load static %}
-{% load custom_tags %}
-{% get_settings_value auth_active "AUTH_ACTIVATION" %}
 
 <head>
     <title>{{ title }}</title>
@@ -11,10 +10,6 @@
     <link rel="stylesheet" href="{% static 'styles/master.css' %}">
     <link rel="stylesheet" href="{% static 'star-ratings/css/star-ratings.css' %}">
     {# Scripts #}
-    {% if auth_active %}
-        {% load socialaccount %}
-        {% providers_media_js %}
-    {% endif %}
     <script src="{% static 'scripts/jquery-3.5.1.js' %}"></script>
     <script src="{% static 'star-ratings/js/dist/star-ratings.min.js' %}"></script>
     {# Curent page #}
@@ -50,15 +45,18 @@
         {#        </form>#}
         <span style="color: white;">
         {% if user.is_anonymous %}
-            {% if auth_active %}
-                <a href="{% provider_login_url "facebook" method="js_sdk" %}" style="color: white;">
-                    Log in with Facebook
-                </a>
-            {% endif %}
+            <a class="nav-link" href="{% url 'login' %}" style="color: white;">Log in</a>
+{#            <a href="{% provider_login_url "facebook" method="js_sdk" %}" style="color: white;">Log in with Facebook</a>#}
         {% else %}
-            Logged in as: {{ user }} (<a href="">Log out</a>)
-        {% endif %}
-        </span>
+            Logged in as: {{ user }}
+            <form method="post" action="{% url 'account_logout' %}">
+                {% csrf_token %}
+                {% if redirect_field_value %}
+                    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+                {% endif %}
+                <button type="submit">{% trans 'Sign Out' %}</button>
+            </form>
+        {% endif %}</span>
     </div>
 </nav>
 <br><br>

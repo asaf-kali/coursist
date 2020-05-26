@@ -44,12 +44,24 @@ INSTALLED_APPS = [
     "allauth.account",
     "allauth.socialaccount",
     "allauth.socialaccount.providers.facebook",
+    # "allauth.socialaccount.providers.google",
+
     # Rating
     "star_ratings",
+    'reviews',
+
     # Cron
     "django_cron",
     # Db backup,
     "dbbackup",
+]
+
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
 MIDDLEWARE = [
@@ -120,15 +132,12 @@ STATICFILES_DIRS = [
 
 STATIC_URL = "/static/"
 
-AUTHENTICATION_BACKEND = (
-    "django.contrib.auth.backends.ModelBackend",
-    "allauth.account.auth_backends.AuthenticationBackend",
-)
-
 # Auth
 AUTH_ACTIVATION = False
 SITE_ID = 1
 LOGIN_REDIRECT_URL = "/"
+ACCOUNT_EMAIL_VERIFICATION = "none"
+
 
 # DB Backup
 DBBACKUP_STORAGE = "django.core.files.storage.FileSystemStorage"
@@ -138,6 +147,10 @@ DBBACKUP_STORAGE_OPTIONS = {"location": "./backups"}
 STAR_RATINGS_STAR_HEIGHT = 16
 # STAR_RATINGS_ANONYMOUS = False
 # STAR_RATINGS_RATING_MODEL = "academic_helper.ExtendedRating"
+
+# Reviews
+REVIEW_PUBLISH_UNMODERATED = True
+REVIEW_SHOW_RATING_TEXT = False
 
 # Cron
 CRON_CLASSES = [

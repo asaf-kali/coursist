@@ -1,6 +1,7 @@
 {% extends "master.html" %}
 {% load static %}
 {% load ratings %}
+{% load reviews %}
 
 {% block head %}
 {% endblock %}
@@ -12,6 +13,17 @@
 
     <h2>{{ course.name }}</h2>
     <p>Course number {{ course.course_number }}.</p>
+
+    <br><br><br>
+    {% get_review_count for course as review_count %}
+    <p>This course has {{ review_count }} reviews.</p>
+    {% if not user.is_anonymous %}
+        {% render_review_form for course %}
+    {% else %}
+        To add a review, please sign in.
+    {% endif %}
+    {% render_review_list for course %}
+
     <br><br><br>
     <h4>Ratings</h4>
     <h5>Semester rating:</h5>
