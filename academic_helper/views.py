@@ -86,17 +86,17 @@ class LoginView(SuperLoginView):
     template_name = "login.html"
 
     def get_context_data(self, **kwargs):
-        ret = super().get_context_data(**kwargs)
-        ret['signup_url'] = reverse("signup")
-        return ret
+        context = super().get_context_data(**kwargs)
+        context['signup_url'] = reverse("signup")
+        return context
 
 
 class SignupView(SuperSignupView):
     template_name = "signup.html"
 
     def get_context_data(self, **kwargs):
-        ret = super().get_context_data(**kwargs)
-        ret['login_url'] = reverse("login")
-        return ret
+        context = super().get_context_data(**kwargs)
+        context['login_url'] = reverse("login")
+        return context
 
 

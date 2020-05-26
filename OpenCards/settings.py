@@ -48,6 +48,8 @@ INSTALLED_APPS = [
 
     # Rating
     "star_ratings",
+    'reviews',
+
     # Cron
     "django_cron",
     # Db backup,
@@ -145,6 +147,10 @@ DBBACKUP_STORAGE_OPTIONS = {"location": "./backups"}
 STAR_RATINGS_STAR_HEIGHT = 16
 # STAR_RATINGS_ANONYMOUS = False
 # STAR_RATINGS_RATING_MODEL = "academic_helper.ExtendedRating"
+
+# Reviews
+REVIEW_PUBLISH_UNMODERATED = True
+REVIEW_SHOW_RATING_TEXT = False
 
 # Cron
 CRON_CLASSES = [
