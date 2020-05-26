@@ -7,13 +7,25 @@
 
 {% block content %}
     <div id="fb-root"></div>
-<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v7.0&appId=1129461710764059&autoLogAppEvents=1"></script>
+    <script async defer crossorigin="anonymous"
+            src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v7.0&appId=1129461710764059&autoLogAppEvents=1"></script>
 
     <h2>{{ course.name }}</h2>
     <p>Course number {{ course.course_number }}.</p>
     <br><br><br>
     <h4>Ratings</h4>
-    {% ratings object %}
+    <h5>Semester rating:</h5>
+    How hard was the course during the semester? How difficult / intense were the home assignments?<br>
+    (1 - hard, 5 - easy)<br>
+    {% ratings course.semester_rating %}
+    <h5>Finals rating:</h5>
+    How hard was the final exam / project?<br>
+    (1 - hard, 5 - easy)<br>
+    {% ratings course.finals_rating %}
+    <h5>Interesting rating:</h5>
+    How interesting was the course? How fun?<br>
+    (1 - boring, 5 - interesting)<br>
+    {% ratings course.interesting_rating %}
     <br><br><br>
     <h4>Facebook reviews</h4>
     <div class="fb-comments" data-href="{{ request.build_absolute_uri }}" data-numposts="5" data-width=""></div>

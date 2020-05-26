@@ -1,23 +1,40 @@
 # open-cards
 
 ## Description
-This project is intended mainly for university students all around the world.<br />
+This project is intended for university students all around the world.<br>
 The main features that this project contains are:
 1. Social course review system.
-1. Course program plannning for the entire degree.
+1. Course program planning for the entire degree.
 1. Semestrial courses schedule building tool.
 
 ## Installation
+*Important: You will need `python 3.7+` to run this project.*
 1. Clone the project.
 1. Create a virtual environment.
-1. Run `make install`.
-1. Open `127.0.0.1:8000` in you preferred web browser.
+1. In the terminal, make sure that when you type `python` you use the virtual environment's python!<br>
+(If you use `Pycharm` that will happen by default in the integrated terminal, otherwise you will need to
+use the `source` command).
+1. Run `make install` (if you dont have `make` installed, just run the commands inside the `Makefile`).
+
+## Usage
+#### Basics
+First, you need to run the local server:
+1. Run `python manage.py runserver`.
+1. Open [http://localhost:8000](http://localhost:8000) in your preferred web browser.
+
+If everything went well, the server is now running on your local machine. Let's create an admin user:
+1. Run `python manage.py createsuperuser` and follow the creation process.
+1. Open [http://localhost:8000/admin](http://localhost:8000/admin) and log in with your new admin user.
+
+Now you can see and control the entire database and the system's objects.
+
+#### Management commands
+The server allows to run these custom commands:
+1. `python manage.py dev_init`: Initiates the database with dummy data for development purposes.
+1. `python manage.py retreive_courses`: Retrieves courses data from specified servers (*TO BE IMPLEMENTED*). 
 
 ## Contribution
 Before committing any change, please run `make black` in the terminal. 
-
-## Usage 
-TBD
 
 ## Related Docs
 1. Styles template: https://bootswatch.com/litera/

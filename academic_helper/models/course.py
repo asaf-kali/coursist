@@ -1,11 +1,20 @@
 from __future__ import annotations
 
-from typing import Union, Iterable, Collection, List
+from typing import Union, Iterable, Collection
 
-from django.db.models import IntegerField, CharField, QuerySet, ManyToManyField, ForeignKey, CASCADE
+from django.contrib.admin.options import get_content_type_for_model
+from django.db.models import (
+    IntegerField,
+    CharField,
+    QuerySet,
+    ManyToManyField,
+    ForeignKey,
+    CASCADE,
+)
 
 from academic_helper.models import ExtendedUser
 from academic_helper.models.base import Base
+from academic_helper.models.extended_rating import RatingDummy
 
 
 class Course(Base):
@@ -30,6 +39,18 @@ class Course(Base):
     @staticmethod
     def all_courses() -> Union[Collection[Course], QuerySet]:
         return Course.objects.all()
+
+    @property
+    def semester_rating(self):
+        return RatingDummy.dummy_for(self, "Semester")
+
+    @property
+    def finals_rating(self):
+        return RatingDummy.dummy_for(self, "Finals")
+
+    @property
+    def interesting_rating(self):
+        return RatingDummy.dummy_for(self, "Interesting")
 
 
 class StudyBlock(Base):
