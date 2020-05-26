@@ -1,6 +1,6 @@
 import re
 
-from allauth.account.views import LoginView as superLoginView, SignupView as superSignupView
+from allauth.account.views import LoginView as SuperLoginView, SignupView as SuperSignupView
 from django.core.handlers.wsgi import WSGIRequest
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
@@ -82,23 +82,21 @@ class AboutView(ExtendedViewMixin):
     template_name = "about.html"
 
 
-class LoginView(superLoginView):
+class LoginView(SuperLoginView):
     template_name = "login.html"
 
     def get_context_data(self, **kwargs):
-        ret = super(LoginView, self).get_context_data(**kwargs)
-
-        ret.update({"signup_url": reverse("signup")})
+        ret = super().get_context_data(**kwargs)
+        ret['signup_url'] = reverse("signup")
         return ret
 
 
-class SignupView(superSignupView):
+class SignupView(SuperSignupView):
     template_name = "signup.html"
 
     def get_context_data(self, **kwargs):
-        ret = super(SignupView, self).get_context_data(**kwargs)
-
-        ret.update({"login_url": reverse("login")})
+        ret = super().get_context_data(**kwargs)
+        ret['login_url'] = reverse("login")
         return ret
 
 
