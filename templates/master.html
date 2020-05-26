@@ -1,16 +1,20 @@
 <html lang="">
-{% load socialaccount %}
-{#{% providers_media_js %}#}
-
 {% load static %}
+{% load custom_tags %}
+{% get_settings_value auth_active "AUTH_ACTIVATION" %}
 
 <head>
     <title>{{ title }}</title>
+    <link rel="icon" href="{% static 'images/icon-64.png' %}">
     {#  Styles  #}
     <link rel="stylesheet" href="{% static 'styles/bootstrap.css' %}">
     <link rel="stylesheet" href="{% static 'styles/master.css' %}">
     <link rel="stylesheet" href="{% static 'star-ratings/css/star-ratings.css' %}">
     {# Scripts #}
+    {% if auth_active %}
+        {% load socialaccount %}
+        {% providers_media_js %}
+    {% endif %}
     <script src="{% static 'scripts/jquery-3.5.1.js' %}"></script>
     <script src="{% static 'star-ratings/js/dist/star-ratings.min.js' %}"></script>
     {# Curent page #}
@@ -46,10 +50,15 @@
         {#        </form>#}
         <span style="color: white;">
         {% if user.is_anonymous %}
-            <a href="{% provider_login_url "facebook" method="js_sdk" %}" style="color: white;">Log in with Facebook</a>
+            {% if auth_active %}
+                <a href="{% provider_login_url "facebook" method="js_sdk" %}" style="color: white;">
+                    Log in with Facebook
+                </a>
+            {% endif %}
         {% else %}
-            Logged in as: {{ user }}
-        {% endif %}</span>
+            Logged in as: {{ user }} (<a href="">Log out</a>)
+        {% endif %}
+        </span>
     </div>
 </nav>
 <br><br>
