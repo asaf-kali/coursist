@@ -1,6 +1,8 @@
 <html lang="">
+{% load i18n %}
 {% load socialaccount %}
 {% providers_media_js %}
+
 
 {% load static %}
 
@@ -46,9 +48,17 @@
         {#        </form>#}
         <span style="color: white;">
         {% if user.is_anonymous %}
-            <a href="{% provider_login_url "facebook" method="js_sdk" %}" style="color: white;">Log in with Facebook</a>
+            <a class="nav-link" href="{% url 'login' %}" style="color: white;">Log in</a>
+{#            <a href="{% provider_login_url "facebook" method="js_sdk" %}" style="color: white;">Log in with Facebook</a>#}
         {% else %}
             Logged in as: {{ user }}
+            <form method="post" action="{% url 'account_logout' %}">
+                {% csrf_token %}
+                {% if redirect_field_value %}
+                    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+                {% endif %}
+                <button type="submit">{% trans 'Sign Out' %}</button>
+            </form>
         {% endif %}</span>
     </div>
 </nav>

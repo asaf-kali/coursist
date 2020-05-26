@@ -1,5 +1,6 @@
 import re
 
+from allauth.account.views import LoginView as superLoginView, SignupView as superSignupView
 from django.core.handlers.wsgi import WSGIRequest
 from django.http import JsonResponse
 from django.shortcuts import render
@@ -7,6 +8,8 @@ from django.views.generic import TemplateView, ListView, DetailView
 
 from academic_helper.models.course import Course
 from academic_helper.utils.logger import log
+
+from django.urls import reverse
 
 
 def index(request):
@@ -76,3 +79,25 @@ class CoursesView(ExtendedViewMixin, ListView):
 
 class AboutView(ExtendedViewMixin):
     template_name = "about.html"
+
+
+class LoginView(superLoginView):
+    template_name = "login.html"
+
+    def get_context_data(self, **kwargs):
+        ret = super(LoginView, self).get_context_data(**kwargs)
+
+        ret.update({"signup_url": reverse("signup")})
+        return ret
+
+
+class SignupView(superSignupView):
+    template_name = "signup.html"
+
+    def get_context_data(self, **kwargs):
+        ret = super(SignupView, self).get_context_data(**kwargs)
+
+        ret.update({"login_url": reverse("login")})
+        return ret
+
+
