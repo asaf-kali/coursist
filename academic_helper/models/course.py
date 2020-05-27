@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from typing import Union, Iterable, Collection
 
-from django.contrib.admin.options import get_content_type_for_model
 from django.db.models import (
     IntegerField,
     CharField,
@@ -10,17 +9,22 @@ from django.db.models import (
     ManyToManyField,
     ForeignKey,
     CASCADE,
-)
+    SET_NULL)
 
 from academic_helper.models import ExtendedUser
 from academic_helper.models.base import Base
 from academic_helper.models.extended_rating import RatingDummy
 
 
+class Faculty(Base):
+    name: str = CharField(max_length=50)
+
+
 class Course(Base):
     course_number: int = IntegerField(unique=True)
     name: str = CharField(max_length=100, unique=True)
     credits: int = IntegerField(default=0)
+    faculty: Faculty = ForeignKey(Faculty, on_delete=SET_NULL, null=True)
 
     class Meta:
         ordering = ["course_number"]
