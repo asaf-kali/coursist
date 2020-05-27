@@ -88,7 +88,7 @@ class CoursesView(ExtendedViewMixin, ListView):
         text = request.POST["free_text"]
         queryset = Course.find_by(text)
         result = [c.as_dict for c in queryset]
-        return JsonResponse({"success": True, "courses": result})
+        return JsonResponse({"courses": result})
 
 
 class AboutView(ExtendedViewMixin):

@@ -2,7 +2,7 @@ const CSRF_KEY = 'csrfmiddlewaretoken';
 
 
 function logAndCall(response, callback, comment) {
-    console.log(`Ajax response (${comment}): ${JSON.stringify(response)}`);
+    console.debug(`Ajax response (${comment}): ${JSON.stringify(response)}`);
     if (callback)
         callback(response);
 }
@@ -11,7 +11,7 @@ function logAndCall(response, callback, comment) {
 function ajax(data, success, error, csrfToken = undefined, url = undefined) {
     if (!url) {
         url = location.href.replace(location.search, '');
-        console.log(`Referring: ${url}`);
+        console.log(`Posting to: ${url}`);
     }
     if (!(CSRF_KEY in data)) {
         data[CSRF_KEY] = csrfToken;

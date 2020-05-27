@@ -14,8 +14,8 @@ function initHandlebars() {
 
 /*** Fading ***/
 
-const refreshRate = 50;
-const fadeOutSpeed = 150;
+const refreshRate = 25;
+const fadeOutSpeed = 200;
 const fadeInSpeed = 200;
 let isFading = new Map();
 

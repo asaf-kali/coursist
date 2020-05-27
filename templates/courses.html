@@ -3,7 +3,6 @@
 {% load custom_tags %}
 
 {% block head %}
-    <!-- Include Handlebars from a CDN -->
     <script src={% static 'scripts/handlebars.js' %}></script>
     <script name="course-single" type="text/x-handlebars-template">
         {% raw_include 'handlebars/course-item.html' %}
@@ -18,7 +17,8 @@
         }
 
         onReady(() => {
-            bindButton("search_btn", () => {
+            bindButton("search_btn",
+                () => {
                     hide("courses-list");
                     let free_text = $("#course_id").val();
                     return {"free_text": free_text};
