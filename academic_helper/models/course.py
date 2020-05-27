@@ -2,7 +2,8 @@ from __future__ import annotations
 
 from typing import Union, Iterable, Collection
 
-from django.db.models import IntegerField, CharField, QuerySet, ManyToManyField, ForeignKey, CASCADE, SET_NULL
+from django.db.models import IntegerField, CharField, QuerySet, ManyToManyField, ForeignKey, \
+    CASCADE, SET_NULL
 
 from academic_helper.models import ExtendedUser
 from academic_helper.models.base import Base
@@ -27,6 +28,8 @@ class Course(Base):
 
     def save(self, *args, **kwargs):
         self.name = self.name.title()
+        if isinstance(self.faculty, str):
+            self.faculty = Faculty.objects.get_or_create(name=self.faculty)
         super().save(*args, **kwargs)
 
     def __str__(self) -> str:

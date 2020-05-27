@@ -2,7 +2,6 @@ import re
 
 from allauth.account.views import LoginView as SuperLoginView, SignupView as SuperSignupView
 from django.core.handlers.wsgi import WSGIRequest
-from django import forms
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
@@ -87,8 +86,9 @@ class CoursesView(ExtendedViewMixin, ListView):
         if not request.is_ajax():
             raise NotImplementedError()
         text = request.POST["free_text"]
-        result = Course.find_by(text).values()
-        return JsonResponse({"success": True, "courses": list(result)})
+        queryset = Course.find_by(text)
+        result = [c.as_dict for c in queryset]
+        return JsonResponse({"success": True, "courses": result})
 
 
 class AboutView(ExtendedViewMixin):

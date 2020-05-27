@@ -43,6 +43,13 @@ class Permissions:
         return [self.view, self.add, self.change, self.delete]
 
 
+# class MyBaseSerializer(DjangoJSONEncoder):
+#     def default(self, obj):
+#         if isinstance(obj, Base):
+#             return obj.as_json
+#         return super().default(obj)
+
+
 class Base(Model):
     id: int = AutoField(primary_key=True, editable=False)
     objects = Manager()
@@ -52,7 +59,7 @@ class Base(Model):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self._initial = self._dict
+        self._initial = self.as_dict
 
     def is_same_model_as(self, other) -> bool:
         if not isinstance(other, Model):
@@ -75,7 +82,7 @@ class Base(Model):
     @property
     def diff(self) -> dict:
         d1 = self._initial
-        d2 = self._dict
+        d2 = self.as_dict
         diffs = [(k, (v, d2[k])) for k, v in d1.items() if str(v) != str(d2[k])]
         return dict(diffs)
 
@@ -94,16 +101,16 @@ class Base(Model):
         return self.diff.get(field_name, None)
 
     @property
-    def _dict(self) -> dict:
+    def as_dict(self) -> dict:
         return model_to_dict(self, fields=[field.name for field in self._meta.fields])
 
     @property
-    def _json(self) -> str:
-        as_dict = {col: val for col, val in self._dict.items() if val is not None}
+    def as_json(self) -> str:
+        as_dict = {col: val for col, val in self.as_dict.items() if val is not None}
         return json.dumps(as_dict, cls=DjangoJSONEncoder)
 
     def str(self):
-        return self._json
+        return self.as_json
 
     @property
     def _type(self):
@@ -116,7 +123,7 @@ class Base(Model):
         if self.has_changed:
             log.info(f"{self._type} {wrap(self.id)} changed: {self.diff}")
         super().save(*args, **kwargs)
-        self._initial = self._dict
+        self._initial = self.as_dict
 
     @classproperty
     def permissions(cls) -> Permissions:

@@ -1,26 +1,39 @@
 {% extends "master.html" %}
 {% load static %}
+{% load custom_tags %}
 
 {% block head %}
     <!-- Include Handlebars from a CDN -->
     <script src={% static 'scripts/handlebars.js' %}></script>
+    <script name="course-single" type="text/x-handlebars-template">
+        {% raw_include 'handlebars/course-item.html' %}
+    </script>
     <script>
-        // compile the template
-        {#var template = Handlebars.compile("Handlebars <b>{{doesWhat}}</b>");#}
-        {#// execute the compiled template and print the output to the console#}
-        {#console.log(template({doesWhat: "rocks!"}));#}
+        function renderSearchResults(courses) {
+            let newContent = "";
+            courses.forEach((course) => {
+                newContent += hb_templates["course-single"]({"course": course});
+            });
+            $("#courses-list").html(newContent);
+        }
+
         onReady(() => {
             bindButton("search_btn", () => {
-                    value = $("#course_id").val();
-                    return {"free_text": value};
+                    hide("courses-list");
+                    let free_text = $("#course_id").val();
+                    return {"free_text": free_text};
                 },
                 (response) => {
+                    const courses = response["courses"];
+                    console.log(`Got ${courses.length} courses`);
+                    show("courses-list", () => {
+                        renderSearchResults(courses);
+                    });
                 },
                 (response) => {
                 },
                 '{{ csrf_token }}');
         });
-
     </script>
 {% endblock %}
 
@@ -89,10 +102,12 @@
 {% endblock %}
 
 {% block content_body %}
-    {% for course in object_list %}
-        <li>{{ course.course_number }}:
-            <a href="{% url 'course-details' course.course_number %}">{{ course.name }}</a>
-        </li>
-    {% endfor %}
+    <div id="courses-list">
+        {% for course in object_list %}
+            <li>{{ course.course_number }}:
+                <a href="{% url 'course-details' course.course_number %}">{{ course.name }}</a>
+            </li>
+        {% endfor %}
+    </div>
 {% endblock %}
 
