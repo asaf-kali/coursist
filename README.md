@@ -11,7 +11,8 @@ The main features that this project contains are:
 ## Installation
 *Important: You will need `python 3.7+` to run this project.*
 1. Clone the project.
-1. Create a [virtual environment](https://docs.python.org/3/tutorial/venv.html) (if you can, use `Pycharm` to do this). 
+1. Create a [virtual environment](https://docs.python.org/3/tutorial/venv.html)
+(if you use `Pycharm`, [you can do it like that](https://www.jetbrains.com/help/pycharm/creating-virtual-environment.html)). 
 1. In the terminal, make sure that when you type `python` you use the virtual environment's python<br>
 (If you use `Pycharm` that will happen by default in the integrated terminal, otherwise you will need to
 use the [source](https://docs.python.org/3/tutorial/venv.html) command).
