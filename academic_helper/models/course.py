@@ -31,6 +31,10 @@ class Course(Base):
     def all_courses() -> Union[Collection[Course], QuerySet]:
         return Course.objects.all()
 
+    @staticmethod
+    def find_by(name: str):
+        return Course.objects.filter(name=name).all()
+
 
 class StudyBlock(Base):
     name: str = CharField(max_length=50)

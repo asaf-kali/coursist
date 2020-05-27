@@ -1,0 +1,146 @@
+<html dir="rtl">
+	<head>
+		<!-- Latest compiled and minified CSS -->
+		<link
+		  rel="stylesheet"
+		  href="https://cdn.rtlcss.com/bootstrap/v4.2.1/css/bootstrap.min.css"
+		  integrity="sha384-vus3nQHTD+5mpDiZ4rkEPlnkcyTP+49BhJ4wJeJunw06ZAp+wzzeBPUXr42fi8If"
+		  crossorigin="anonymous">
+
+		<!-- Latest compiled and minified JavaScript -->
+		<script
+		  src="https://cdn.rtlcss.com/bootstrap/v4.2.1/js/bootstrap.min.js"
+		  integrity="sha384-a9xOd0rz8w0J8zqj1qJic7GPFfyMfoiuDjC9rqXlVOcGO/dmRqzMn34gZYDTel8k"
+          crossorigin="anonymous"></script>
+        <script src="{% static 'scripts/jquery-3.5.1.js' %}"></script>
+        <script src="{% static 'star-ratings/js/dist/star-ratings.min.js' %}"></script>
+
+		<link rel="stylesheet" href="../static/styles/style.css" />
+        <meta charset="utf-8">
+
+
+	</head>
+	<body>
+		<nav class="navbar fixed-top navbar-expand-lg navbar-light bg-navbar">
+		  <a class="navbar-brand" href="#">Skedj</a>
+		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		  </button>
+
+		  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
+			  <li class="nav-item active">
+				<a class="nav-link" href="#"></a>
+			  </li>
+			  <li class="nav-item">
+				<a class="nav-link" href="#">קורסים</a>
+			  </li>
+			  <li class="nav-item">
+				<a class="nav-link" href="#">בניית מערכת</a>
+			  </li>
+                </li>
+			  <li class="nav-item">
+				<a class="nav-link" href="#">אודות</a>
+			  </li>
+			</ul>
+		  </div>
+		</nav>
+
+		<section>
+			<!--Grid row-->
+			<div class="row">
+
+				<!--Grid column-->
+				<div class="col-md-12">
+					<div class="card search-bg card-image"
+                         style="background-image: url(../static/images/search-bg.jpeg);">
+						<div class="text-white text-center">
+
+                            <br><br><br>
+                            <div>
+                                <h1>Course Name</h1>
+                            </div>
+                            <div>
+                                <h3>Course Number</h3>
+                            </div>
+                            <a class="text-white" href="https://shnaton.huji.ac.il/index
+                            .php/NewSyl/">סילבוס</a>
+                            <br><br>
+                            <div>
+                                <button class="add-btn" id="add_course">
+                                    <svg class="bi bi-plus-square" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                      <path fill-rule="evenodd" d="M8 3.5a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5H4a.5.5 0 0 1 0-1h3.5V4a.5.5 0 0 1 .5-.5z"/>
+                                      <path fill-rule="evenodd" d="M7.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0V8z"/>
+                                      <path fill-rule="evenodd" d="M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            <br>
+
+						</div>
+					</div>
+				</div>
+				<!--Grid column-->
+
+			</div>
+			<!--Grid row-->
+
+		</section>
+		<!--Projects section v.4-->
+
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="rating-wrapper text-center">
+                        <div class="title">
+                            קושי
+                        </div>
+                        <div class="mt-3">
+                            דירוג 1
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="rating-wrapper text-center">
+                        <div class="title">
+                            עניין
+                        </div>
+                        <div class="mt-3">
+                            דירוג 2
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="rating-wrapper text-center">
+                        <div class="title">
+                            מרצה
+                        </div>
+                        <div class="mt-3">
+                            דירוג 3
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="rating-wrapper text-center">
+                        <div class="title">
+                            רלוונטיות
+                        </div>
+                        <div class="mt-3">
+                            דירוג 4
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div>
+            <h1 class="text-center">ביקורות</h1>
+        </div>
+
+
+
+	</body>
+</html>
