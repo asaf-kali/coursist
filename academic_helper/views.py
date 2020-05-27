@@ -2,14 +2,14 @@ import re
 
 from allauth.account.views import LoginView as SuperLoginView, SignupView as SuperSignupView
 from django.core.handlers.wsgi import WSGIRequest
+from django import forms
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
+from django.urls import reverse
 from django.views.generic import TemplateView, ListView, DetailView
 
 from academic_helper.models.course import Course
 from academic_helper.utils.logger import log
-
-from django.urls import reverse
 
 
 def index(request):
@@ -28,6 +28,9 @@ class ExtendedViewMixin(TemplateView):
         context["title"] = self.title
         return context
 
+    def post(self, request: WSGIRequest):
+        pass
+
 
 class AjaxView(ExtendedViewMixin):
     template_name = "ajax.html"
@@ -35,9 +38,6 @@ class AjaxView(ExtendedViewMixin):
     @property
     def title(self):
         return "Ajax"
-
-    def get(self, request: WSGIRequest, *args, **kwargs):
-        return super().get(request, *args, **kwargs)
 
     def post(self, request: WSGIRequest, *args, **kwargs):
         log.info("We are in POST")
@@ -65,6 +65,11 @@ class CourseDetailsView(DetailView, ExtendedViewMixin):
         return get_object_or_404(query)
 
 
+# class CourseSearchForm(forms.Form):
+#     free_text: forms.CharField(max_length=50)
+#     faculty: forms.CharField(max_length=50)
+
+
 class CoursesView(ExtendedViewMixin, ListView):
     model = Course
     template_name = "courses.html"
@@ -77,13 +82,12 @@ class CoursesView(ExtendedViewMixin, ListView):
     def object_list(self):
         return Course.objects.all()
 
-    def post(self, request: WSGIRequest, *args, **kwargs):
+    def post(self, request: WSGIRequest):
         log.info("Courses POST")
         if not request.is_ajax():
-            raise NotImplemented()
-        # log.info(f"User sent {value} via Ajax")
-        name = request.POST["free_text"]
-        result = Course.find_by(name).values()
+            raise NotImplementedError()
+        text = request.POST["free_text"]
+        result = Course.find_by(text).values()
         return JsonResponse({"success": True, "courses": list(result)})
 
 
@@ -102,8 +106,3 @@ class LoginView(SuperLoginView):
 
 class SignupView(SuperSignupView):
     template_name = "signup.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["login_url"] = reverse("login")
-        return context

@@ -1,4 +1,5 @@
-# open-cards
+# Coursist
+Course + Assist, got it?
 
 ## Description
 This project is intended for university students all around the world.<br>
