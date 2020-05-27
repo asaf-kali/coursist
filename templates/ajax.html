@@ -18,7 +18,7 @@
             }, `{{ csrf_token }}`);
     </script>
 {% endblock %}
-{% block content %}<br><br>
+{% block content_body %}<br><br>
     {% if value %}Response from server: {{ value }}
     {% else %}No response from server yet.{% endif %}<br><br>
     This is a POST form:

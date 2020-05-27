@@ -6,3 +6,4 @@ django-star-ratings==0.9.1
 django-allauth==0.42.0
 django-dbbackup==3.3.0
 django_cron==0.5.1
+django-rated-reviews==0.6.0

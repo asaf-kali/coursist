@@ -83,7 +83,7 @@ class CoursesView(ExtendedViewMixin, ListView):
             raise NotImplemented()
         # log.info(f"User sent {value} via Ajax")
         name = request.POST["free_text"]
-        result = Course.find_by(name)
+        result = Course.find_by(name).values()
         return JsonResponse({"success": True, "courses": list(result)})
 
 
@@ -96,7 +96,7 @@ class LoginView(SuperLoginView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['signup_url'] = reverse("signup")
+        context["signup_url"] = reverse("signup")
         return context
 
 
@@ -105,7 +105,5 @@ class SignupView(SuperSignupView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['login_url'] = reverse("login")
+        context["login_url"] = reverse("login")
         return context
-
-

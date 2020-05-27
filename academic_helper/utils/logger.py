@@ -62,4 +62,8 @@ def init():
     return logger
 
 
+def wrap(obj) -> str:
+    return f"[{obj}]"
+
+
 log = init()

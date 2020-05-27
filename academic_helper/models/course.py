@@ -2,14 +2,7 @@ from __future__ import annotations
 
 from typing import Union, Iterable, Collection
 
-from django.db.models import (
-    IntegerField,
-    CharField,
-    QuerySet,
-    ManyToManyField,
-    ForeignKey,
-    CASCADE,
-    SET_NULL)
+from django.db.models import IntegerField, CharField, QuerySet, ManyToManyField, ForeignKey, CASCADE, SET_NULL
 
 from academic_helper.models import ExtendedUser
 from academic_helper.models.base import Base
@@ -17,6 +10,9 @@ from academic_helper.models.extended_rating import RatingDummy
 
 
 class Faculty(Base):
+    class Meta:
+        verbose_name_plural = "faculties"
+
     name: str = CharField(max_length=50)
 
 
@@ -24,7 +20,7 @@ class Course(Base):
     course_number: int = IntegerField(unique=True)
     name: str = CharField(max_length=100, unique=True)
     credits: int = IntegerField(default=0)
-    faculty: Faculty = ForeignKey(Faculty, on_delete=SET_NULL, null=True)
+    faculty = ForeignKey(Faculty, on_delete=SET_NULL, null=True, blank=True)
 
     class Meta:
         ordering = ["course_number"]
@@ -58,7 +54,7 @@ class Course(Base):
 
     @staticmethod
     def find_by(name: str):
-        return Course.objects.filter(name=name).all()
+        return Course.objects.filter(name__contains=name).all()
 
 
 class StudyBlock(Base):
