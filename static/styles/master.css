@@ -1,3 +1,90 @@
-body {
-    /*background-color: red;*/
+* {
+	box-sizing: border-box;
+}
+
+.border1 {
+	border: 1px solid #000;
+}
+
+.bg-navbar {
+	background: #ffcc66;
+}
+
+.search-bg {
+	border-radius: 0px !important;
+	background-size: cover;
+	background-position-y: 50%;
+}
+
+.search-content-wrapper {
+	background: rgba(0,0,0, 0.5);
+}
+
+.search-param-wrapper {
+	background: rgba(255, 204, 102, 0.5);
+	border-radius: 10px;
+	padding: 15px;
+}
+
+.search-param-wrapper .title {
+	font-weight: bold;
+	font-size: 16px;
+}
+
+.search-param-wrapper .search-input {
+	width: 100%;
+	border: 1px solid #000;
+	padding: 5px 10px;
+}
+
+.search-param-wrapper .search-input:focus {
+	outline: none;
+}
+
+.course-name-wrapper {
+	background: #ffffff;
+	border-radius: 10px;
+	text-align: right;
+}
+
+.course-name-input {
+	width: 94%;
+	border: 0;
+	border-radius: 10px;
+	padding: 5px 10px;
+}
+
+.search-btn {
+	width: 5%;
+	background: #ffffff;
+	border: 0;
+	cursor: pointer;
+	font-size: 22px;
+	padding: 0px;
+}
+
+.course-trailer {
+	padding: 5px;
+}
+
+.course-trailer .course-trailer-content {
+		border: 1px solid #000;
+}
+
+.add-btn {
+	background: rgba(255, 255, 255, 0.5);
+	border: 0;
+	cursor: pointer;
+	font-size: 55px;
+	padding: 0px;
+	border-radius: 10px;
+
+}
+
+.rating-wrapper {
+	border-radius: 50%;
+	border: 1px solid #000;
+	padding: 5px;
+	height: 150px;
+	width: 150px;
 }

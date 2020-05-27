@@ -3,37 +3,46 @@
 {% load static %}
 
 <head>
+    <meta charset="utf-8">
     <title>{{ title }}</title>
     <link rel="icon" href="{% static 'images/icon-64.png' %}">
     {#  Styles  #}
-    <link rel="stylesheet" href="{% static 'styles/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'styles/master.css' %}">
     <link rel="stylesheet" href="{% static 'star-ratings/css/star-ratings.css' %}">
     {# Scripts #}
     <script src="{% static 'scripts/jquery-3.5.1.js' %}"></script>
     <script src="{% static 'star-ratings/js/dist/star-ratings.min.js' %}"></script>
+    <script src="{% static 'scripts/bootstrap.min.js' %}"></script>
+    <script src="{% static 'scripts/ajax.js' %}"></script>
     {# Curent page #}
     {% block head %}{% endblock %}
 </head>
 <body>
 {# TODO: Put navbar inside template #}
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <a class="navbar-brand" href="{% url 'index' %}"><h2>Open Cards</h2></a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01"
-            aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+<nav class="navbar navbar-expand-lg navbar-light bg-navbar">
+    <a class="navbar-brand" href="#">Coursist</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse" id="navbarColor01">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" href="{% url 'index' %}">Home</a>
+                <a class="nav-link" href="{% url 'index' %}"></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'courses' %}">Courses</a>
+                <a class="nav-link" href="{% url 'courses' %}">קורסים</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'about' %}">About</a>
+                <a class="nav-link" href="#">בניית מערכת</a>
+            </li>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'about' %}">אודות</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'admin:index' %}">Admin</a>
@@ -46,7 +55,8 @@
         <span style="color: white;">
         {% if user.is_anonymous %}
             <a class="nav-link" href="{% url 'login' %}" style="color: white;">Log in</a>
-{#            <a href="{% provider_login_url "facebook" method="js_sdk" %}" style="color: white;">Log in with Facebook</a>#}
+{#            <a href="{% provider_login_url "facebook" method="js_sdk" %}"
+               style="color: white;">Log in with Facebook</a>#}
         {% else %}
             Logged in as: {{ user }}
             <form method="post" action="{% url 'account_logout' %}">
@@ -59,9 +69,17 @@
         {% endif %}</span>
     </div>
 </nav>
-<br><br>
-<div id="content-main" style="margin-left: 35px;">
-    {% block content %} {% endblock %}
-</div>
+<section>
+    <!--Grid row-->
+    <div class="row">
+        <!--Grid column-->
+        <div class="col-md-12">
+            <div class="card search-bg card-image" style="background-image: url({% static 'images/search-bg.jpeg' %});">
+                {% block content_header %} {% endblock %}
+            </div>
+        </div>
+    </div>
+</section>
+{% block content_body %} {% endblock %}
 </body>
 </html>

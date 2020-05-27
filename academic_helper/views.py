@@ -77,6 +77,15 @@ class CoursesView(ExtendedViewMixin, ListView):
     def object_list(self):
         return Course.objects.all()
 
+    def post(self, request: WSGIRequest, *args, **kwargs):
+        log.info("Courses POST")
+        if not request.is_ajax():
+            raise NotImplemented()
+        # log.info(f"User sent {value} via Ajax")
+        name = request.POST["free_text"]
+        result = Course.find_by(name)
+        return JsonResponse({"success": True, "courses": list(result)})
+
 
 class AboutView(ExtendedViewMixin):
     template_name = "about.html"

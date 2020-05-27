@@ -56,6 +56,10 @@ class Course(Base):
     def interesting_rating(self):
         return RatingDummy.dummy_for(self, "Interesting")
 
+    @staticmethod
+    def find_by(name: str):
+        return Course.objects.filter(name=name).all()
+
 
 class StudyBlock(Base):
     name: str = CharField(max_length=50)
