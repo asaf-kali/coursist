@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 INSTALLED_APPS = [
     # Our app
     "academic_helper",
+    "schedule",
     # Django base
     "django.contrib.admin",
     "django.contrib.auth",
