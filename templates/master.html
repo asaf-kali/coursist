@@ -1,4 +1,4 @@
-<html lang="" dir="rtl">
+<html dir="rtl">
 {% load i18n %}
 {% load static %}
 
@@ -21,14 +21,31 @@
 </head>
 <body>
 {# TODO: Put navbar inside template #}
-<nav class="navbar navbar-expand-lg navbar-light bg-navbar">
+<nav class="navbar fixed-top navbar-expand-lg navbar-light bg-navbar">
+    <a class="navbar-brand" href="#">Coursist</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse"
             data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false"
             aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
+
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'courses' %}">קורסים</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'schedule' %}">בניית מערכת</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'about' %}">אודות</a>
+            </li>
+        </ul>
+    </div>
+    <div class="nav-item">
+        <a class="nav-link text-white" href="{% url 'admin:index' %}">Admin</a>
+    </div>
     <span style="color: white;">
         {% if user.is_anonymous %}
             <a class="nav-link" href="{% url 'login' %}" style="color: white;">Log in</a>
@@ -43,22 +60,6 @@
             </form>
         {% endif %}
     </span>
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'admin:index' %}">Admin</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'about' %}">אודות</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'schedule' %}">בניית מערכת</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'courses' %}">קורסים</a>
-            </li>
-        </ul>
-        <a class="navbar-brand" href="#">Coursist</a>
-    </div>
 </nav>
 <section>
     <!--Grid row-->
