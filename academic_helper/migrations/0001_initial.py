@@ -24,7 +24,7 @@ class Migration(migrations.Migration):
             fields=[
                 ("id", models.AutoField(editable=False, primary_key=True, serialize=False)),
                 ("password", models.CharField(max_length=128, verbose_name="password")),
-                ("last_login", models.DateTimeField(blank=True, null=True, verbose_name="last login")),
+                ("last_login", models.DateTimeField(blank=True, null=True, verbose_name="last login"),),
                 (
                     "is_superuser",
                     models.BooleanField(
@@ -44,9 +44,9 @@ class Migration(migrations.Migration):
                         verbose_name="username",
                     ),
                 ),
-                ("first_name", models.CharField(blank=True, max_length=30, verbose_name="first name")),
-                ("last_name", models.CharField(blank=True, max_length=150, verbose_name="last name")),
-                ("email", models.EmailField(blank=True, max_length=254, verbose_name="email address")),
+                ("first_name", models.CharField(blank=True, max_length=30, verbose_name="first name"),),
+                ("last_name", models.CharField(blank=True, max_length=150, verbose_name="last name"),),
+                ("email", models.EmailField(blank=True, max_length=254, verbose_name="email address"),),
                 (
                     "is_staff",
                     models.BooleanField(
@@ -63,7 +63,7 @@ class Migration(migrations.Migration):
                         verbose_name="active",
                     ),
                 ),
-                ("date_joined", models.DateTimeField(default=django.utils.timezone.now, verbose_name="date joined")),
+                ("date_joined", models.DateTimeField(default=django.utils.timezone.now, verbose_name="date joined"),),
                 (
                     "groups",
                     models.ManyToManyField(
@@ -124,10 +124,10 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name="ExtendedRating",
             fields=[
-                ("id", models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("id", models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID"),),
                 ("count", models.PositiveIntegerField(default=0)),
                 ("total", models.PositiveIntegerField(default=0)),
-                ("average", models.DecimalField(decimal_places=3, default=Decimal("0"), max_digits=6)),
+                ("average", models.DecimalField(decimal_places=3, default=Decimal("0"), max_digits=6),),
                 ("object_id", models.PositiveIntegerField(blank=True, null=True)),
                 (
                     "content_type",
@@ -150,8 +150,11 @@ class Migration(migrations.Migration):
                     "block",
                     models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to="academic_helper.StudyBlock"),
                 ),
-                ("course", models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to="academic_helper.Course")),
-                ("user", models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "course",
+                    models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to="academic_helper.Course"),
+                ),
+                ("user", models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),),
             ],
             options={"unique_together": {("user", "course")},},
         ),

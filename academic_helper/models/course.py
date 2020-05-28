@@ -2,7 +2,8 @@ from __future__ import annotations
 
 from typing import Union, Iterable, Collection
 
-from django.db.models import IntegerField, CharField, QuerySet, ManyToManyField, ForeignKey, CASCADE, SET_NULL
+from django.db import models
+from django.db.models import QuerySet
 
 from academic_helper.models import ExtendedUser
 from academic_helper.models.base import Base
@@ -13,14 +14,14 @@ class Faculty(Base):
     class Meta:
         verbose_name_plural = "faculties"
 
-    name: str = CharField(max_length=50)
+    name: str = models.CharField(max_length=50)
 
 
 class Course(Base):
-    course_number: int = IntegerField(unique=True)
-    name: str = CharField(max_length=100, unique=True)
-    credits: int = IntegerField(default=0)
-    faculty = ForeignKey(Faculty, on_delete=SET_NULL, null=True, blank=True)
+    course_number: int = models.IntegerField(unique=True)
+    name: str = models.CharField(max_length=100, unique=True)
+    credits: int = models.IntegerField(default=0)
+    faculty = models.ForeignKey(Faculty, on_delete=models.SET_NULL, null=True, blank=True)
 
     class Meta:
         ordering = ["course_number"]
@@ -60,19 +61,19 @@ class Course(Base):
 
 
 class StudyBlock(Base):
-    name: str = CharField(max_length=50)
-    courses = ManyToManyField(Course)
-    min_credits: int = IntegerField()
+    name: str = models.CharField(max_length=50)
+    courses = models.ManyToManyField(Course)
+    min_credits: int = models.IntegerField()
 
     def __str__(self):
         return f"{self.name} Block"
 
 
 class CompletedCourse(Base):
-    user: ExtendedUser = ForeignKey(ExtendedUser, on_delete=CASCADE)
-    course: Course = ForeignKey(Course, on_delete=CASCADE)
-    block: StudyBlock = ForeignKey(StudyBlock, on_delete=CASCADE)
-    grade: int = IntegerField(null=True, blank=True)
+    user: ExtendedUser = models.ForeignKey(ExtendedUser, on_delete=models.CASCADE)
+    course: Course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    block: StudyBlock = models.ForeignKey(StudyBlock, on_delete=models.CASCADE)
+    grade: int = models.IntegerField(null=True, blank=True)
 
     class Meta:
         unique_together = ("user", "course")

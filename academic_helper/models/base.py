@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from typing import KeysView, List
 
 from django.core.serializers.json import DjangoJSONEncoder
-from django.db.models import Model, AutoField, Manager
+from django.db import models
 from django.forms import model_to_dict
 from django.utils.decorators import classproperty
 
@@ -50,9 +50,9 @@ class Permissions:
 #         return super().default(obj)
 
 
-class Base(Model):
-    id: int = AutoField(primary_key=True, editable=False)
-    objects = Manager()
+class Base(models.Model):
+    id: int = models.AutoField(primary_key=True, editable=False)
+    objects = models.Manager()
 
     class Meta:
         abstract = True
@@ -62,7 +62,7 @@ class Base(Model):
         self._initial = self.as_dict
 
     def is_same_model_as(self, other) -> bool:
-        if not isinstance(other, Model):
+        if not isinstance(other, models.Model):
             return False
         if self._meta.concrete_model != other._meta.concrete_model:
             return False

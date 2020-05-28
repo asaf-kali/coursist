@@ -23,7 +23,7 @@ class Migration(migrations.Migration):
             model_name="course",
             name="faculty",
             field=models.ForeignKey(
-                blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to="academic_helper.Faculty"
+                blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to="academic_helper.Faculty",
             ),
         ),
     ]

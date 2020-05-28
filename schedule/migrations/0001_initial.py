@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name="Course",
             fields=[
-                ("id", models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("id", models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID"),),
                 ("course_number", models.CharField(max_length=30, unique=True)),
                 ("name_he", models.CharField(max_length=300)),
                 ("name_en", models.CharField(max_length=300)),
@@ -26,7 +26,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name="CourseClass",
             fields=[
-                ("id", models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("id", models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID"),),
                 ("course_number", models.CharField(max_length=30)),
                 ("serial_number", models.IntegerField()),
                 ("lecturer", models.CharField(max_length=300)),
@@ -36,7 +36,7 @@ class Migration(migrations.Migration):
                 ("day", models.CharField(max_length=30)),
                 ("hour", models.CharField(max_length=100)),
                 ("hall", models.CharField(max_length=300)),
-                ("course_id", models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to="schedule.Course")),
+                ("course_id", models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to="schedule.Course"),),
             ],
         ),
     ]

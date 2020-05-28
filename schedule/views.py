@@ -1,8 +1,6 @@
-import json
-
 from django.core import serializers
 from django.db.models import Q
-from django.http import HttpResponse, JsonResponse, HttpResponseForbidden, HttpResponseBadRequest
+from django.http import JsonResponse, HttpResponseBadRequest
 from django.shortcuts import render
 from django.views import View
 from django.views.generic import TemplateView
@@ -33,7 +31,7 @@ class ScheduleView(TemplateView):
             json_courses = serializers.serialize("json", courses)
 
             return JsonResponse(
-                {"status": "success", "course": json_courses}, json_dumps_params={"ensure_ascii": False}
+                {"status": "success", "course": json_courses}, json_dumps_params={"ensure_ascii": False},
             )  # TODO maybe remove
 
 
