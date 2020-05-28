@@ -7,16 +7,22 @@
 {% endblock %}
 
 {% block content_header %}
+    <div class="text-white text-center align-items-center search-content-wrapper">
+    <br><br>
+        <div>
+            <br><br>
+            <h1>{{ course.name }}</h1>
+        </div>
+        <div><p>Course number {{ course.course_number }}</p></div>
+        <a class="nav-link text-white" href="https://shnaton.huji.ac.il/index.php/NewSyl/{{ course.course_number }}">סילבוס</a>
+    <br>
+    </div>
 {% endblock %}
 
 {% block content_body %}
     <div id="fb-root"></div>
     <script async defer crossorigin="anonymous"
             src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v7.0&appId=1129461710764059&autoLogAppEvents=1"></script>
-
-    <h2>{{ course.name }}</h2>
-    <p>Course number {{ course.course_number }}.</p>
-
     <br><br><br>
     {% get_review_count for course as review_count %}
     <p>This course has {{ review_count }} reviews.</p>

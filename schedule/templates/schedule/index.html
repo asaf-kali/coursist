@@ -4,18 +4,23 @@
     <link rel="stylesheet" href="{% static 'styles/schedule.css' %}">
     <script>document.getElementsByTagName("html")[0].className += " js";</script>
 {% endblock head %}
-{% block content_body %}
-    <div class="container">
-        <div class="row mb-4">
+{% block content_header %}
+    <div class="container text-center text-white schedule_header_bg">
+    <br><br>
             <div class="col-sm-12">
-                <h3>בניית מערכת שעות</h3>
+                <h1>בניית מערכת שעות</h1>
                 <p>
                     הקלידו את שם הקורס או את המספר שלו,
                     ואם הוא קיים במערכת, הוא יופיע בתיבת ההצעות.<br />
                     אם הקורס לא קיים במערכת, הכניסו את מספר הקורס ולחצו על חפש.
                 </p>
             </div>
-        </div>
+        <br><br>
+    </div>
+{% endblock %}
+
+{%  block content_body %}
+    <div class="container">
         <div class="row">
             <div class="col-lg-3">
                 <div id="search_form">

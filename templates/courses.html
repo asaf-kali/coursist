@@ -40,6 +40,7 @@
 {% block content_header %}
     <div class="text-white text-center d-flex align-items-center search-content-wrapper py-5 px-4">
         <div class="container">
+            <br><br>
             <div class="row">
                 <div class="col-md-4">
                     <div class="search-param-wrapper">
@@ -102,11 +103,22 @@
 {% endblock %}
 
 {% block content_body %}
-    <div id="courses-list">
+    <div class="container" id="courses-list">
         {% for course in object_list %}
-            <li>{{ course.course_number }}:
-                <a href="{% url 'course-details' course.course_number %}">{{ course.name }}</a>
-            </li>
+            <div class="card float-left" style="width: 24%; height: 10rem; margin-left: 10px">
+                <div class="card-body text-center">
+                    <h5 class="card-title">{{ course.name }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ course.course_number }}</h6>
+                    <a href="{% url 'course-details' course.course_number %}">
+                        <svg class="bi bi-arrows-angle-expand" width="1em" height="1em" viewBox="0 0 16 16"
+                             fill="black" xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd" d="M1.5 10.036a.5.5 0 0 1 .5.5v3.5h3.5a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5v-4a.5.5 0 0 1 .5-.5z"/>
+                          <path fill-rule="evenodd" d="M6.354 9.646a.5.5 0 0 1 0 .708l-4.5 4.5a.5.5 0 0 1-.708-.708l4.5-4.5a.5.5 0 0 1 .708 0zm8.5-8.5a.5.5 0 0 1 0 .708l-4.5 4.5a.5.5 0 0 1-.708-.708l4.5-4.5a.5.5 0 0 1 .708 0z"/>
+                          <path fill-rule="evenodd" d="M10.036 1.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 1 1-1 0V2h-3.5a.5.5 0 0 1-.5-.5z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
         {% endfor %}
     </div>
 {% endblock %}

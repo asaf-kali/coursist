@@ -710,3 +710,8 @@
     background: #007bff;
     color: #ffffff;
 }
+
+.schedule_header_bg {
+    background: rgba(0,0,0,0.5);
+    width: 100%;
+}
