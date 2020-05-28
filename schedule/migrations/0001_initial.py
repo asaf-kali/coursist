@@ -8,36 +8,35 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Course',
+            name="Course",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('course_number', models.CharField(max_length=30, unique=True)),
-                ('name_he', models.CharField(max_length=300)),
-                ('name_en', models.CharField(max_length=300)),
-                ('year', models.IntegerField()),
-                ('semester', models.CharField(max_length=30)),
-                ('nz', models.IntegerField()),
+                ("id", models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("course_number", models.CharField(max_length=30, unique=True)),
+                ("name_he", models.CharField(max_length=300)),
+                ("name_en", models.CharField(max_length=300)),
+                ("year", models.IntegerField()),
+                ("semester", models.CharField(max_length=30)),
+                ("nz", models.IntegerField()),
             ],
         ),
         migrations.CreateModel(
-            name='CourseClass',
+            name="CourseClass",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('course_number', models.CharField(max_length=30)),
-                ('serial_number', models.IntegerField()),
-                ('lecturer', models.CharField(max_length=300)),
-                ('class_type', models.CharField(max_length=100)),
-                ('group', models.CharField(max_length=30)),
-                ('semester', models.CharField(max_length=100)),
-                ('day', models.CharField(max_length=30)),
-                ('hour', models.CharField(max_length=100)),
-                ('hall', models.CharField(max_length=300)),
-                ('course_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='schedule.Course')),
+                ("id", models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("course_number", models.CharField(max_length=30)),
+                ("serial_number", models.IntegerField()),
+                ("lecturer", models.CharField(max_length=300)),
+                ("class_type", models.CharField(max_length=100)),
+                ("group", models.CharField(max_length=30)),
+                ("semester", models.CharField(max_length=100)),
+                ("day", models.CharField(max_length=30)),
+                ("hour", models.CharField(max_length=100)),
+                ("hall", models.CharField(max_length=300)),
+                ("course_id", models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to="schedule.Course")),
             ],
         ),
     ]
