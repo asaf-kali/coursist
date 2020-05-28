@@ -9,7 +9,7 @@ class Command(BaseCommand):
         log.info("Creating courses")
         intro = Course.objects.get_or_create(course_number=67101, name="Intro To Cs", credits=7)[0]
         crypto = Course.objects.get_or_create(
-            course_number=67392, name="Introduction To Cryptography And Software Security", credits=4
+            course_number=67392, name="Introduction To Cryptography And Software Security", credits=4,
         )[0]
         impr = Course.objects.get_or_create(course_number=67829, name="Image Processing", credits=4)[0]
 

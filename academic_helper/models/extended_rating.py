@@ -1,7 +1,7 @@
 from django.contrib.admin.options import get_content_type_for_model
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
-from django.db.models import ForeignKey, CASCADE, PositiveIntegerField, CharField
+from django.db import models
 from star_ratings.models import AbstractBaseRating
 
 from academic_helper.models import Base
@@ -12,10 +12,10 @@ class ExtendedRating(AbstractBaseRating):
 
 
 class RatingDummy(Base):
-    content_type = ForeignKey(ContentType, null=True, blank=True, on_delete=CASCADE, editable=False)
-    object_id = PositiveIntegerField(null=True, blank=True, editable=False)
+    content_type = models.ForeignKey(ContentType, null=True, blank=True, on_delete=models.CASCADE, editable=False)
+    object_id = models.PositiveIntegerField(null=True, blank=True, editable=False)
     content_object = GenericForeignKey()
-    name: str = CharField(max_length=50)
+    name: str = models.CharField(max_length=50)
 
     def __str__(self):
         return f"{self.name} rating for {self.content_object}"

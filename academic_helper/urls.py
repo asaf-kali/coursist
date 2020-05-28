@@ -1,6 +1,14 @@
 from django.urls import path, include
 
-from academic_helper.views import AjaxView, CourseDetailsView, index, CoursesView, AboutView, LoginView, SignupView
+from academic_helper.views import (
+    AjaxView,
+    CourseDetailsView,
+    index,
+    CoursesView,
+    AboutView,
+    LoginView,
+    SignupView,
+)
 
 urlpatterns = [
     path("", index, name="index"),
