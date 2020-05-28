@@ -2,53 +2,6 @@ from django.db import models
 
 from schedule.shnaton_parser import ShnatonParser
 
-from collections import namedtuple
-from enum import IntEnum
-from typing import Tuple, List, Dict
-
-ReadableEnum = namedtuple("ReadableEnum", ["value", "name"])
-
-
-class ChoicesEnum(IntEnum):
-    @classmethod
-    def as_dict(cls) -> Dict[str, int]:
-        return {e.name: e.value for e in cls.readable_list()}
-
-    @classmethod
-    def list(cls) -> List[Tuple[int, str]]:
-        """
-        :return: a list of tuples, representing all enum options.
-        Each enum tuple is (value, name), where value is the enum value and name is the parsed
-        readable ("Title Styled") name of the enum.
-        Used for django's IntegerField options.
-        """
-        return list(map(enum_to_tuple, cls))
-
-    @classmethod
-    def readable_list(cls) -> List[ReadableEnum]:
-        """
-        :return: a list of ReadableEnum instances representing all enum options.
-        Used for convenient template rendering (using field names and not tuple indexes).
-        """
-        return [ReadableEnum(*t) for t in cls.list()]
-
-    @property
-    def readable_name(self):
-        return " ".join(c.capitalize() or "" for c in self.name.split("_"))
-
-
-def enum_to_tuple(enum: ChoicesEnum) -> Tuple:
-    return enum.value, enum.readable_name
-
-
-class Semester(ChoicesEnum):
-    A = "א'"
-    B = "ב'"
-    A_AND_B = "א' ו-ב'"
-    A_OR_B = "א' או ב'"
-    YEAR = "שנתי"
-    SUMMER = "קיץ"
-
 
 class Course(models.Model):
     DELIMITER = ";"

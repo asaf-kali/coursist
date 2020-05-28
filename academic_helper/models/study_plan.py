@@ -1,7 +1,27 @@
+from typing import Iterable
+
 from django.db import models
 
-from academic_helper.models import Base
-from academic_helper.models.course import StudyBlock
+from academic_helper.models import Base, Course, ExtendedUser
+
+
+class StudyBlock(Base):
+    name: str = models.CharField(max_length=50)
+    courses: Iterable[Course] = models.ManyToManyField(Course)
+    min_credits: int = models.IntegerField()
+
+    def __str__(self):
+        return f"{self.name} Block"
+
+
+class CompletedCourse(Base):
+    user: ExtendedUser = models.ForeignKey(ExtendedUser, on_delete=models.CASCADE)
+    course: Course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    block: StudyBlock = models.ForeignKey(StudyBlock, on_delete=models.CASCADE)
+    grade: int = models.IntegerField(null=True, blank=True)
+
+    class Meta:
+        unique_together = ["user", "course"]
 
 
 class StudyPlan(Base):

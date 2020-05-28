@@ -1,6 +1,8 @@
 import json
+from collections import namedtuple
 from dataclasses import dataclass
-from typing import KeysView, List
+from enum import Enum
+from typing import KeysView, List, Dict, Tuple
 
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
@@ -9,6 +11,40 @@ from django.utils.decorators import classproperty
 
 from academic_helper.utils.logger import log, wrap
 
+ReadableEnum = namedtuple("ReadableEnum", ["value", "name"])
+
+
+class ChoicesEnum(Enum):
+    @classmethod
+    def as_dict(cls) -> Dict[str, str]:
+        return {e.name: e.value for e in cls.readable_list()}
+
+    @classmethod
+    def list(cls) -> List[Tuple[str, str]]:
+        """
+        :return: a list of tuples, representing all enum options.
+        Each enum tuple is (value, name), where value is the enum value and name is the parsed
+        readable ("Title Styled") name of the enum.
+        Used for django's IntegerField options.
+        """
+        return list(map(enum_to_tuple, cls))
+
+    @classmethod
+    def readable_list(cls) -> List[ReadableEnum]:
+        """
+        :return: a list of ReadableEnum instances representing all enum options.
+        Used for convenient template rendering (using field names and not tuple indexes).
+        """
+        return [ReadableEnum(*t) for t in cls.list()]
+
+    @property
+    def readable_name(self):
+        return " ".join(c.capitalize() or "" for c in self.name.split("_"))
+
+
+def enum_to_tuple(enum: ChoicesEnum) -> Tuple:
+    return enum.value, enum.readable_name
+
 
 @dataclass
 class Permissions:
@@ -16,7 +52,7 @@ class Permissions:
     _obj_name: str
 
     def _get_permission(self, name: str) -> str:
-        return f"{self.app_name}.{name}{self._obj_name}"
+        return f"{self._app_name}.{name}{self._obj_name}"
 
     @property
     def view(self) -> str:
@@ -113,18 +149,18 @@ class Base(models.Model):
         return self.as_json
 
     @property
-    def _type(self):
-        return self._class.name_
+    def verbose_type(self):
+        return self._meta.verbose_name.title()
 
     def save(self, *args, **kwargs):
         """
         Saves model and set initial state.
         """
         if self.has_changed:
-            log.info(f"{self._type} {wrap(self.id)} changed: {self.diff}")
+            log.info(f"{self.verbose_type} {wrap(self.id)} changed: {self.diff}")
         super().save(*args, **kwargs)
         self._initial = self.as_dict
 
     @classproperty
     def permissions(cls) -> Permissions:
-        return Permissions(cls.meta.app_label, cls.name_.lower())
+        return Permissions(cls._meta.app_label, cls._meta.model_name)

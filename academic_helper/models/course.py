@@ -5,7 +5,6 @@ from typing import Union, Iterable, Collection
 from django.db import models
 from django.db.models import QuerySet
 
-from academic_helper.models import ExtendedUser
 from academic_helper.models.base import Base
 from academic_helper.models.extended_rating import RatingDummy
 
@@ -58,22 +57,3 @@ class Course(Base):
     @staticmethod
     def find_by(name: str):
         return Course.objects.filter(name__contains=name).all()
-
-
-class StudyBlock(Base):
-    name: str = models.CharField(max_length=50)
-    courses = models.ManyToManyField(Course)
-    min_credits: int = models.IntegerField()
-
-    def __str__(self):
-        return f"{self.name} Block"
-
-
-class CompletedCourse(Base):
-    user: ExtendedUser = models.ForeignKey(ExtendedUser, on_delete=models.CASCADE)
-    course: Course = models.ForeignKey(Course, on_delete=models.CASCADE)
-    block: StudyBlock = models.ForeignKey(StudyBlock, on_delete=models.CASCADE)
-    grade: int = models.IntegerField(null=True, blank=True)
-
-    class Meta:
-        unique_together = ("user", "course")

@@ -22,14 +22,13 @@
 <body>
 {# TODO: Put navbar inside template #}
 <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-navbar">
-    <a class="navbar-brand" href="#">Coursist</a>
+    <a class="navbar-brand" href="{% url 'index' %}">Coursist</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse"
             data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false"
             aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
@@ -41,25 +40,33 @@
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'about' %}">אודות</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'admin:index' %}">Admin</a>
+            </li>
         </ul>
     </div>
-    <div class="nav-item">
-        <a class="nav-link text-white" href="{% url 'admin:index' %}">Admin</a>
-    </div>
-    <span style="color: white;">
-        {% if user.is_anonymous %}
-            <a class="nav-link" href="{% url 'login' %}" style="color: white;">Log in</a>
-        {% else %}
-            Logged in as: {{ user }}
-            <form method="post" action="{% url 'account_logout' %}">
-                {% csrf_token %}
-                {% if redirect_field_value %}
-                    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+    <div>
+        <ul class="navbar-nav" style="direction: ltr;">
+            <li>
+                {% if user.is_anonymous %}
+                    <a class="nav-link" href="{% url 'login' %}" style="color: white;">Log in</a>
+                {% else %}
+                    Logged in as: {{ user }}&nbsp;&nbsp;
                 {% endif %}
-                <button type="submit">{% trans 'Sign Out' %}</button>
-            </form>
-        {% endif %}
-    </span>
+            </li>
+            {% if not user.is_anonymous %}
+                <li>
+                    <form method="post" action="{% url 'account_logout' %}">
+                        {% csrf_token %}
+                        {% if redirect_field_value %}
+                            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+                        {% endif %}
+                        <button type="submit">{% trans 'Sign Out' %}</button>
+                    </form>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
 </nav>
 <section>
     <!--Grid row-->
