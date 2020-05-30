@@ -16,11 +16,11 @@ ReadableEnum = namedtuple("ReadableEnum", ["value", "name"])
 
 class ChoicesEnum(Enum):
     @classmethod
-    def as_dict(cls) -> Dict[str, str]:
+    def as_dict(cls) -> Dict[int, str]:
         return {e.name: e.value for e in cls.readable_list()}
 
     @classmethod
-    def list(cls) -> List[Tuple[str, str]]:
+    def list(cls) -> List[Tuple[int, str]]:
         """
         :return: a list of tuples, representing all enum options.
         Each enum tuple is (value, name), where value is the enum value and name is the parsed
@@ -157,7 +157,8 @@ class Base(models.Model):
         Saves model and set initial state.
         """
         if self.has_changed:
-            log.info(f"{self.verbose_type} {wrap(self.id)} changed: {self.diff}")
+            # TODO: solve hebrew encoding issue
+            log.info(f"{self.verbose_type} {wrap(self.id)} changed: {self.diff}".encode("utf-8"))
         super().save(*args, **kwargs)
         self._initial = self.as_dict
 

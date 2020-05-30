@@ -15,11 +15,13 @@ class Faculty(Base):
 
     name: str = models.CharField(max_length=50)
 
+    def __str__(self):
+        return f"{self.name} Faculty"
+
 
 class Course(Base):
-    course_number: int = models.IntegerField(unique=True)
-    name: str = models.CharField(max_length=100, unique=True)
-    credits: int = models.IntegerField(default=0)
+    course_number: int = models.IntegerField()
+    name: str = models.CharField(max_length=100)
     faculty = models.ForeignKey(Faculty, on_delete=models.SET_NULL, null=True, blank=True)
 
     class Meta:
@@ -28,15 +30,11 @@ class Course(Base):
     def save(self, *args, **kwargs):
         self.name = self.name.title()
         if isinstance(self.faculty, str):
-            self.faculty = Faculty.objects.get_or_create(name=self.faculty)
+            self.faculty = Faculty.objects.get_or_create(name=self.faculty)[0]
         super().save(*args, **kwargs)
 
     def __str__(self) -> str:
-        return f"{self.course_number} - {self.name}"
-
-    @staticmethod
-    def get_course_by_name(title: str) -> Union[Iterable[Course], QuerySet]:
-        return Course.objects.filter(title=title)
+        return f"{self.name} ({self.course_number})"
 
     @staticmethod
     def all_courses() -> Union[Collection[Course], QuerySet]:

@@ -1,6 +1,6 @@
 from django.db import models
 
-from schedule.shnaton_parser import ShnatonParser
+from academic_helper.logic.shnaton_parser import ShnatonParser
 
 
 class Course(models.Model):
@@ -12,62 +12,6 @@ class Course(models.Model):
     year = models.IntegerField()
     semester = models.CharField(max_length=30)
     nz = models.IntegerField()
-
-    @staticmethod
-    def fetch_course(course_number):
-        """
-        Fetch course from Shnaton, add it to the database and return it.
-        :param course_number: The course number to search.
-        :return: The course model object of the fetched course and its classes,
-         or None if the course wasn't found.
-        """
-        if not course_number.isdigit():
-            return None
-
-        # TODO make year 2020 a variable
-        parsed_course = ShnatonParser.parse_course("2020", course_number)
-        if parsed_course is None:
-            return None
-
-        new_course = Course()
-        new_course.course_number = parsed_course["id"]
-        new_course.name_he = parsed_course["name"]
-        new_course.year = parsed_course["year"]
-        new_course.semester = parsed_course["semester"]
-        new_course.nz = parsed_course["nz"]
-        new_course.save()
-
-        result = Course.objects.filter(course_number__exact=course_number)
-
-        # TODO need to add also the classes of the course
-        print(parsed_course["lessons"])
-        serial_num = 0
-        for lesson in parsed_course["lessons"]:
-            # prepare values to insert
-            lecturer = Course.DELIMITER.join(lesson["lecturer"])
-            class_type = lesson["type"]
-            group = lesson["group"]
-            semester = Course.DELIMITER.join(lesson["semester"])
-            day = Course.DELIMITER.join(lesson["day"])
-            hour = Course.DELIMITER.join(lesson["hour"])
-            hall = Course.DELIMITER.join(lesson["hall"])
-
-            # create new class and save
-            new_class = CourseClass()
-            new_class.course_id = new_course
-            new_class.course_number = new_course.course_number
-            new_class.serial_number = serial_num
-            serial_num += 1
-            new_class.lecturer = lecturer
-            new_class.class_type = class_type
-            new_class.group = group
-            new_class.semester = semester
-            new_class.day = day
-            new_class.hour = hour
-            new_class.hall = hall
-            new_class.save()
-
-        return result
 
 
 class CourseClass(models.Model):
