@@ -142,10 +142,8 @@ ScheduleTemplate.prototype.placeEvents = function() {
 			eventHeight = slotHeight*duration/self.timelineUnitDuration;
 
 		this.singleEvents[i].setAttribute('style', 'top: '+(eventTop-1)+'px; height: '+(eventHeight +1)+'px');
-		if (!$(this.singleEvents[i]).hasClass('adjusted')) {
-			let numOverlaps = this.getNumOverlaps(this.singleEvents[i]);
-			this.setEventPosition(this.singleEvents[i], 100 / numOverlaps);
-		}
+		let numOverlaps = this.getNumOverlaps(this.singleEvents[i]);
+		this.setEventPosition(this.singleEvents[i], 100 / numOverlaps);
 	}
 
 	Util.removeClass(this.element, 'cd-schedule--loading');
@@ -414,7 +412,7 @@ function getScheduleTimestamp(time) {
 
 
 
-$(document).ready(function(){
+$(document).ready(function() {
     $('#course_input').keypress(function(e) {
         if(e.keyCode==13) {
             e.preventDefault();
@@ -478,60 +476,60 @@ class Schedule {
         }
         delete this.courses[course_number];
     }
+
+    /**
+	 * Converts the courses returned from server to convenient objects.
+	 */
+	toCourseObj(courses) {
+		let ret = [];
+		for (let i = 0; i < courses.length; i++) {
+			ret[i] = {
+				course_number: courses[i]['fields']['course_number'],
+				name_he: courses[i]['fields']['name_he'],
+				name_en: courses[i]['fields']['name_en'],
+				year: courses[i]['fields']['year'],
+				semester: courses[i]['fields']['semester'],
+				nz: courses[i]['fields']['nz']
+			};
+		}
+
+		return ret;
+	}
+
+	/**
+	 * Converts the classes returned from server to convenient objects.
+	 */
+	toClassObj(classes) {
+		let delim = ';';
+		let ret = [];
+		for (let i = 0; i < classes.length; i++) {
+			let lecturers = classes[i]['fields']['lecturer'].split(delim);
+			let semesters = classes[i]['fields']['semester'].split(delim);
+			let days = classes[i]['fields']['day'].split(delim);
+			let hours = classes[i]['fields']['hour'].split(delim);
+			let halls = classes[i]['fields']['hall'].split(delim);
+
+			ret[i] = {
+				course_id: classes[i]['fields']['course_id'],
+				course_number: classes[i]['fields']['course_number'],
+				serial_number: classes[i]['fields']['serial_number'],
+				lecturer: lecturers,
+				class_type: classes[i]['fields']['class_type'],
+				group: classes[i]['fields']['group'],
+				semester: semesters,
+				day: days,
+				hour: hours,
+				hall: halls
+			};
+		}
+
+		return ret;
+	}
 }
 let schedule = new Schedule();
 
 /**
- * Converts the courses returned from server to convenient objects.
- */
-function toCourseObj(courses) {
-    let ret = [];
-    for (let i = 0; i < courses.length; i++) {
-        ret[i] = {
-            course_number: courses[i]['fields']['course_number'],
-            name_he: courses[i]['fields']['name_he'],
-            name_en: courses[i]['fields']['name_en'],
-            year: courses[i]['fields']['year'],
-            semester: courses[i]['fields']['semester'],
-            nz: courses[i]['fields']['nz']
-        };
-    }
-
-    return ret;
-}
-
-/**
- * Converts the classes returned from server to convenient objects.
- */
-function toClassObj(classes) {
-    let delim = ';';
-    let ret = [];
-    for (let i = 0; i < classes.length; i++) {
-        let lecturers = classes[i]['fields']['lecturer'].split(delim);
-        let semesters = classes[i]['fields']['semester'].split(delim);
-        let days = classes[i]['fields']['day'].split(delim);
-        let hours = classes[i]['fields']['hour'].split(delim);
-        let halls = classes[i]['fields']['hall'].split(delim);
-
-        ret[i] = {
-            course_id: classes[i]['fields']['course_id'],
-            course_number: classes[i]['fields']['course_number'],
-            serial_number: classes[i]['fields']['serial_number'],
-            lecturer: lecturers,
-            class_type: classes[i]['fields']['class_type'],
-            group: classes[i]['fields']['group'],
-            semester: semesters,
-            day: days,
-            hour: hours,
-            hall: halls
-        };
-    }
-
-    return ret;
-}
-
-/**
- * Displays the results of course search.
+ * Displays the results of a course search.
  */
 function display_course_results(list, course, csrf) {
     let course_number = course['course_number'];
@@ -581,7 +579,7 @@ function courses_autocomplete(search_val, csrf) {
                 return;
             }
 
-            courses = toCourseObj(courses);
+            courses = schedule.toCourseObj(courses);
             $.each(courses, function(index, value) {
                 if (!schedule.hasCourse(value)) {
                     display_course_results(container.children('ul'), value, csrf);
@@ -627,7 +625,7 @@ function search_course(csrf) {
             }
 
             let courses = JSON.parse(response.course);
-            courses = toCourseObj(courses);
+            courses = schedule.toCourseObj(courses);
             display_course_results(container.children('ul'), courses[0], csrf);
         },
         error: function () {
@@ -658,7 +656,7 @@ function add_course(course, csrf) {
                 return;
             }
 
-            classes = toClassObj(classes);
+            classes = schedule.toClassObj(classes);
             schedule.addCourse(course, classes);
             let course_number = course['course_number'];
             let course_name_he = course['name_he'];
@@ -666,7 +664,7 @@ function add_course(course, csrf) {
             course_list_container.append(
                 '<li id="course_item_' + course_number + '">' +
                     '<div class="title_wrapper clear">' +
-                        '<div class="course_name">' + course_name_he + '</div>' +
+                        '<div class="course_name opened">' + course_number + ' - ' + course_name_he + '</div>' +
                         '<div class="remove_button" id="del_btn_' + course_number + '">' +
                             '<svg class="bi bi-trash" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">\n' +
                             '  <path d="M5.5 5.5A.5.5 0 016 6v6a.5.5 0 01-1 0V6a.5.5 0 01.5-.5zm2.5 0a.5.5 0 01.5.5v6a.5.5 0 01-1 0V6a.5.5 0 01.5-.5zm3 .5a.5.5 0 00-1 0v6a.5.5 0 001 0V6z"/>\n' +
@@ -677,6 +675,9 @@ function add_course(course, csrf) {
                     '<div id="course_classes_' + course_number + '" class="course_classes_wrapper"></div>' +
                 '</li>'
             );
+            $('#course_item_' + course_number).find('.course_name').click(function () {
+				toggleCourseItem($(this));
+			});
             $('#del_btn_' + course_number).click(function () {
                 schedule.removeCourse(course_number);
                 $('#course_item_' + course_number).remove();
@@ -737,6 +738,7 @@ function display_course_classes(container, course_number, classes) {
 var scheduleTemplate = document.getElementsByClassName('js-cd-schedule'),
     scheduleTemplateArray = [],
     resizing = false;
+
 if( scheduleTemplate.length > 0 ) { // init ScheduleTemplate objects
     for( var i = 0; i < scheduleTemplate.length; i++) {
         (function(i){
@@ -882,7 +884,7 @@ function updateScheduleDisplay(add_class) {
         $('#day_' + day[i] + '_a').append(
             '<li class="cd-schedule__event" id="' + li_id + '" data-group="' + li_data_group + '">' +
             '   <a data-start="' + start_end_hour[1] + '" data-end="' + start_end_hour[0] +
-                '"  data-content="event-rowing-workout" data-event="event-4" href="#0">' +
+                '"  data-content="need to add" data-event="event-4" href="#0">' +
             '       <em class="cd-schedule__name">' + course_number + ' - ' + course_mame_he + '</em>' +
             '   </a>' +
             '</li>'
@@ -892,4 +894,14 @@ function updateScheduleDisplay(add_class) {
     for(let i = 0; i < scheduleTemplateArray.length; i++) {
         scheduleTemplateArray[i].addEvent();
     }
+}
+
+function toggleCourseItem($title_element) {
+	if ($title_element.hasClass('opened')) {
+		$title_element.removeClass('opened');
+		$title_element.parent().parent().find('.course_classes_wrapper').slideUp();
+	} else {
+		$title_element.addClass('opened');
+		$title_element.parent().parent().find('.course_classes_wrapper').slideDown();
+	}
 }

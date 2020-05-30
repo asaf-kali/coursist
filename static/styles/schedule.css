@@ -27,6 +27,9 @@
     --schedule-rows-height: 30px;
     --component-padding: 5px;
     --max-width-xl: 90rem;
+
+    --schedule-primary-color: #ffcc66;
+    --schedule-primary-color-opaque: #ffcc6640;
 }
 .cd-schedule {
     position: relative;
@@ -586,7 +589,7 @@
     line-height: 40px;
     padding: 0 5px;
     border-width: 0 0 3px 0;
-    border-color: #F7224D;
+    border-color: var(--schedule-primary-color);
     border-style: solid;
 }
 
@@ -603,7 +606,7 @@
     height: 40px;
     line-height: 40px;
     color: #ffffff;
-    background-color: #F7224D;
+    background-color: var(--schedule-primary-color);
     border: none;
     cursor: pointer;
 }
@@ -643,7 +646,25 @@
 
 #my_courses {
     max-height: 70vh;
+    margin: 50px 0 0 0;
     overflow: auto;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track
+{
+    -webkit-box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
+    background-color: #f4f4f4;
+}
+
+.custom-scrollbar::-webkit-scrollbar
+{
+    width: 10px;
+    background-color: #f4f4f4;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb
+{
+    background-color: var(--schedule-primary-color);
 }
 
 #my_courses ul {
@@ -653,7 +674,8 @@
 }
 
 #my_courses ul li .title_wrapper {
-    border-bottom: 3px solid #F7224D;
+    border-bottom: 3px solid orange;
+    background: var(--schedule-primary-color);
     padding: 5px;
     overflow: hidden; /* so it will take containing div's height */
 }
@@ -666,13 +688,15 @@
     float: right;
     padding-left: 25px;
     font-size: 16px;
-    color: #F7224D;
     width: 90%;
+    cursor: pointer;
 }
 
 #my_courses ul li .remove_button {
     float: left;
     width: 10%;
+    font-size: 18px;
+    padding: 5px 0;
     cursor: pointer;
 }
 
@@ -702,13 +726,13 @@
 }
 
 .course_classes_wrapper ul li:hover {
-    background: #007bff;
-    color: #ffffff;
+    background: #ebebeb;
+    color: #000;
 }
 
 .course_classes_wrapper ul li.active {
-    background: #007bff;
-    color: #ffffff;
+    background: #ebebeb;
+    color: #000;
 }
 
 .schedule_header_bg {
