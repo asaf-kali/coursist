@@ -138,7 +138,9 @@ class Base(models.Model):
 
     @property
     def as_dict(self) -> dict:
-        return model_to_dict(self, fields=[field.name for field in self._meta.fields])
+        # TODO: Check this out!
+        # return model_to_dict(self, fields=[field.name for field in self._meta.fields])
+        return dict()
 
     @property
     def as_json(self) -> str:

@@ -5,6 +5,7 @@ from urllib import request
 from urllib.parse import urlencode
 
 from bs4 import BeautifulSoup
+from django.db.transaction import atomic
 
 from academic_helper.models import Course
 from academic_helper.models.course_occurrence import (
@@ -65,6 +66,11 @@ def parse_group_type(class_type: str) -> ClassType:
         return ClassType.LECTURE
     if class_type == "תרג":
         return ClassType.RECITATION
+    if class_type == "שות":
+        return ClassType.SHUT
+    if class_type == "הדר":
+        return ClassType.GUIDANCE
+    # TODO: Add more here
     raise NotImplementedError(f"Unrecognized class type: {class_type}")
 
 
@@ -92,12 +98,10 @@ def parse_times(times: str) -> Tuple[str, str]:
 def parse_hall(raw_hall: str) -> Hall:
     match = re.match(r"(.*) \((.*)\)", raw_hall)
     if match:
-        campus = Campus(name=match[2])
-        campus.save()
-        hall = Hall(name=match[1], campus=campus)
+        campus = Campus.objects.get_or_create(name=match[2])[0]
+        hall = Hall.objects.get_or_create(name=match[1], campus=campus)[0]
     else:
-        hall = Hall(name=raw_hall)
-    hall.save()
+        hall = Hall.objects.get_or_create(name=raw_hall)[0]
     return hall
 
 
@@ -120,6 +124,7 @@ class ShnatonParser:
     LESSON_TABLE_CELL_NUM = 8  # number of <td>s in the lesson table rows
 
     @staticmethod
+    @atomic
     def fetch_course(course_number: int, year: int = 2020):
         """
         Fetch course from Shnaton, add it to the database and return it.

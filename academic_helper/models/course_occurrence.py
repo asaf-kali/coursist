@@ -27,6 +27,7 @@ class ClassType(ChoicesEnum):
     PREPARATORY = 9
     GUIDANCE = 10
     GUIDANCE_AND_LECTURE = 11
+    SHUT = 12
 
     # ("lecture", "שיעור"),  # שעור
     # ("recitation", "תרגיל"),  # תרג
