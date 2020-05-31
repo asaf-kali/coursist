@@ -146,7 +146,7 @@ class Base(models.Model):
         result = model_to_dict(self, fields=fields)
         result["id"] = self.id
         return result
-    
+
     @property
     def as_json(self) -> str:
         as_dict = {col: val for col, val in self.as_dict.items() if val is not None}
