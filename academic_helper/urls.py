@@ -10,6 +10,7 @@ from academic_helper.views import (
     SignupView,
     SearchView,
     FetchClassesView,
+    ScheduleView,
 )
 
 urlpatterns = [
@@ -21,6 +22,8 @@ urlpatterns = [
     path("about/", AboutView.as_view(), name="about"),
     path("login/", LoginView.as_view(), name="login"),
     path("signup/", SignupView.as_view(), name="signup"),
-    path("search", SearchView.as_view(), name="search_course"),
-    path("fetch_classes", FetchClassesView.as_view(), name="fetch_classes"),
+    path("schedule/", ScheduleView.as_view(), name="schedule"),
+    # TODO: These are not views, enable these as API!
+    path("schedule/search/", SearchView.as_view(), name="search_course"),
+    path("schedule/fetch_classes/", FetchClassesView.as_view(), name="fetch_classes"),
 ]

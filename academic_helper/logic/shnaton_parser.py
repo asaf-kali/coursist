@@ -5,7 +5,7 @@ from typing import Optional, List, Tuple
 from urllib import request
 from urllib.parse import urlencode
 
-from bs4 import BeautifulSoup, Tag
+from bs4 import BeautifulSoup
 from django.db.transaction import atomic
 
 from academic_helper.models import Course
@@ -157,7 +157,7 @@ class ShnatonParser:
 
     @staticmethod
     @atomic
-    def fetch_course(course_number: int, year: int = 2020):
+    def fetch_course(course_number: int, year: int = 2020) -> Course:
         """
         Fetch course from Shnaton, add it to the database and return it.
         :param course_number: The course number to search.
@@ -183,10 +183,11 @@ class ShnatonParser:
 
         for raw_group in raw_data["lessons"]:
             ShnatonParser.create_course_groups(course, year, course_semesters, occurrence_credits, raw_group)
+        return course
 
     @staticmethod
     def occurrence_for_semester(
-        course: Course, year: int, occurrence_credits: int, semester: int, course_semesters: List[Semester]
+            course: Course, year: int, occurrence_credits: int, semester: int, course_semesters: List[Semester]
     ) -> Optional["CourseOccurrence"]:
         if not semester:
             semester = course_semesters[0].value
@@ -196,7 +197,7 @@ class ShnatonParser:
 
     @staticmethod
     def create_course_groups(
-        course: Course, year: int, course_semesters: List[Semester], occurrence_credits: int, raw_group: dict
+            course: Course, year: int, course_semesters: List[Semester], occurrence_credits: int, raw_group: dict
     ):
         group_mark = raw_group["group"]
         group_class_type = parse_group_type(raw_group["type"]).value

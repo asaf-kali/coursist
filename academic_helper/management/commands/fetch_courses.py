@@ -1,11 +1,8 @@
 import json
-import traceback
 
 from django.core.management import BaseCommand
 
 from academic_helper.logic.shnaton_parser import ShnatonParser
-
-# TODO: Add arguments: src file, limit
 from academic_helper.models import Course
 from academic_helper.utils.logger import log
 
@@ -13,14 +10,15 @@ LIMIT = 100
 SKIP_EXISTING = True
 
 
+# TODO: Add arguments: src file, limit
 class Command(BaseCommand):
     def handle(self, *args, **options):
         with open("courses_2020.json", encoding="utf8") as file:
             courses = json.load(file)
         fail_count = 0
         for i, course in enumerate(courses):
-            # if i > 100:
-            #     break
+            if i > LIMIT:
+                break
             course_number = course["id"]
             if SKIP_EXISTING:
                 if Course.objects.filter(course_number=course_number).exists():

@@ -142,8 +142,11 @@ class Base(models.Model):
 
     @property
     def as_dict(self) -> dict:
-        return model_to_dict(self, fields=[field.name for field in self._meta.fields])
-
+        fields = [field.name for field in self._meta.fields]
+        result = model_to_dict(self, fields=fields)
+        result["id"] = self.id
+        return result
+    
     @property
     def as_json(self) -> str:
         as_dict = {col: val for col, val in self.as_dict.items() if val is not None}

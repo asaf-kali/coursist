@@ -117,5 +117,12 @@ class CourseClass(Base):
         #     self.teacher = Teacher.objects.get_or_create(name=self.teacher)[0]
         super().save(*args, **kwargs)
 
+    @property
+    def as_dict(self) -> dict:
+        result = super().as_dict
+        result["teacher"] = str(self.teacher)
+        result["hall"] = str(self.hall)
+        return result
+
     def __str__(self):
         return f"{self.group} - {DayOfWeek(self.day).readable_name} {self.hall}"
