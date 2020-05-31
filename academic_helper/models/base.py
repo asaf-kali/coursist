@@ -95,7 +95,11 @@ class Base(models.Model):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self._initial = self.as_dict
+        if models.DEFERRED in args:
+            # We don't care about the dict logic (do we?)
+            self._initial = dict()
+        else:
+            self._initial = self.as_dict
 
     def is_same_model_as(self, other) -> bool:
         if not isinstance(other, models.Model):
@@ -138,9 +142,7 @@ class Base(models.Model):
 
     @property
     def as_dict(self) -> dict:
-        # TODO: Check this out!
-        # return model_to_dict(self, fields=[field.name for field in self._meta.fields])
-        return dict()
+        return model_to_dict(self, fields=[field.name for field in self._meta.fields])
 
     @property
     def as_json(self) -> str:
@@ -158,7 +160,7 @@ class Base(models.Model):
         """
         Saves model and set initial state.
         """
-        if self.has_changed:
+        if self.has_changed and self.id:
             # TODO: solve hebrew encoding issue
             log.info(f"{self.verbose_type} {wrap(self.id)} changed: {self.diff}".encode("utf-8"))
         super().save(*args, **kwargs)

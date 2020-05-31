@@ -8,6 +8,8 @@ from academic_helper.views import (
     AboutView,
     LoginView,
     SignupView,
+    SearchView,
+    FetchClassesView,
 )
 
 urlpatterns = [
@@ -19,4 +21,6 @@ urlpatterns = [
     path("about/", AboutView.as_view(), name="about"),
     path("login/", LoginView.as_view(), name="login"),
     path("signup/", SignupView.as_view(), name="signup"),
+    path("search", SearchView.as_view(), name="search_course"),
+    path("fetch_classes", FetchClassesView.as_view(), name="fetch_classes"),
 ]

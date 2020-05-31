@@ -1,10 +1,11 @@
 import re
 import urllib
+from os import path
 from typing import Optional, List, Tuple
 from urllib import request
 from urllib.parse import urlencode
 
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, Tag
 from django.db.transaction import atomic
 
 from academic_helper.models import Course
@@ -19,6 +20,7 @@ from academic_helper.models.course_occurrence import (
     Campus,
     Teacher,
 )
+from academic_helper.utils.logger import log
 
 SERVER_URL = "https://shnaton.huji.ac.il/index.php"
 CHARSET = "windows-1255"
@@ -31,23 +33,23 @@ def parse_course_semester(semester: str) -> List[Semester]:
         return [Semester.A]
     elif semester == "סמסטר ב'":
         return [Semester.B]
-    elif semester == "קיץ":
+    elif semester == "קיץ" or semester == "סמסטר קיץ":
         return [Semester.SUMMER]
     elif semester == "שנתי":
         return [Semester.YEARLY]
-    raise NotImplementedError(f"Unrecognized semester: {semester}")
+    raise NotImplementedError(f"Unrecognized course semester: {semester}")
 
 
 def parse_lesson_semester(semester: str) -> Semester:
-    if semester == "סמסטר א":
+    if semester == "סמסטר א" or semester == "סמסטר א'":
         return Semester.A
-    elif semester == "סמסטר ב":
+    elif semester == "סמסטר ב" or semester == "סמסטר ב'":
         return Semester.B
-    elif semester == "קיץ":
+    elif semester == "קיץ" or semester == "סמסטר קיץ":
         return Semester.SUMMER
     elif semester == "שנתי":
         return Semester.YEARLY
-    raise NotImplementedError(f"Unrecognized semester: {semester}")
+    raise NotImplementedError(f"Unrecognized lesson semester: {semester}")
 
 
 def parse_group_semester(semesters: List[str]) -> Semester:
@@ -66,11 +68,36 @@ def parse_group_type(class_type: str) -> ClassType:
         return ClassType.LECTURE
     if class_type == "תרג":
         return ClassType.RECITATION
-    if class_type == "שות":
-        return ClassType.SHUT
+    if class_type == "סמ":
+        return ClassType.SEMINAR
+    if class_type == "מעב":
+        return ClassType.LAB
+    if class_type == "סדנה":
+        return ClassType.WORKSHOP
+    if class_type == "מטלה":
+        return ClassType.ASSIGNMENT
+    if class_type == "שק":
+        return ClassType.CLINICAL
+    if class_type == "סיור":
+        return ClassType.TRIP
+    if class_type == "מכי":
+        return ClassType.PREPARATORY
     if class_type == "הדר":
         return ClassType.GUIDANCE
-    # TODO: Add more here
+    if class_type == "שומ":
+        return ClassType.LESSON_AND_LAB
+    if class_type == "שות":
+        return ClassType.SHUT
+    if class_type == "ע.מע":
+        return ClassType.PRACTICAL_WORK
+    if class_type == "שוסד":
+        return ClassType.LESSON_AND_WORKSHOP
+    if class_type == "שוה":
+        return ClassType.LESSON_AND_GUIDANCE
+    if class_type == "שוס":
+        return ClassType.LESSON_AND_SEMINAR
+    if class_type == "מחנה":
+        return ClassType.CAMP
     raise NotImplementedError(f"Unrecognized class type: {class_type}")
 
 
@@ -106,14 +133,19 @@ def parse_hall(raw_hall: str) -> Hall:
 
 
 def expand_teacher_list(teachers: List[str], length: int) -> List[str]:
-    if len(teachers) == length:
+    if len(teachers) == length or len(teachers) > length:
         return teachers
-    if len(teachers) > length:
-        raise ValueError("Cannot make list shorter")
     while len(teachers) < length:
-        # TODO: Is this how its working?
-        teachers.insert(0, teachers[0])
+        # TODO: Make sure this is reached only when needed
+        teachers.append(teachers[-1])
     return teachers
+
+
+def parse_course_credits(year, raw_data):
+    occurrence_year = raw_data["year"]
+    assert str(occurrence_year) == str(year)
+    occurrence_credits = raw_data["nz"]
+    return occurrence_credits
 
 
 def parse_teacher(teacher: str) -> Teacher:
@@ -140,45 +172,94 @@ class ShnatonParser:
         if raw_data is None:
             return None
 
-        course = Course()
-        course.course_number = raw_data["id"]
-        course.name = raw_data["name"]
-        course.save()
+        course_number = raw_data["id"]
+        course_name = raw_data["name"].replace("_", "")
+        # if "name_en" in raw_data and len(raw_data["name_en"].replace(" ", "")) > 5:
+        #     course_name = raw_data["name_en"]
+        course = Course.objects.get_or_create(name=course_name, course_number=course_number)[0]
 
-        semesters = parse_course_semester(raw_data["semester"])
-        for semester in semesters:
-            occurrence = CourseOccurrence()
-            occurrence.course = course
-            occurrence.year = raw_data["year"]
-            assert str(occurrence.year) == str(year)
-            occurrence.semester = semester.value
-            occurrence.credits = raw_data["nz"]
-            occurrence.save()
+        course_semesters = parse_course_semester(raw_data["semester"])
+        occurrence_credits = parse_course_credits(year, raw_data)
 
         for raw_group in raw_data["lessons"]:
-            # Add groups
-            group = ClassGroup()
-            group.mark = raw_group["group"]
-            group.class_type = parse_group_type(raw_group["type"]).value
-            class_num = len(raw_group["hall"])
-            teachers = expand_teacher_list(raw_group["lecturer"], class_num)
-            group_semester = parse_group_semester(raw_group["semester"])
-            occurrence = CourseOccurrence.for_semester(course=course, year=year, semester=group_semester.value)
-            group.occurrence = occurrence
-            group.save()
-            # Add classes to group
-            for i, raw_hall in enumerate(raw_group["hall"]):
-                course_class = CourseClass()
-                course_class.group = group
-                course_class.teacher = parse_teacher(teachers[i])
-                course_class.semester = parse_lesson_semester(raw_group["semester"][i]).value
-                course_class.day = parse_day_of_week(raw_group["day"][i]).value
-                course_class.start_time, course_class.end_time = parse_times(raw_group["hour"][i])
-                course_class.hall = parse_hall(raw_hall)
-                course_class.save()
+            ShnatonParser.create_course_groups(course, year, course_semesters, occurrence_credits, raw_group)
 
     @staticmethod
-    def get_course_html(year, course_id):
+    def occurrence_for_semester(
+        course: Course, year: int, occurrence_credits: int, semester: int, course_semesters: List[Semester]
+    ) -> Optional["CourseOccurrence"]:
+        if not semester:
+            semester = course_semesters[0].value
+        return CourseOccurrence.objects.get_or_create(
+            course=course, year=year, credits=occurrence_credits, semester=semester
+        )[0]
+
+    @staticmethod
+    def create_course_groups(
+        course: Course, year: int, course_semesters: List[Semester], occurrence_credits: int, raw_group: dict
+    ):
+        group_mark = raw_group["group"]
+        group_class_type = parse_group_type(raw_group["type"]).value
+        class_num = len(raw_group["semester"])
+        teachers = expand_teacher_list(raw_group["lecturer"], class_num)
+        try:
+            group_semester = parse_group_semester(raw_group["semester"]).value
+        except Exception as e:
+            log.info(f"No group semester for {course.course_number}: {e}")
+            group_semester = None
+        occurrence = ShnatonParser.occurrence_for_semester(
+            course, year, occurrence_credits, group_semester, course_semesters
+        )
+        group, created = ClassGroup.objects.get_or_create(
+            occurrence=occurrence, class_type=group_class_type, mark=group_mark
+        )
+        if created:
+            log.info(f"Group {group.id} created")
+        # Add classes to group
+        for i, raw_semester in enumerate(raw_group["semester"]):
+            ShnatonParser.create_course_class(group, i, raw_group, raw_semester, teachers)
+
+    @staticmethod
+    def create_course_class(group: ClassGroup, i, raw_group, raw_semester, teachers):
+        teacher = parse_teacher(teachers[i])  # TODO: This does not handle 2 teachers for 1 group case (course 1920)
+        try:
+            semester = parse_lesson_semester(raw_semester).value
+        except Exception as e:
+            semester = group.occurrence.semester
+        try:
+            day = parse_day_of_week(raw_group["day"][i]).value
+        except Exception as e:
+            log.warning(f"Skipping day for course {group.occurrence.course.course_number}: {e}")
+            day = DayOfWeek.UNDEFINED.value
+        try:
+            start_time, end_time = parse_times(raw_group["hour"][i])
+        except Exception as e:
+            log.warning(f"Skipping times for course {group.occurrence.course.course_number}: {e}")
+            start_time, end_time = None, None
+        try:
+            hall = parse_hall(raw_group["hall"][i])
+        except Exception as e:
+            log.warning(f"Skipping hall for course {group.occurrence.course.course_number}: {e}")
+            hall = None
+        course_class, created = CourseClass.objects.get_or_create(
+            group=group,
+            teacher=teacher,
+            semester=semester,
+            day=day,
+            start_time=start_time,
+            end_time=end_time,
+            hall=hall,
+        )
+        if created:
+            log.info(f"Class {course_class.id} created")
+
+    @staticmethod
+    def get_course_html(year, course_id, use_mock=True):
+        mock_path = path.join("academic_helper", "shnaton_mock", f"{course_id}-{year}.html")
+        if use_mock and path.exists(mock_path):
+            with open(mock_path, encoding="utf-8") as file:
+                log.info(f"Reading mock for {course_id} year {year}")
+                return file.read()
         data = urllib.parse.urlencode(
             {"peula": "Simple", "maslul": "0", "shana": "0", "year": year, "course": course_id}
         ).encode(
@@ -187,14 +268,18 @@ class ShnatonParser:
 
         req = urllib.request.urlopen(url=SERVER_URL, data=data)
         html = req.read().decode(req.headers.get_content_charset())
-
+        with open(mock_path, "w", encoding="utf-8") as file:
+            log.info(f"Writing mock for {course_id} year {year}")
+            file.write(html)
         return html
 
     @staticmethod
     def extract_data_from_shnaton(year: int, course_id: int) -> Optional[dict]:
-        source = BeautifulSoup(ShnatonParser.get_course_html(year, course_id), "html.parser")
+        html = ShnatonParser.get_course_html(year, course_id)
+        source = BeautifulSoup(html, "html.parser")
 
         if len(source.find_all(class_="courseTD")) == 0:
+            log.warning(f"Skipping course {course_id} because of bad html")
             # course not found
             return None
 
@@ -214,6 +299,10 @@ class ShnatonParser:
 
         course["id"] = re.sub("[^0-9]", "", general_course_info[2].string)
         course["name"] = general_course_info[1].string
+        try:
+            course["name_en"] = general_course_info[0].string.title()
+        except Exception as e:
+            pass
         course["year"] = year
         course["semester"] = general_course_info[7].string
         course["nz"] = re.sub("[^0-9]", "", general_course_info[6].string)
@@ -246,9 +335,12 @@ class ShnatonParser:
     def parse_halls(halls):
         ret = list()
         hall_children = halls.find_all("b")
-
+        if not hall_children:
+            # This is patch for 1921 and likewise
+            hall_children = halls.contents
         for hall in hall_children:
-            ret.append(hall.string)
+            if hall.string is not None:
+                ret.append(hall.string.replace("\n", ""))
 
         return ret
 
@@ -290,8 +382,10 @@ class ShnatonParser:
         ret = list()
 
         for lecturer in lecturers.contents:
+            # TODO: This order is not right for course 1921!
             if lecturer.string is not None:
-                # not <br>, append it
                 ret.append(lecturer.string)
+            elif lecturer.name == "br" and lecturer.previous_sibling not in ret:
+                ret.append(ret[-1])
 
         return ret

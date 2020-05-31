@@ -1,6 +1,6 @@
 .idea/*
 backups/
-
+**/shnaton_mock/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

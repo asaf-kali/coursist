@@ -16,41 +16,27 @@ class Semester(ChoicesEnum):
 
 
 class ClassType(ChoicesEnum):
-    LECTURE = 1
-    RECITATION = 2
-    SEMINAR = 3
-    LAB = 4
+    LECTURE = 1  # שעור
+    RECITATION = 2  # תרג
+    SEMINAR = 3  # סמ
+    LAB = 4  # מעב
     WORKSHOP = 5
-    ASSIGNMENT = 6
-    CLINICAL = 7
-    TRIP = 8
-    PREPARATORY = 9
-    GUIDANCE = 10
-    GUIDANCE_AND_LECTURE = 11
-    SHUT = 12
-
-    # ("lecture", "שיעור"),  # שעור
-    # ("recitation", "תרגיל"),  # תרג
-    # שיעור ותרגיל
-    # ("", "סמינריון"),  # סמ
-    # שיעור וסמינריון
-    # ("lab", "מעבדה"),  # מעב
-    # ("guidance", "הדרכה"),  # הדר
-    # ("guidance and lecture", "שיעור ומעבדה"),  # שומ
-    # ("preparatory", "מכינה"),  # מכי
-    # ("workshop", "סדנה"),  # סדנה
-    # ("trip", "סיור"),  # סיור
-    # ("assignment", "מטלה"),  # מטלה
-    # ("clinical", "שיעור קליני"),  # שק
-    # שיעור והדרכה
-    # סיור-מחנה
-    # ("practical work", "עבודה מעשית"),  # ע.מע
-    # מחנה
-    # שיעור וסדנה
-    # שיעור תרגיל ומעבדה
+    ASSIGNMENT = 6  # מטלה
+    CLINICAL = 7  # שק
+    TRIP = 8  # סיור
+    PREPARATORY = 9  # מכי
+    GUIDANCE = 10  # הדר
+    LESSON_AND_LAB = 11  # שומ
+    SHUT = 12  # שות
+    PRACTICAL_WORK = 13  # ע.מע
+    LESSON_AND_WORKSHOP = 14  # שוסד
+    LESSON_AND_GUIDANCE = 15  # שוה
+    LESSON_AND_SEMINAR = 16  # שוס
+    CAMP = 17  # מחנה
 
 
 class DayOfWeek(ChoicesEnum):
+    UNDEFINED = -1
     SUNDAY = 1
     MONDAY = 2
     TUESDAY = 3
@@ -71,13 +57,6 @@ class CourseOccurrence(Base):
 
     def __str__(self):
         return f"{self.course} - {self.year} {Semester(self.semester).readable_name}"
-
-    @staticmethod
-    def for_semester(course: Course, year: int, semester: Semester) -> Optional["CourseOccurrence"]:
-        result = CourseOccurrence.objects.filter(course=course, year=year, semester=semester).first()
-        if result:
-            return result
-        return CourseOccurrence.objects.filter(course=course, year=year, semester=Semester.YEARLY).first()
 
 
 class Campus(Base):
@@ -123,19 +102,19 @@ class CourseClass(Base):
     group: ClassGroup = models.ForeignKey(ClassGroup, on_delete=models.CASCADE)
     teacher: Teacher = models.ForeignKey(Teacher, on_delete=models.SET_NULL, null=True, blank=True)
     semester: int = models.IntegerField(choices=Semester.list(), null=True, blank=True)
-    day: int = models.IntegerField(choices=DayOfWeek.list(), null=True)
-    start_time: time = models.TimeField()
-    end_time: time = models.TimeField()
+    day: int = models.IntegerField(choices=DayOfWeek.list(), null=True, blank=True)
+    start_time: time = models.TimeField(null=True, blank=True)
+    end_time: time = models.TimeField(null=True, blank=True)
     hall: Hall = models.ForeignKey(Hall, on_delete=models.SET_NULL, null=True, blank=True)
 
     class Meta:
         verbose_name_plural = "course classes"
 
     def save(self, *args, **kwargs):
-        if self.hall is not None and isinstance(self.hall, str):
-            self.hall = Hall.objects.get_or_create(name=self.hall)[0]
-        if self.teacher is not None and isinstance(self.teacher, str):
-            self.teacher = Teacher.objects.get_or_create(name=self.teacher)[0]
+        # if self.hall is not None and isinstance(self.hall, str):
+        #     self.hall = Hall.objects.get_or_create(name=self.hall)[0]
+        # if self.teacher is not None and isinstance(self.teacher, str):
+        #     self.teacher = Teacher.objects.get_or_create(name=self.teacher)[0]
         super().save(*args, **kwargs)
 
     def __str__(self):

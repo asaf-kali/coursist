@@ -6,4 +6,4 @@ from academic_helper.logic.shnaton_parser import ShnatonParser
 # TODO: Add arguments: course number
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        ShnatonParser.fetch_course(67504)
+        ShnatonParser.fetch_course(1530)
