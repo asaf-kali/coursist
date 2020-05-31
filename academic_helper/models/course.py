@@ -1,9 +1,9 @@
 from __future__ import annotations
 
-from typing import Union, Iterable, Collection
+from typing import Union, Collection
 
 from django.db import models
-from django.db.models import QuerySet
+from django.db.models import QuerySet, Q
 
 from academic_helper.models.base import Base
 from academic_helper.models.extended_rating import RatingDummy
@@ -53,5 +53,5 @@ class Course(Base):
         return RatingDummy.dummy_for(self, "Interesting")
 
     @staticmethod
-    def find_by(name: str):
-        return Course.objects.filter(name__contains=name).all()
+    def find_by(text: str):
+        return Course.objects.filter(Q(name__contains=text) | Q(course_number__icontains=text)).all()

@@ -1,4 +1,5 @@
 import json
+import random
 
 from django.core.management import BaseCommand
 
@@ -6,8 +7,9 @@ from academic_helper.logic.shnaton_parser import ShnatonParser
 from academic_helper.models import Course
 from academic_helper.utils.logger import log
 
-LIMIT = 100
+LIMIT = 50
 SKIP_EXISTING = True
+SHUFFLE = True
 
 
 # TODO: Add arguments: src file, limit
@@ -15,6 +17,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         with open("courses_2020.json", encoding="utf8") as file:
             courses = json.load(file)
+        if SHUFFLE:
+            random.shuffle(courses)
         fail_count = 0
         for i, course in enumerate(courses):
             if i > LIMIT:

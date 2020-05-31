@@ -86,12 +86,13 @@ class CoursesView(ExtendedViewMixin, ListView):
         return Course.objects.all()
 
     def post(self, request: WSGIRequest):
-        log.info("Courses POST")
         if not request.is_ajax():
             raise NotImplementedError()
         text = request.POST["free_text"]
         queryset = Course.find_by(text)
         result = [c.as_dict for c in queryset]
+        for course in result:
+            course["url"] = reverse("course-details", args=[course["course_number"]])
         return JsonResponse({"courses": result})
 
 
