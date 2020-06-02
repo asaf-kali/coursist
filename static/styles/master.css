@@ -60,7 +60,7 @@
 
 .search-btn {
 	width: 5%;
-	background: #ffffff;
+	background: rgba(0,0,0,0);
 	border: 0;
 	cursor: pointer;
 	font-size: 22px;
@@ -98,4 +98,15 @@
   display: inline-block;
   margin-right: auto;
   margin-left: auto;
+}
+
+.sign-out-btn {
+
+	border-radius: 10%;
+	background: rgba(0,0,0,0);
+	border: 1px solid #3d3d3d;
+	cursor: pointer;
+	padding: 5px;
+	text-align: center;
+	font-size: 10px;
 }

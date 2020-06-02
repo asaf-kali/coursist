@@ -80,35 +80,50 @@
             </div>
             <div class="row mt-5">
                 <div class="col-sm-12">
-                    <div class="course-name-wrapper">
-                        <input type="text"
+                    <input type="text"
                                name="course_name"
                                id="course_id"
                                class="course-name-input"
                                placeholder=" חיפוש חופשי"/>
-                        <button class="search-btn" id="search_btn">
-                            <svg class="bi bi-search" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor"
-                                 xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd"
-                                      d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
-                                <path fill-rule="evenodd"
-                                      d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
-                            </svg>
-                        </button>
-                    </div>
+                    <button type="button" class="search-btn" id="search_btn">
+                        <svg class="bi bi-search" width="1em" height="1em" viewBox="0 0 16 16" fill="white"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                  d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
+                            <path fill-rule="evenodd"
+                                  d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
+                        </svg>
+                    </button>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        var input = document.getElementById("course_id");
+
+        // Execute a function when the user releases a key on the keyboard
+        input.addEventListener("keyup", function(event) {
+        // Number 13 is the "Enter" key on the keyboard
+            if (event.keyCode === 13) {
+                // Cancel the default action, if needed
+                event.preventDefault();
+                // Trigger the button element with a click
+                document.getElementById("search_btn").click();
+            }
+        });
+    </script>
+
 {% endblock %}
 
 {% block content_body %}
     <div class="container" id="courses-list">
         {% for course in object_list %}
-            <div class="card float-left" style="width: 24%; height: 10rem; margin-left: 10px">
+            <div class="card float-left" style="width: 24%; height: 10rem; margin-left: 10px; margin-bottom: 10px">
                 <div class="card-body text-center">
-                    <h5 class="card-title">{{ course.name }}</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">{{ course.course_number }}</h6>
+                    <a href="{% url 'course-details' course.course_number %}"><h5 style="color: black">
+                        {{ course.name }}</h5></a>
+                    <h6 class="card-subtitle mb-2 text-muted" >{{ course.course_number }}</h6>
                     <a href="{% url 'course-details' course.course_number %}">
                         <svg class="bi bi-arrows-angle-expand" width="1em" height="1em" viewBox="0 0 16 16"
                              fill="black" xmlns="http://www.w3.org/2000/svg">
