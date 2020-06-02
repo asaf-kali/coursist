@@ -23,7 +23,77 @@
     <div id="fb-root"></div>
     <script async defer crossorigin="anonymous"
             src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v7.0&appId=1129461710764059&autoLogAppEvents=1"></script>
-    <br><br><br>
+    <br>
+
+    <div class="container align-content-center">
+        <div class="row">
+            <div class="col-md-4">
+
+                <div style="display: inline-block">
+                    <div class="rating-wrapper">
+                        <br>
+                        <strong>קושי במהלך הסמסטר</strong>
+                        <svg type="button" data-toggle="tooltip" data-placement="top"
+
+                             title="כמה קשה היה הקורס במהלך הסמסטר? כמה עמוסים היו שיעורי הבית? (1-קשה 5-קל)"
+
+                             class="bi bi-info-circle-fill"
+                             width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                        </svg>
+                        {% ratings course.semester_rating %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div style="display: inline-block">
+                    <div class="rating-wrapper">
+                        <br>
+                        <strong>בחינות</strong>
+
+                        <svg type="button" data-toggle="tooltip" data-placement="top"
+
+                             title="כמה קשה היתה הבחינה/פרוייקט גמר? (1-קשה 5-קל)"
+
+                             class="bi bi-info-circle-fill"
+                             width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                        </svg>
+                        <br>
+                        {% ratings course.finals_rating %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div style="display: inline-block">
+                    <div class="rating-wrapper">
+                        <br>
+                        <strong>עניין במהלך הסמסטר</strong>
+                        <svg type="button" data-toggle="tooltip" data-placement="top"
+
+                             title="כמה מעניין היה הקורס? כמה כיף? (1-לא מעניין 5-מעניין)"
+
+                             class="bi bi-info-circle-fill"
+                             width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                        </svg>
+                        {% ratings course.interesting_rating %}
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <script>
+    $(document).ready(function(){
+      $('[data-toggle="tooltip"]').tooltip();
+    });
+    </script>
+
+    <hr>
+
     {% get_review_count for course as review_count %}
     <p>This course has {{ review_count }} reviews.</p>
     {% if not user.is_anonymous %}
@@ -33,21 +103,9 @@
     {% endif %}
     {% render_review_list for course %}
 
-    <br><br><br>
-    <h4>Ratings</h4>
-    <h5>Semester rating:</h5>
-    How hard was the course during the semester? How difficult / intense were the home assignments?<br>
-    (1 - hard, 5 - easy)<br>
-    {% ratings course.semester_rating %}
-    <h5>Finals rating:</h5>
-    How hard was the final exam / project?<br>
-    (1 - hard, 5 - easy)<br>
-    {% ratings course.finals_rating %}
-    <h5>Interesting rating:</h5>
-    How interesting was the course? How fun?<br>
-    (1 - boring, 5 - interesting)<br>
-    {% ratings course.interesting_rating %}
-    <br><br><br>
-    <h4>Facebook reviews</h4>
-    <div class="fb-comments" data-href="{{ request.build_absolute_uri }}" data-numposts="5" data-width=""></div>
+
+
+{#    <br><br><br>#}
+{#    <h4>Facebook reviews</h4>#}
+{#    <div class="fb-comments" data-href="{{ request.build_absolute_uri }}" data-numposts="5" data-width=""></div>#}
 {% endblock %}
