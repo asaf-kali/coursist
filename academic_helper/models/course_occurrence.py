@@ -109,13 +109,6 @@ class CourseClass(Base):
     class Meta:
         verbose_name_plural = "course classes"
 
-    def save(self, *args, **kwargs):
-        # if self.hall is not None and isinstance(self.hall, str):
-        #     self.hall = Hall.objects.get_or_create(name=self.hall)[0]
-        # if self.teacher is not None and isinstance(self.teacher, str):
-        #     self.teacher = Teacher.objects.get_or_create(name=self.teacher)[0]
-        super().save(*args, **kwargs)
-
     @property
     def as_dict(self) -> dict:
         result = super().as_dict

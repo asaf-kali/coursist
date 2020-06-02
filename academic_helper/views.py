@@ -70,8 +70,9 @@ class CourseDetailsView(DetailView, ExtendedViewMixin):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["semester_rating_description"] = "כמה קשה היה הקורס במהלך הסמסטר? כמה עמוסים היו שיעורי הבית? (1-קשה " \
-                                                 "5-קל)"
+        context["semester_rating_description"] = (
+            "כמה קשה היה הקורס במהלך הסמסטר? כמה עמוסים היו שיעורי הבית? (1-קשה " "5-קל)"
+        )
         context["semester_rating_title"] = "קושי במהלך הסמסטר"
         context["exams_rating_description"] = "כמה קשה היתה הבחינה/פרוייקט גמר? (1-קשה 5-קל)"
         context["exams_rating_title"] = "בחינות"

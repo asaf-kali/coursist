@@ -32,5 +32,6 @@ prod:
 com:
 	make black
 	git add .
+	git status
 	git commit -m "Auto commit"
 	git push
