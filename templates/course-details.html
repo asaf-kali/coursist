@@ -24,23 +24,19 @@
     <script async defer crossorigin="anonymous"
             src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v7.0&appId=1129461710764059&autoLogAppEvents=1"></script>
     <br>
-
     <div class="container align-content-center">
         <div class="row">
             {% include 'course-rating.html' with rating_title=semester_rating_title rating_description=semester_rating_description rating_object=course.semester_rating %}
-            {% include 'course-rating.html' with rating_title=exams_rating_title rating_description=exams_rating_description rating_object=course.semester_rating %}
-            {% include 'course-rating.html' with rating_title=interest_rating_title rating_description=interest_rating_description rating_object=course.semester_rating %}
+            {% include 'course-rating.html' with rating_title=exams_rating_title rating_description=exams_rating_description rating_object=course.finals_rating %}
+            {% include 'course-rating.html' with rating_title=interest_rating_title rating_description=interest_rating_description rating_object=course.interesting_rating %}
         </div>
     </div>
-
     <script>
         $(document).ready(function () {
             $('[data-toggle="tooltip"]').tooltip();
         });
     </script>
-
     <hr>
-
     {% get_review_count for course as review_count %}
     <p>This course has {{ review_count }} reviews.</p>
     {% if not user.is_anonymous %}
@@ -49,9 +45,6 @@
         To add a review, please sign in.
     {% endif %}
     {% render_review_list for course %}
-
-
-
     {#    <br><br><br>#}
     {#    <h4>Facebook reviews</h4>#}
     {#    <div class="fb-comments" data-href="{{ request.build_absolute_uri }}" data-numposts="5" data-width=""></div>#}
