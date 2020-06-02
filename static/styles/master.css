@@ -88,7 +88,14 @@
 .rating-wrapper {
 	border-radius: 50%;
 	border: 1px solid #000;
-	padding: 5px;
-	height: 150px;
-	width: 150px;
+	padding: 30px;
+	height: 250px;
+	width: 250px;
+	text-align: center;
+}
+
+.center-block {
+  display: inline-block;
+  margin-right: auto;
+  margin-left: auto;
 }
