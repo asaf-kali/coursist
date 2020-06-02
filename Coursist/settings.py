@@ -24,11 +24,18 @@ SECRET_KEY = "6*cne7zoh!2qr*teq_8#(y0d8o-15504&+5y3tvp+c@1f=jvhj"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "coursist.xyz"]
 
 # Application definition
 
 INSTALLED_APPS = [
+    # Rating
+    "reviews",
+    "star_ratings",
+    # Cron
+    "django_cron",
+    # Db backup
+    "dbbackup",
     # Our app
     "academic_helper",
     # "schedule",
@@ -46,13 +53,6 @@ INSTALLED_APPS = [
     "allauth.socialaccount",
     "allauth.socialaccount.providers.facebook",
     # "allauth.socialaccount.providers.google",
-    # Rating
-    "star_ratings",
-    "reviews",
-    # Cron
-    "django_cron",
-    # Db backup,
-    "dbbackup",
 ]
 
 AUTHENTICATION_BACKENDS = [
@@ -95,16 +95,16 @@ WSGI_APPLICATION = "Coursist.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": os.path.join(BASE_DIR, "db.sqlite3"),}}
+DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": os.path.join(BASE_DIR, "db.sqlite3"), }}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",},
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",},
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",},
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",},
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator", },
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator", },
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator", },
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator", },
 ]
 
 # Internationalization
