@@ -24,7 +24,10 @@ SECRET_KEY = "6*cne7zoh!2qr*teq_8#(y0d8o-15504&+5y3tvp+c@1f=jvhj"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+HEALTH_CHECK_SRC = os.getenv("HEALTH_CHECK_SRC", None)
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", "coursist.xyz"]
+if HEALTH_CHECK_SRC:
+    ALLOWED_HOSTS += [HEALTH_CHECK_SRC]
 
 # Application definition
 
