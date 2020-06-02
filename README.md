@@ -1,5 +1,5 @@
 # Coursist
-Course + Assist, got it?
+Course + Assist, get it?
 
 ## Description
 This project is intended for university students all around the world.<br>
