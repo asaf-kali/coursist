@@ -14,27 +14,42 @@ SHUFFLE = True
 
 
 class Command(BaseCommand):
-
     def add_arguments(self, parser):
-        parser.add_argument('--src_file', type=str, default=DEFAULT_SRC_FILE,
-                            help=f'Source file for courses (Default is {DEFAULT_SRC_FILE}).')
-        parser.add_argument('--limit', type=int, default=DEFAULT_LIMIT,
-                            help=f'Max number of courses to fetch (Default is {DEFAULT_LIMIT}).')
-        parser.add_argument('--fetch_existing', action='store_false', help='fetch existing courses.')
+        parser.add_argument(
+            "--src_file",
+            type=str,
+            default=DEFAULT_SRC_FILE,
+            help=f"Source file for courses (Default is {DEFAULT_SRC_FILE}).",
+        )
+        parser.add_argument(
+            "--limit",
+            type=int,
+            default=DEFAULT_LIMIT,
+            help=f"Max number of courses to fetch (Default is {DEFAULT_LIMIT}).",
+        )
+        parser.add_argument(
+            "--fetch_existing",
+            type=bool,
+            default=False,
+            action="store_true",
+            help="Fetch existing courses (default is False). If set to True, existing courses will be deleted!",
+        )
 
     def handle(self, *args, **options):
-        with open(options['src_file'], encoding="utf8") as file:
+        with open(options["src_file"], encoding="utf8") as file:
             courses = json.load(file)
         if SHUFFLE:
             random.shuffle(courses)
         fail_count = 0
         for i, course in enumerate(courses):
-            if i > options['limit']:
+            if i > options["limit"]:
                 break
             course_number = course["id"]
-            if options['fetch_existing']:
-                if Course.objects.filter(course_number=course_number).exists():
-                    continue
+            if not options["fetch_existing"]:
+                continue
+            existing = Course.objects.filter(course_number=course_number)
+            if existing.exists():
+                existing.delete()
             try:
                 ShnatonParser.fetch_course(course_number)
             except Exception as e:
