@@ -188,7 +188,7 @@ class ShnatonParser:
 
     @staticmethod
     def occurrence_for_semester(
-            course: Course, year: int, occurrence_credits: int, semester: int, course_semesters: List[Semester]
+        course: Course, year: int, occurrence_credits: int, semester: int, course_semesters: List[Semester]
     ) -> Optional["CourseOccurrence"]:
         if not semester:
             semester = course_semesters[0].value
@@ -198,7 +198,7 @@ class ShnatonParser:
 
     @staticmethod
     def create_course_groups(
-            course: Course, year: int, course_semesters: List[Semester], occurrence_credits: int, raw_group: dict
+        course: Course, year: int, course_semesters: List[Semester], occurrence_credits: int, raw_group: dict
     ):
         group_mark = raw_group["group"]
         group_class_type = parse_group_type(raw_group["type"]).value
@@ -223,7 +223,8 @@ class ShnatonParser:
 
     @staticmethod
     def create_course_class(group: ClassGroup, i, raw_group, raw_semester, teachers):
-        teacher = parse_teacher(teachers[i])  # TODO: This does not handle 2 teachers for 1 group case (course 1920)
+        # TODO: This does not handle 2 teachers for 1 group case (course 1920)
+        teacher = parse_teacher(teachers[i])
         try:
             semester = parse_lesson_semester(raw_semester).value
         except Exception as e:

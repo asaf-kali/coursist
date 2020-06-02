@@ -1,6 +1,9 @@
+from django.conf import settings
+from django.conf.urls.static import static
 from django.http import JsonResponse
 from django.urls import path, include
 
+from academic_helper.utils.environment import is_prod
 from academic_helper.views import (
     AjaxView,
     CourseDetailsView,
