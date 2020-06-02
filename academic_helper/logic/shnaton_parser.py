@@ -1,3 +1,4 @@
+import os
 import re
 import urllib
 from os import path
@@ -187,7 +188,7 @@ class ShnatonParser:
 
     @staticmethod
     def occurrence_for_semester(
-        course: Course, year: int, occurrence_credits: int, semester: int, course_semesters: List[Semester]
+            course: Course, year: int, occurrence_credits: int, semester: int, course_semesters: List[Semester]
     ) -> Optional["CourseOccurrence"]:
         if not semester:
             semester = course_semesters[0].value
@@ -197,7 +198,7 @@ class ShnatonParser:
 
     @staticmethod
     def create_course_groups(
-        course: Course, year: int, course_semesters: List[Semester], occurrence_credits: int, raw_group: dict
+            course: Course, year: int, course_semesters: List[Semester], occurrence_credits: int, raw_group: dict
     ):
         group_mark = raw_group["group"]
         group_class_type = parse_group_type(raw_group["type"]).value
@@ -256,7 +257,10 @@ class ShnatonParser:
 
     @staticmethod
     def get_course_html(year, course_id, use_mock=True):
-        mock_path = path.join("academic_helper", "shnaton_mock", f"{course_id}-{year}.html")
+        mock_dir = path.join("academic_helper", "shnaton_mock")
+        if not path.exists(mock_dir):
+            os.makedirs(mock_dir)
+        mock_path = path.join(mock_dir, f"{course_id}-{year}.html")
         if use_mock and path.exists(mock_path):
             with open(mock_path, encoding="utf-8") as file:
                 log.info(f"Reading mock for {course_id} year {year}")

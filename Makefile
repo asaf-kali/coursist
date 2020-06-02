@@ -24,6 +24,11 @@ push:
 rebase:
 	python scripts/gits.py rebase
 
+prod:
+	source env/bin/activate
+	pip install -r requirements.txt
+	python manage.py migrate
+
 com:
 	make black
 	git add .

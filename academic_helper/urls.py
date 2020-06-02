@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.urls import path, include
 
 from academic_helper.views import (
@@ -13,8 +14,14 @@ from academic_helper.views import (
     ScheduleView,
 )
 
+
+def healthy(request):
+    return JsonResponse({"status": 200})
+
+
 urlpatterns = [
     path("", index, name="index"),
+    path("health/", healthy, name="health-check"),
     path("ajax/", AjaxView.as_view(), name="ajax"),
     path("courses/", CoursesView.as_view(), name="courses"),
     path("courses/<int:course_number>/", CourseDetailsView.as_view(), name="course-details"),
