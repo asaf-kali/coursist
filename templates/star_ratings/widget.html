@@ -1,0 +1,16 @@
+{% extends "star_ratings/widget_base.html" %}
+{% block rating_detail %}
+    {% block rating_average %}
+        <div class="star-ratings-rating-average">Average: <span
+                class='star-ratings-rating-value'>{{ rating.average|floatformat:"-2" }}</span></div>
+    {% endblock rating_average %}
+    {% block rating_count %}
+        <div class="star-ratings-rating-count">Rating count: <span class='star-ratings-rating-value'>
+            {{ rating.count }}</span></div>
+    {% endblock rating_count %}
+
+    {% if not user.is_authenticated and not anonymous_ratings and not read_only %}
+        <p>'Please log in to rate.'</p>
+    {% endif %}
+    <div class="star-ratings-errors"></div>
+{% endblock %}
