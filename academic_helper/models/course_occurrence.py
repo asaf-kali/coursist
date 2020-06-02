@@ -1,10 +1,9 @@
 from datetime import time
-from typing import Optional
 
 from django.db import models
 
-from academic_helper.models import Base, Course
-from academic_helper.models.base import ChoicesEnum
+from academic_helper.models.course import Course
+from academic_helper.models.base import Base, ChoicesEnum
 
 
 class Semester(ChoicesEnum):

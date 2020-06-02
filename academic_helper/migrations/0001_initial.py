@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name="ExtendedUser",
+            name="CoursistUser",
             fields=[
                 ("id", models.AutoField(editable=False, primary_key=True, serialize=False)),
                 ("password", models.CharField(max_length=128, verbose_name="password")),
