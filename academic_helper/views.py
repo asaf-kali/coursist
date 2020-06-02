@@ -10,8 +10,10 @@ from django.views import View
 from django.views.generic import TemplateView, ListView, DetailView
 
 from academic_helper.logic.shnaton_parser import ShnatonParser
+from academic_helper.models import CoursistUser
+from academic_helper.models.class_schedule import ClassSchedule
 from academic_helper.models.course import Course
-from academic_helper.models.course_occurrence import CourseClass, CourseOccurrence, ClassGroup
+from academic_helper.models.course_occurrence import CourseClass, ClassGroup
 from academic_helper.utils.logger import log
 
 
@@ -33,6 +35,10 @@ class ExtendedViewMixin(TemplateView):
 
     def post(self, request: WSGIRequest):
         pass
+
+    @property
+    def user(self) -> CoursistUser:
+        return self.request.user
 
 
 class AjaxView(ExtendedViewMixin):
@@ -120,18 +126,39 @@ class ScheduleView(ExtendedViewMixin):
     def title(self) -> str:
         return "Schedule Planner"
 
-    def post(self, request, *args, **kwargs):
-        if not request.is_ajax():
-            return
-        if "search_val" not in request.POST:
-            return HttpResponseBadRequest()
-
-        search_val = request.POST["search_val"]
+    def search(self, search_val: str):
         courses = Course.objects.filter(
             Q(name__icontains=search_val) | Q(course_number__icontains=search_val)
         ).order_by("course_number")[:10]
         serialized = [c.as_dict for c in courses]
         return JsonResponse({"status": "success", "courses": serialized}, json_dumps_params={"ensure_ascii": False})
+
+    def add_choice_to_user(self, choice):
+        log.info(f"add_choice_to_user with choice={choice}")
+        if self.user.is_anonymous:
+            log.warning("add_choice_to_user called but user is_anonymous")
+            return JsonResponse({"status": "error", "message": "User not logged in"})
+        choice_group = ClassGroup.objects.get(pk=choice)
+        existing = ClassSchedule.objects.filter(user=self.user, group__class_type=choice_group.class_type).first()
+        if existing:
+            log.info(f"add_choice_to_user replacing existing {existing}")
+            existing.delete()
+        schedule = ClassSchedule(user=self.user, group=choice_group)
+        schedule.save()
+        log.info(f"add_choice_to_user added {schedule}")
+        return JsonResponse({"status": "success"})
+
+    def post(self, request, *args, **kwargs):
+        if not request.is_ajax():
+            return
+        if "search_val" in request.POST:
+            search_val = request.POST["search_val"]
+            return self.search(search_val)
+        if "group_choice" in request.POST:
+            choice = request.POST["choice"]
+            return self.add_choice_to_user(choice)
+        else:
+            return HttpResponseBadRequest()
 
 
 class SearchView(View):

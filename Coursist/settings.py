@@ -110,7 +110,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
-AUTH_USER_MODEL = "academic_helper.ExtendedUser"
+AUTH_USER_MODEL = "academic_helper.CoursistUser"
 
 LANGUAGE_CODE = "en-us"
 
@@ -135,7 +135,6 @@ AUTH_ACTIVATION = False
 SITE_ID = 1
 LOGIN_REDIRECT_URL = "/"
 ACCOUNT_EMAIL_VERIFICATION = "none"
-
 
 # DB Backup
 DBBACKUP_STORAGE = "django.core.files.storage.FileSystemStorage"

@@ -2,7 +2,7 @@ from typing import Iterable
 
 from django.db import models
 
-from academic_helper.models import Base, Course, ExtendedUser
+from academic_helper.models import Base, Course, CoursistUser
 
 
 class StudyBlock(Base):
@@ -15,7 +15,7 @@ class StudyBlock(Base):
 
 
 class CompletedCourse(Base):
-    user: ExtendedUser = models.ForeignKey(ExtendedUser, on_delete=models.CASCADE)
+    user: CoursistUser = models.ForeignKey(CoursistUser, on_delete=models.CASCADE)
     course: Course = models.ForeignKey(Course, on_delete=models.CASCADE)
     block: StudyBlock = models.ForeignKey(StudyBlock, on_delete=models.CASCADE)
     grade: int = models.IntegerField(null=True, blank=True)

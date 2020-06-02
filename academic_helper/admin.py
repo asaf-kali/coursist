@@ -4,9 +4,9 @@ from academic_helper.models import StudyPlan, StudyBlock, CompletedCourse
 from academic_helper.models.course import Course, Faculty
 from academic_helper.models.course_occurrence import CourseOccurrence, CourseClass, Campus, Hall, Teacher, ClassGroup
 from academic_helper.models.extended_rating import RatingDummy
-from academic_helper.models.extended_user import ExtendedUser
+from academic_helper.models.coursist_user import CoursistUser
 
-admin.site.register(ExtendedUser)
+admin.site.register(CoursistUser)
 
 admin.site.register(Faculty)
 admin.site.register(Course)
