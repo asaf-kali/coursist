@@ -15,11 +15,12 @@ from academic_helper.models import (
     ClassGroup,
     CoursistUser,
     RatingDummy,
-)
+    School)
 
 admin.site.register(CoursistUser)
 
 admin.site.register(Faculty)
+admin.site.register(School)
 admin.site.register(Course)
 admin.site.register(CourseOccurrence)
 admin.site.register(Campus)
