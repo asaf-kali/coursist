@@ -2,8 +2,8 @@
 	box-sizing: border-box;
 }
 
-.border1 {
-	border: 1px solid #000;
+body {
+	margin-top: 60px;
 }
 
 .bg-navbar {
@@ -14,14 +14,14 @@
 	width: 100%;
 }
 
-.search-bg {
+.header-image {
 	border-radius: 0px !important;
 	background-size: cover;
 	background-position-y: 50%;
+	background-image: url(../images/search-bg.jpeg);
 }
-
-.search-content-wrapper {
-	background: rgba(0,0,0, 0.5);
+.opaque-wrapper {
+	background-color: rgba(0,0,0,0.5);
 }
 
 .search-param-wrapper {
@@ -101,7 +101,6 @@
 }
 
 .sign-out-btn {
-
 	border-radius: 10%;
 	background: rgba(0,0,0,0);
 	border: 1px solid #3d3d3d;
@@ -109,4 +108,22 @@
 	padding: 5px;
 	text-align: center;
 	font-size: 10px;
+}
+
+@media (min-width: 992px) {
+	.navbar {
+		height: 60px;
+	}
+
+	.header-image {
+		min-height: 200px;
+	}
+
+	.header-image.card {
+		border: 0;
+	}
+
+	.opaque-wrapper {
+		min-height: 200px;
+	}
 }

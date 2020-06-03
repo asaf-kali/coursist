@@ -25,12 +25,11 @@
 <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-navbar">
     <a class="navbar-brand" href="{% url 'index' %}">Coursist</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse"
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false"
+            data-target=".dual-collapse" aria-expanded="false"
             aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <div class="collapse navbar-collapse dual-collapse w-100 order-1">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'courses' %}">קורסים</a>
@@ -46,8 +45,8 @@
             </li>
         </ul>
     </div>
-    <div>
-        <ul class="navbar-nav" style="direction: ltr;">
+    <div class="collapse navbar-collapse dual-collapse w-100 order-2">
+        <ul class="navbar-nav ml-auto">
             <li>
                 {% if user.is_anonymous %}
                     <a class="nav-link" href="{% url 'login' %}" style="color: white;">Log in</a>
@@ -69,13 +68,15 @@
         </ul>
     </div>
 </nav>
-<section>
+<section class="container-fluid px-0">
     <!--Grid row-->
-    <div class="row">
+    <div class="row mr-0">
         <!--Grid column-->
-        <div class="col-md-12">
-            <div class="card search-bg card-image" style="background-image: url({% static 'images/search-bg.jpeg' %});">
-                {% block content_header %} {% endblock %}
+        <div class="col-md-12 px-0">
+            <div class="header-image card card-image">
+                <div class="opaque-wrapper">
+                    {% block content_header %} {% endblock %}
+                </div>
             </div>
         </div>
     </div>
