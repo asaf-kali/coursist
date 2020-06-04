@@ -145,6 +145,20 @@ class ScheduleView(ExtendedViewMixin):
         serialized = [c.as_dict for c in courses]
         return JsonResponse({"status": "success", "courses": serialized}, json_dumps_params={"ensure_ascii": False})
 
+    def get_classes(self, course_number):
+        if not course_number.isdigit():
+            return HttpResponseBadRequest()
+        course = Course.objects.filter(course_number=course_number).last()
+        if not course:
+            return JsonResponse({"status": "error", "msg": "Course not found"})
+        groups = ClassGroup.objects.filter(occurrence__course=course).order_by(
+            "class_type", "mark").all()
+        serialized = [g.as_dict for g in groups]
+        for group in serialized:
+            classes = CourseClass.objects.filter(group_id=group["id"]).all()
+            group["classes"] = [c.as_dict for c in classes]
+        return JsonResponse({"status": "success", "groups": serialized})
+
     def add_choice_to_user(self, choice):
         log.info(f"add_choice_to_user with choice={choice}")
         if self.user.is_anonymous:
@@ -166,55 +180,11 @@ class ScheduleView(ExtendedViewMixin):
         if "search_val" in request.POST:
             search_val = request.POST["search_val"]
             return self.search(search_val)
+        if "course_number" in request.POST:
+            course_number = request.POST["course_number"]
+            return self.get_classes(course_number)
         if "group_choice" in request.POST:
             choice = request.POST["choice"]
             return self.add_choice_to_user(choice)
         else:
             return HttpResponseBadRequest()
-
-
-class SearchView(View):
-    """
-    View which searched and fetches the course by its number.
-    If the course doesn't exist locally, we try to fetch it from Shnaton and
-    add it to our database.
-    """
-
-    def post(self, request, *args, **kwargs):
-        if not request.is_ajax():
-            return HttpResponseBadRequest()
-
-        if "search_val" not in request.POST:
-            return HttpResponseBadRequest()
-
-        search_val = request.POST["search_val"]
-        if not search_val.isdigit():
-            return HttpResponseBadRequest()
-
-        course = Course.objects.filter(course_number=search_val).last()
-        if course is None:
-            # try fetching the course from Shnaton
-            course = ShnatonParser.fetch_course(search_val)
-            if course is None:
-                return JsonResponse({"status": "error", "msg": "Course not found"})
-        return JsonResponse({"status": "success", "course": course.as_dict})
-
-
-class FetchClassesView(View):
-    def post(self, request, *args, **kwargs):
-        if not request.is_ajax():
-            return HttpResponseBadRequest()
-        if "search_val" not in request.POST:
-            return HttpResponseBadRequest()
-        search_val = request.POST["search_val"]
-        if not search_val.isdigit():
-            return HttpResponseBadRequest()
-        course = Course.objects.filter(course_number=search_val).last()
-        if not course:
-            return JsonResponse({"status": "error", "msg": "Course not found"})
-        groups = ClassGroup.objects.filter(occurrence__course=course).order_by("class_type", "mark").all()
-        serialized = [g.as_dict for g in groups]
-        for group in serialized:
-            classes = CourseClass.objects.filter(group_id=group["id"]).all()
-            group["classes"] = [c.as_dict for c in classes]
-        return JsonResponse({"status": "success", "groups": serialized})
