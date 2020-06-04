@@ -168,7 +168,7 @@ ScheduleTemplate.prototype.initEvents = function () {
     });
 };
 
-ScheduleTemplate.prototype.addEvent = function () {
+ScheduleTemplate.prototype.refreshSchedule = function () {
     this.singleEvents = this.element.getElementsByClassName('cd-schedule__event');
     this.placeEvents();
     this.initEvents();
@@ -441,7 +441,7 @@ class Schedule {
         return this.courses[courseNumber]['course']['name'];
     }
 
-    getCourseClassesByNumber(courseNumber) {
+    getCourseGroupsByNumber(courseNumber) {
         return this.courses[courseNumber]['groups'];
     }
 
@@ -467,86 +467,74 @@ class Schedule {
         return class_types;
     }
 
+    classTypeToName(class_type) {
+        let types = {
+            '1': 'שיעור',
+            '2': 'תרגול',
+            '3': 'סמינר',
+            '4': 'מעבדה',
+            '5': 'סדנה',
+            '6': 'מטלה',
+            '7': 'שיעור קליני',
+            '8': 'סיור',
+            '9': 'מכינה',
+            '10': 'הדרכה',
+            '11': 'שיעור ומעבדה',
+            '12': 'שיעור ותרגיל',
+            '13': 'עבודה מעשית',
+            '14': 'שיעור וסדנה',
+            '15': 'שיעור והדרכה',
+            '16': 'שיעור וסמינר',
+            '17': 'מחנה',
+        };
+
+        if (class_type in types) {
+            return types[class_type];
+        }
+
+        return 'Unknown class type';
+    }
+
+    semesterToName(semester) {
+        let semesters = {
+            '1': 'סמסטר א',
+            '2': 'סמסטר ב',
+            '3': 'סמסטר ג',
+            '4': 'סמסטר קיץ',
+            '5': 'שנתי',
+        };
+
+        if (semester in semesters) {
+            return semesters[semester];
+        }
+
+        return 'Unknown semester';
+    }
+
+    getGroupTeachers(group) {
+        let teachers = "";
+        if (group['classes'].length > 0) {
+            for (let i = 0; i < group['classes'].length; i++) {
+                teachers += group['classes'][i]['teacher'] + ', ';
+            }
+
+            teachers = teachers.substring(0, teachers.length - 2);
+        }
+
+        return teachers;
+    }
+
     removeCourse(course_number) {
-        let course_classes = this.courses[course_number]['classes'];
-        for (let i = 0; i < course_classes.length; i++) {
-            let serial = course_classes[i]['serial_number'];
-            $('[data-group=class_item_' + course_number + '_' + serial + ']').remove();
+        let course_groups = this.courses[course_number]['groups'];
+        for (let i = 0; i < course_groups.length; i++) {
+            let group_id = course_groups[i]['id'];
+            $('[data-group=class_item_' + group_id + ']').remove();
         }
         delete this.courses[course_number];
     }
-
-    /**
-     * Converts the courses returned from server to convenient objects.
-     */
-    // toCourseObj(courses) {
-    //     let ret = [];
-    //     for (let i = 0; i < courses.length; i++) {
-    //         ret[i] = {
-    //             course_number: courses[i]['fields']['course_number'],
-    //             name: courses[i]['fields']['name'],
-    //             name_en: courses[i]['fields']['name_en'],
-    //             year: courses[i]['fields']['year'],
-    //             semester: courses[i]['fields']['semester'],
-    //             nz: courses[i]['fields']['nz']
-    //         };
-    //     }
-    //
-    //     return ret;
 }
-
-/**
- * Converts the classes returned from server to convenient objects.
- */
-//     toClassObj(classes) {
-//         let delim = ';';
-//         let ret = [];
-//         for (let i = 0; i < classes.length; i++) {
-//             let lecturers = classes[i]['fields']['lecturer'].split(delim);
-//             let semesters = classes[i]['fields']['semester'].split(delim);
-//             let days = classes[i]['fields']['day'].split(delim);
-//             let hours = classes[i]['fields']['hour'].split(delim);
-//             let halls = classes[i]['fields']['hall'].split(delim);
-//
-//             ret[i] = {
-//                 course_id: classes[i]['fields']['course_id'],
-//                 course_number: classes[i]['fields']['course_number'],
-//                 serial_number: classes[i]['fields']['serial_number'],
-//                 lecturer: lecturers,
-//                 class_type: classes[i]['fields']['class_type'],
-//                 group: classes[i]['fields']['group'],
-//                 semester: semesters,
-//                 day: days,
-//                 hour: hours,
-//                 hall: halls
-//             };
-//         }
-//
-//         return ret;
-//     }
-// }
 
 let schedule = new Schedule();
-
-/**
- * Displays the results of a course search.
- */
-function display_course_results(list, course, csrf) {
-    let course_number = course['course_number'];
-    let course_name = course['name'];
-    list.append(
-        '<li>' +
-        '<a href="#" id="add_course_' + course_number + '">' +
-        course_number + ' - ' + course_name + '</a>' +
-        '</li>'
-    );
-    $('#add_course_' + course_number).click(function (e) {
-        e.preventDefault();
-        addCourse(course, csrf);
-        list.html('');
-        $('#course_input').val('');
-    });
-}
 
 /**
  * Autocompletes the user search.
@@ -585,10 +573,18 @@ function courses_autocomplete(search_val, csrf) {
                 return;
             }
 
-            // courses = schedule.toCourseObj(courses);
+            // display the results
+            let list = container.find('ul');
             $.each(courses, function (index, value) {
                 if (!schedule.hasCourse(value)) {
-                    display_course_results(container.children('ul'), value, csrf);
+                    item_html = hb_templates['schedule-course-autocomplete-item']({'course': value});
+                    list.append(item_html);
+                    $('#add_course_' + value['course_number']).click(function (e) {
+                        e.preventDefault();
+                        addCourse(value, csrf);
+                        list.html('');
+                        $('#course_input').val('');
+                    });
                 }
             });
         },
@@ -614,7 +610,6 @@ function addCourse(course, csrf) {
             'course_number': course['course_number']
         },
         success: function (response) {
-            console.log(response);
             const groups = response.groups;
             if (groups.length === 0) {
                 // TODO show to the user error message?
@@ -622,32 +617,23 @@ function addCourse(course, csrf) {
             }
             schedule.addCourse(course, groups);
             let course_number = course['course_number'];
-            let course_name = course['name'];
             let course_list_container = $('#my_courses_list');
-            course_list_container.append(
-                '<li id="course_item_' + course_number + '">' +
-                '<div class="title_wrapper clear">' +
-                '<div class="course_name opened">' + course_number + ' - ' + course_name + '</div>' +
-                '<div class="remove_button" id="del_btn_' + course_number + '">' +
-                '<svg class="bi bi-trash" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">\n' +
-                '  <path d="M5.5 5.5A.5.5 0 016 6v6a.5.5 0 01-1 0V6a.5.5 0 01.5-.5zm2.5 0a.5.5 0 01.5.5v6a.5.5 0 01-1 0V6a.5.5 0 01.5-.5zm3 .5a.5.5 0 00-1 0v6a.5.5 0 001 0V6z"/>\n' +
-                '  <path fill-rule="evenodd" d="M14.5 3a1 1 0 01-1 1H13v9a2 2 0 01-2 2H5a2 2 0 01-2-2V4h-.5a1 1 0 01-1-1V2a1 1 0 011-1H6a1 1 0 011-1h2a1 1 0 011 1h3.5a1 1 0 011 1v1zM4.118 4L4 4.059V13a1 1 0 001 1h6a1 1 0 001-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" clip-rule="evenodd"/>\n' +
-                '</svg>' +
-                '</div>' +
-                '</div>' +
-                '<div id="course_classes_' + course_number + '" class="course_classes_wrapper"></div>' +
-                '</li>'
-            );
+            let item_html = hb_templates['schedule-course-item']({'course': course});
+            course_list_container.append(item_html);
+
+            // collapse functionality
             $('#course_item_' + course_number).find('.course_name').click(function () {
                 toggleCourseItem($(this));
             });
+
+            // delete functionality
             $('#del_btn_' + course_number).click(function () {
                 schedule.removeCourse(course_number);
                 $('#course_item_' + course_number).remove();
             });
 
-            let classesContainer = $('#course_classes_' + course_number);
-            displayCourseGroups(classesContainer, course_number, groups);
+            let groupsContainer = $('#course_groups_' + course_number);
+            displayCourseGroups(groupsContainer, course_number, groups);
         },
         error: function () {
             alert('failed');
@@ -660,31 +646,39 @@ function addCourse(course, csrf) {
  */
 function displayCourseGroups(container, courseNumber, groups) {
     let class_types = schedule.getClassTypes(courseNumber);
-    // TODO map class types to strings
     for (let i = 0; i < class_types.length; i++) {
         let cur_class_type = class_types[i];
-        container.append(
-            '<ul class="course_class_' + i + '">' +
-            '<li class="course_class_title">' + cur_class_type + '</li>' +
-            '</ul>'
-        );
-        let class_list = container.find('.course_class_' + i);
+        let group_header = hb_templates['schedule-course-item-group-header']({
+            'class_type': cur_class_type,
+            'class_type_name': schedule.classTypeToName(cur_class_type)
+        });
+        container.append(group_header);
+
+        let group_list = container.find('.course_group_' + cur_class_type);
         let passed_first = false;
         groups.forEach((group) => {
             if (group['class_type'] === cur_class_type) {
                 let css_class = (passed_first === false) ? 'active' : '';
-                class_list.append(
-                    '<li class="' + css_class + '" id="list_class_' + group['course_number'] + '_' + group['serial_number'] + '">' +
-                    group['group'] + ' - ' + group['lecturer'] +
-                    '</li>'
-                );
-                $('#list_class_' + group['course_number'] + '_' + group['serial_number']).click(function (e) {
+
+                let group_item = hb_templates['schedule-course-item-group-item']({
+                    'css_class': css_class,
+                    'course_number': courseNumber,
+                    'group_id': group['id'],
+                    'mark': group['mark'],
+                    'teachers': schedule.getGroupTeachers(group)
+                });
+                group_list.append(group_item);
+
+                // add click functionality
+                $('#list_group_' + courseNumber + '_' + group['id']).click(function (e) {
                     if (!$(this).hasClass('active')) {
                         $(this).siblings().removeClass('active');
                         $(this).addClass('active');
                         updateScheduleDisplay(courseNumber, group);
                     }
                 });
+
+                // display first of each class type in the schedule
                 if (passed_first === false) {
                     updateScheduleDisplay(courseNumber, group);
                 }
@@ -749,73 +743,15 @@ function getClassLecturer(cls) {
     return ret;
 }
 
-function getClassSemester(cls) {
-    ret = [];
-
-    for (let i = 0; i < cls['semester'].length; i++) {
-        ret.push(cls['semester'][i]);
-    }
-
-    return ret;
-}
-
-function getClassDay(cls) {
-    ret = [];
-
-    for (let i = 0; i < cls['day'].length; i++) {
-        let day;
-        switch (cls['day'][i]) {
-            case "יום א'":
-                day = 1;
-                break;
-            case "יום ב'":
-                day = 2;
-                break;
-            case "יום ג'":
-                day = 3;
-                break;
-            case "יום ד'":
-                day = 4;
-                break;
-            case "יום ה'":
-                day = 5;
-                break;
-            default:
-                day = 1; // TODO maybe return error
-        }
-        ret.push(day);
-    }
-
-    return ret;
-}
-
-function getClassHour(cls) {
-    ret = [];
-
-    for (let i = 0; i < cls['hour'].length; i++) {
-        ret.push(cls['hour'][i]);
-    }
-
-    return ret;
-}
-
-function getClassHall(cls) {
-    ret = [];
-
-    for (let i = 0; i < cls['hall'].length; i++) {
-        ret.push(cls['hall'][i]);
-    }
-
-    return ret;
-}
-
 function getNiceTime(time) {
     const lastIndex = time.lastIndexOf(":");
     return time.substring(0, lastIndex);
 }
 
 function addClassToDisplay(courseNumber, courseName, group, courseClass) {
-    const serial_number = group['id'];
+    const class_id = courseClass['id'];
+    const group_id = group['id'];
+    const class_type = group['class_type'];
     const teacher = courseClass['teacher'];
     const semester = courseClass['semester'];
     const day = courseClass['day'];
@@ -823,47 +759,49 @@ function addClassToDisplay(courseNumber, courseName, group, courseClass) {
     const endTime = getNiceTime(courseClass['end_time']);
     const hall = courseClass['hall'];
 
-    let li_id = 'class_item_' + courseNumber + '_' + serial_number + '_' + serial_number;
-    let li_data_group = 'class_item_' + courseNumber + '_' + serial_number;
-    $('#day_' + day + '_a').append(
-        '<li class="cd-schedule__event" id="' + li_id + '" data-group="' + li_data_group + '">' +
-        '   <a data-start="' + startTime + '" data-end="' + endTime +
-        '"  data-content="need to add" data-event="event-4" href="#0">' +
-        '       <em class="cd-schedule__name">' + courseNumber + ' - ' + courseName + '</em>' +
-        '   </a>' +
-        '</li>'
-    );
+    const li_id = 'class_item_' + courseNumber + '_' + class_id;
+    const li_data_group = 'class_item_' + group_id;
 
-    for (let i = 0; i < scheduleTemplateArray.length; i++) {
-        scheduleTemplateArray[i].addEvent();
-    }
+    let schedule_event = hb_templates['schedule-single-event']({
+        'li_id': li_id,
+        'li_data_group': li_data_group,
+        'class_type': class_type,
+        'start_time': startTime,
+        'end_time': endTime,
+        'course_number': courseNumber,
+        'course_name': courseName
+    });
+
+    $('#schedule_semester_' + semester).find('#day_' + day + '_a').append(schedule_event);
+
+    scheduleTemplateArray[semester - 1].refreshSchedule();
 }
 
-function getCoursesToRemove(courseNumber, group) {
-    let allClasses = schedule.getCourseClassesByNumber(courseNumber);
-    let toRemove = []; // classes of same group that we potentially need to remove
-    for (let i = 0; i < allClasses.length; i++) {
-        if (allClasses[i]['class_type'] === group["class_type"]) {
-            if (allClasses[i]['serial_number'] !== group["mark"]) {
-                toRemove.push(allClasses[i]['serial_number']);
+function getGroupsToRemove(courseNumber, group) {
+    let allGroups = schedule.getCourseGroupsByNumber(courseNumber);
+    let groupsToRemove = [];
+    for (let i = 0; i < allGroups.length; i++) {
+        if (allGroups[i]['class_type'] === group["class_type"]) {
+            if (allGroups[i]['id'] !== group["id"]) {
+                groupsToRemove.push(allGroups[i]['id']);
             }
         }
     }
-    return toRemove;
+    return groupsToRemove;
 }
 
-function removeCourses(toRemove, courseNumber) {
-    for (let i = 0; i < toRemove.length; i++) {
-        $('[data-group=class_item_' + courseNumber + '_' + toRemove[i] + ']').remove();
+function removeCourseGroups(groupsToRemove) {
+    for (let i = 0; i < groupsToRemove.length; i++) {
+        $('[data-group=class_item_' + groupsToRemove[i] + ']').remove();
     }
 }
 
 function updateScheduleDisplay(courseNumber, group) {
     // TODO decide to which schedule depending on the semester
     const courseName = schedule.getCourseNameByNumber(courseNumber);
-    let toRemove = getCoursesToRemove(courseNumber, group);
-    removeCourses(toRemove, courseNumber);
-    group.classes.forEach((courseClass) => {
+    let groupsToRemove = getGroupsToRemove(courseNumber, group);
+    removeCourseGroups(groupsToRemove);
+    $.each(group['classes'], function (index, courseClass) {
         addClassToDisplay(courseNumber, courseName, group, courseClass);
     });
 }
@@ -871,9 +809,19 @@ function updateScheduleDisplay(courseNumber, group) {
 function toggleCourseItem($title_element) {
     if ($title_element.hasClass('opened')) {
         $title_element.removeClass('opened');
-        $title_element.parent().parent().find('.course_classes_wrapper').slideUp();
+        $title_element.parent().parent().find('.course_groups_wrapper').slideUp();
     } else {
         $title_element.addClass('opened');
-        $title_element.parent().parent().find('.course_classes_wrapper').slideDown();
+        $title_element.parent().parent().find('.course_groups_wrapper').slideDown();
     }
 }
+
+/**
+ * Refresh the schedule when the tab is shown, to properly display the events.
+ */
+$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+    const jq_elem = $(e.target);
+    const target = jq_elem.attr('href');
+    const schedule_idx = $(target).data('schedule');
+    scheduleTemplateArray[schedule_idx].refreshSchedule();
+});

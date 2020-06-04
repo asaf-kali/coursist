@@ -686,37 +686,37 @@
     cursor: pointer;
 }
 
-.course_classes_wrapper ul {
+.course_groups_wrapper ul {
     list-style: none;
     margin: 0;
     padding: 0;
 }
 
-.course_classes_wrapper ul li.course_class_title {
+.course_groups_wrapper ul li.course_group_title {
     font-weight: bold;
     background: #dfdfdf;
     color: #000000;
     cursor: auto;
 }
 
-.course_classes_wrapper ul li.course_class_title:hover {
+.course_groups_wrapper ul li.course_group_title:hover {
     background: #dfdfdf;
     color: #000000;
 }
 
-.course_classes_wrapper ul li {
+.course_groups_wrapper ul li {
     background: #ffffff;
     color: #000000;
     cursor: pointer;
     padding: 0 5px;
 }
 
-.course_classes_wrapper ul li:hover {
+.course_groups_wrapper ul li:hover {
     background: #ebebeb;
     color: #000;
 }
 
-.course_classes_wrapper ul li.active {
+.course_groups_wrapper ul li.active {
     background: #ebebeb;
     color: #000;
 }

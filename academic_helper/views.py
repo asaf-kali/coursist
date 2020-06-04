@@ -151,8 +151,11 @@ class ScheduleView(ExtendedViewMixin):
         course = Course.objects.filter(course_number=course_number).last()
         if not course:
             return JsonResponse({"status": "error", "msg": "Course not found"})
+        # TODO need to check ordering by id (mark is not good because of hebrew
+        # TODO alphabet numbering), id orders by creation order, but if we
+        # TODO update the groups and create a new one, it might get unordered
         groups = ClassGroup.objects.filter(occurrence__course=course).order_by(
-            "class_type", "mark").all()
+            "class_type", "id").all()
         serialized = [g.as_dict for g in groups]
         for group in serialized:
             classes = CourseClass.objects.filter(group_id=group["id"]).all()
