@@ -559,6 +559,12 @@ function courses_autocomplete(search_val, csrf) {
         return;
     }
 
+    container.html(
+        '<div class="text-center">' +
+            '<div class="spinner-grow text-primary" role="status"></div>' +
+        '</div>'
+    );
+
     $.ajax({
         method: 'POST',
         url: './',
@@ -593,45 +599,6 @@ function courses_autocomplete(search_val, csrf) {
 }
 
 /**
- * Search for a specific course number.
- */
-function search_course(csrf) {
-    let search_val = $('#course_input').val();
-    let container = $('#search_results');
-
-    if (search_val.length < 2) {
-        return;
-    }
-
-    container.html(
-        '<div class="text-center">' +
-        '<div class="spinner-grow text-primary" role="status"></div>' +
-        '</div>'
-    );
-    $.ajax({
-        method: 'POST',
-        url: './search/',
-        data: {
-            csrfmiddlewaretoken: csrf,
-            'search_val': search_val
-        },
-        success: function (response) {
-            container.html('<ul></ul>');
-            if (response.status === 'error') {
-                if (response.msg === 'Course not found') {
-                    container.html('לא נמצאו קורסים');
-                    return;
-                }
-            }
-            display_course_results(container.children('ul'), response.course, csrf);
-        },
-        error: function () {
-            container.html('Error, try again.');
-        }
-    });
-}
-
-/**
  * Adds a course to the course list.
  */
 function addCourse(course, csrf) {
@@ -641,10 +608,10 @@ function addCourse(course, csrf) {
 
     $.ajax({
         method: 'POST',
-        url: './fetch_classes/',
+        url: './',
         data: {
             csrfmiddlewaretoken: csrf,
-            'search_val': course['course_number']
+            'course_number': course['course_number']
         },
         success: function (response) {
             console.log(response);

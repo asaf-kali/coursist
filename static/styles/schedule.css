@@ -584,7 +584,7 @@
 
 #course_input {
     float: right;
-    width: 80%;
+    width: 100%;
     height: 40px;
     line-height: 40px;
     padding: 0 5px;
@@ -599,20 +599,6 @@
 
 #course_input::placeholder {
     color: #666666;
-}
-
-#search_btn {
-    width: 20%;
-    height: 40px;
-    line-height: 40px;
-    color: #ffffff;
-    background-color: var(--schedule-primary-color);
-    border: none;
-    cursor: pointer;
-}
-
-#search_btn:focus {
-    outline: none;
 }
 
 #search_results {
