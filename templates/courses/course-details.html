@@ -26,9 +26,9 @@
     <br>
     <div class="container align-content-center">
         <div class="row">
-            {% include 'course-rating.html' with rating_title=semester_rating_title rating_description=semester_rating_description rating_object=course.semester_rating %}
-            {% include 'course-rating.html' with rating_title=exams_rating_title rating_description=exams_rating_description rating_object=course.finals_rating %}
-            {% include 'course-rating.html' with rating_title=interest_rating_title rating_description=interest_rating_description rating_object=course.interesting_rating %}
+            {% include 'courses/course-rating.html' with rating_title=semester_rating_title rating_description=semester_rating_description rating_object=course.semester_rating %}
+            {% include 'courses/course-rating.html' with rating_title=exams_rating_title rating_description=exams_rating_description rating_object=course.finals_rating %}
+            {% include 'courses/course-rating.html' with rating_title=interest_rating_title rating_description=interest_rating_description rating_object=course.interesting_rating %}
         </div>
     </div>
     <script>

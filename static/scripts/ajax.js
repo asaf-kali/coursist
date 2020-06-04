@@ -1,5 +1,5 @@
 const CSRF_KEY = 'csrfmiddlewaretoken';
-
+let CSRF_TOKEN = '';
 
 function logAndCall(response, callback, comment) {
     console.debug(`Ajax response (${comment}): ${JSON.stringify(response)}`);
@@ -8,12 +8,14 @@ function logAndCall(response, callback, comment) {
 }
 
 
-function ajax(data, success, error, csrfToken = undefined, url = undefined) {
+function ajax(data, success = undefined, error = undefined, csrfToken = undefined, url = undefined) {
     if (!url) {
         url = location.href.replace(location.search, '');
         console.log(`Posting to: ${url}`);
     }
     if (!(CSRF_KEY in data)) {
+        if (!csrfToken)
+            csrfToken = CSRF_TOKEN;
         data[CSRF_KEY] = csrfToken;
     }
     $.ajax({
@@ -33,7 +35,7 @@ function onReady(bind) {
     $(document).ready((e) => bind(e));
 }
 
-function bindInput(inputId, success, error, csrfToken, url = undefined) {
+function bindInput(inputId, success = undefined, error = undefined, csrfToken = undefined, url = undefined) {
     onReady(() => {
         $("#" + inputId).on("input", (e) => {
             ajax({value: $(e.target).val()}, success, error, csrfToken, url);
@@ -41,7 +43,7 @@ function bindInput(inputId, success, error, csrfToken, url = undefined) {
     });
 }
 
-function bindButton(btnId, dataGetter, success, error, csrfToken, url = undefined) {
+function bindButton(btnId, dataGetter, success = undefined, error = undefined, csrfToken = undefined, url = undefined) {
     onReady(() => {
         $("#" + btnId).click((e) => {
             const data = dataGetter(e);

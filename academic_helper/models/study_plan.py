@@ -11,7 +11,7 @@ class StudyBlock(Base):
     min_credits: int = models.IntegerField()
 
     def __str__(self):
-        return f"{self.name} Block"
+        return f"{self.name}"
 
 
 class CompletedCourse(Base):
@@ -23,6 +23,9 @@ class CompletedCourse(Base):
     class Meta:
         unique_together = ["user", "course"]
 
+    def __str__(self):
+        return f"{self.user} - {self.course}"
+
 
 class StudyPlan(Base):
     name: str = models.CharField(max_length=50)
@@ -31,4 +34,4 @@ class StudyPlan(Base):
     is_public: bool = models.BooleanField(default=True)
 
     def __str__(self):
-        return f"Plan {self.id} - {self.name}"
+        return f"{self.id} - {self.name}"

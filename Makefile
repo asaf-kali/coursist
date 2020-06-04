@@ -3,6 +3,7 @@ install:
 	pip install -r requirements-dev.txt
 	python manage.py migrate
 	python manage.py dev_init
+	python manage.py fetch_courses --limit 20
 
 run:
 	python manage.py runserver

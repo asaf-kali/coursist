@@ -16,7 +16,7 @@ class Faculty(Base):
     name: str = models.CharField(max_length=50)
 
     def __str__(self):
-        return f"{self.name} Faculty"
+        return f"{self.name}"
 
 
 class School(Base):
@@ -30,7 +30,7 @@ class School(Base):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.name} School in {self.faculty}"
+        return f"{self.name} ({self.faculty})"
 
 
 class Course(Base):
