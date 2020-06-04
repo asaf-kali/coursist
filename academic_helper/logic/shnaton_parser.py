@@ -9,7 +9,7 @@ from urllib.parse import urlencode
 from bs4 import BeautifulSoup
 from django.db.transaction import atomic
 
-from academic_helper.models import Course
+from academic_helper.models import Course, School, Faculty
 from academic_helper.models.course_occurrence import (
     CourseOccurrence,
     Semester,
@@ -173,11 +173,16 @@ class ShnatonParser:
         if raw_data is None:
             return None
 
+        raw_faculty = raw_data['faculty'].strip()
+        raw_school = raw_data['school'].strip()
+        faculty = Faculty.objects.get_or_create(name=raw_faculty)[0]
+        school = School.objects.get_or_create(name=raw_school, faculty=faculty)[0]
+
         course_number = raw_data["id"]
         course_name = raw_data["name"].replace("_", "")
         # if "name_en" in raw_data and len(raw_data["name_en"].replace(" ", "")) > 5:
         #     course_name = raw_data["name_en"]
-        course = Course.objects.get_or_create(name=course_name, course_number=course_number)[0]
+        course = Course.objects.get_or_create(name=course_name, course_number=course_number, school=school)[0]
 
         course_semesters = parse_course_semester(raw_data["semester"])
         occurrence_credits = parse_course_credits(year, raw_data)
@@ -290,6 +295,9 @@ class ShnatonParser:
             return None
 
         course = dict()
+        # parse faculty and school
+        ShnatonParser.parse_faculty(source, course)
+
         # parse general course info
         ShnatonParser.parse_general_course_info(source, year, course)
 
@@ -297,6 +305,18 @@ class ShnatonParser:
         ShnatonParser.parse_lessons(source, course)
 
         return course
+
+    @staticmethod
+    def parse_faculty(source, course):
+        faculty_container = source.find(class_="courseTitle")
+        if len(faculty_container) == 0:
+            return
+
+        # maxsplit = 1 because some faculties have more than one colon
+        data = faculty_container.string.split(":", maxsplit=1)
+        if len(data) == 2:
+            course['faculty'] = data[0]
+            course['school'] = data[1]
 
     @staticmethod
     def parse_general_course_info(source, year, course):
