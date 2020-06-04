@@ -173,8 +173,8 @@ class ShnatonParser:
         if raw_data is None:
             return None
 
-        raw_faculty = raw_data['faculty'].strip()
-        raw_school = raw_data['school'].strip()
+        raw_faculty = raw_data["faculty"].strip()
+        raw_school = raw_data["school"].strip()
         faculty = Faculty.objects.get_or_create(name=raw_faculty)[0]
         school = School.objects.get_or_create(name=raw_school, faculty=faculty)[0]
 
@@ -315,8 +315,8 @@ class ShnatonParser:
         # maxsplit = 1 because some faculties have more than one colon
         data = faculty_container.string.split(":", maxsplit=1)
         if len(data) == 2:
-            course['faculty'] = data[0]
-            course['school'] = data[1]
+            course["faculty"] = data[0]
+            course["school"] = data[1]
 
     @staticmethod
     def parse_general_course_info(source, year, course):

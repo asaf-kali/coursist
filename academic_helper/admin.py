@@ -15,7 +15,8 @@ from academic_helper.models import (
     ClassGroup,
     CoursistUser,
     RatingDummy,
-    School)
+    School,
+)
 
 admin.site.register(CoursistUser)
 
