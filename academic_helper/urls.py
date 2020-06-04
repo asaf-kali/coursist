@@ -1,19 +1,10 @@
-from django.conf import settings
-from django.conf.urls.static import static
 from django.http import JsonResponse
 from django.urls import path, include
 
-from academic_helper.utils.environment import is_prod
-from academic_helper.views import (
-    AjaxView,
-    CourseDetailsView,
-    index,
-    CoursesView,
-    AboutView,
-    LoginView,
-    SignupView,
-    ScheduleView,
-)
+from academic_helper.views.basic import index
+from academic_helper.views.courses import CoursesView, CourseDetailsView
+from academic_helper.views.other import AjaxView, AboutView, LoginView, SignupView
+from academic_helper.views.schedule import ScheduleView
 
 
 def healthy(request):
