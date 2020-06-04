@@ -35,6 +35,7 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
+        log.info(f"Fetching courses with: {options}")
         with open(options["src_file"], encoding="utf8") as file:
             courses = json.load(file)
         if SHUFFLE:

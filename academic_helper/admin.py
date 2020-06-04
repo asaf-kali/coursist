@@ -19,7 +19,6 @@ from academic_helper.models import (
 )
 
 admin.site.register(CoursistUser)
-
 admin.site.register(Faculty)
 admin.site.register(School)
 admin.site.register(Course)
@@ -30,7 +29,6 @@ admin.site.register(Teacher)
 admin.site.register(ClassGroup)
 admin.site.register(CourseClass)
 admin.site.register(ClassSchedule)
-
 admin.site.register(StudyBlock)
 admin.site.register(CompletedCourse)
 admin.site.register(RatingDummy)
