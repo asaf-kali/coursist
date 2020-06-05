@@ -1,10 +1,10 @@
 beautifulsoup4
 asgiref==3.2.7
-Django==3.0.6
+Django==3.0.7
 pytz==2020.1
 sqlparse==0.3.1
 django-star-ratings==0.9.1
 django-allauth==0.42.0
 django-dbbackup==3.3.0
 django_cron==0.5.1
-django-rated-reviews==0.6.0
+django-contrib-comments==1.9.2

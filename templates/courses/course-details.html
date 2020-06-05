@@ -1,7 +1,8 @@
 {% extends "master.html" %}
 {% load static %}
 {% load ratings %}
-{% load reviews %}
+{#{% load reviews %}#}
+{% load comments %}
 
 {% block head %}
 {% endblock %}
@@ -37,14 +38,15 @@
         });
     </script>
     <hr>
-    {% get_review_count for course as review_count %}
-    <p>This course has {{ review_count }} reviews.</p>
     {% if not user.is_anonymous %}
-        {% render_review_form for course %}
+        {% include 'courses/comment_form.html' with couse=course %}
     {% else %}
         To add a review, please sign in.
     {% endif %}
-    {% render_review_list for course %}
+    {% include 'courses/comments_list.html' with couse=course %}
+
+
+{#    {% render_review_list for course %}#}
     {#    <br><br><br>#}
     {#    <h4>Facebook reviews</h4>#}
     {#    <div class="fb-comments" data-href="{{ request.build_absolute_uri }}" data-numposts="5" data-width=""></div>#}

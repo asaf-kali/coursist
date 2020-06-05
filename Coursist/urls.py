@@ -20,5 +20,6 @@ urlpatterns = [
     path("", include("academic_helper.urls")),
     path("admin/", admin.site.urls),
     path("ratings/", include("star_ratings.urls", namespace="ratings")),
-    path("reviews/", include("reviews.urls")),
+    # path("reviews/", include("reviews.urls")),
+    path("comments/", include("django_comments.urls")),
 ]

@@ -31,8 +31,11 @@ if HEALTH_CHECK_SRC:
 # Application definition
 
 INSTALLED_APPS = [
+    # "reviews",
+    # comments
+    "django_comments",
+    "course_comments",
     # Rating
-    "reviews",
     "star_ratings",
     # Cron
     "django_cron",
@@ -149,8 +152,9 @@ STAR_RATINGS_STAR_HEIGHT = 16
 # STAR_RATINGS_RATING_MODEL = "academic_helper.ExtendedRating"
 
 # Reviews
-REVIEW_PUBLISH_UNMODERATED = True
-REVIEW_SHOW_RATING_TEXT = False
+COMMENTS_APP = "course_comments"
+# REVIEW_PUBLISH_UNMODERATED = True
+# REVIEW_SHOW_RATING_TEXT = False
 
 # Cron
 CRON_CLASSES = [
