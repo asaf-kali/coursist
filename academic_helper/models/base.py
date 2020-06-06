@@ -9,7 +9,7 @@ from django.db import models
 from django.forms import model_to_dict
 from django.utils.decorators import classproperty
 
-from academic_helper.utils.logger import log, wrap
+from academic_helper.utils.logger import wrap, log
 
 ReadableEnum = namedtuple("ReadableEnum", ["value", "name"])
 

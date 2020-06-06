@@ -139,14 +139,8 @@ function courses_autocomplete(search_val, csrf) {
         '</div>'
     );
 
-    $.ajax({
-        method: 'POST',
-        url: './',
-        data: {
-            'csrfmiddlewaretoken': csrf,
-            'search_val': search_val
-        },
-        success: function (response) {
+    ajax({'search_val': search_val},
+        (response) => {
             if (response.status !== 'success') {
                 container.html('Error, try again.');
                 return;
@@ -173,11 +167,9 @@ function courses_autocomplete(search_val, csrf) {
                     });
                 }
             });
-        },
-        error: function () {
+        }, () => {
             container.html('Error, try again.');
-        }
-    });
+        });
 }
 
 /**

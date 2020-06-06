@@ -15,7 +15,7 @@ def fetch_courses():
 
 def create_blocks():
     log.info("Creating blocks")
-    intro = Course.objects.get(course_number=67829)
+    intro = Course.objects.get(course_number=67101)
     crypto = Course.objects.get(course_number=67392)
     impr = Course.objects.get(course_number=67829)
     must_cs_block = StudyBlock.objects.get_or_create(name="Must CS", min_credits=32)[0]
