@@ -15,9 +15,9 @@ class CourseComment(CommentAbstractModel):
         """
         :return: The user name to be shown in the comments list - either user name or 'Anonymous'
         """
-        return self.user_name if not self.is_anonymous else 'Anonymous'
+        return self.user_name if not self.is_anonymous else "Anonymous"
 
     @property
     def semester_rating(self):
         course = Course.objects.get(pk=self.object_pk)
-        return UserRating.objects.get(user=self.user, id=course.semester_rating)
+        return UserRating.objects.get(user=self.user, rating=course.semester_rating)
