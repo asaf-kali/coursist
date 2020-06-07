@@ -5,10 +5,9 @@ from django.core.management import BaseCommand
 
 from academic_helper.logic.shnaton_parser import ShnatonParser
 from academic_helper.models import Course
-from academic_helper.utils.logger import log, wrap
+from academic_helper.utils.logger import wrap, log
 
 DEFAULT_SRC_FILE = "courses_2020.json"
-
 DEFAULT_LIMIT = 50
 SHUFFLE = True
 

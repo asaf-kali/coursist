@@ -9,14 +9,25 @@ from academic_helper.models.base import Base
 from academic_helper.models.extended_rating import RatingDummy
 
 
+# class University(Base):
+#     name: str = models.CharField(max_length=50)
+#
+#     class Meta:
+#         verbose_name_plural = "universities"
+#
+#     def str(self):
+#         return self.name
+
+
 class Faculty(Base):
+    name: str = models.CharField(max_length=50)
+    # university: University = models.ForeignKey(University, on_delete=models.CASCADE)
+
     class Meta:
         verbose_name_plural = "faculties"
 
-    name: str = models.CharField(max_length=50)
-
     def __str__(self):
-        return f"{self.name}"
+        return self.name
 
 
 class School(Base):
@@ -30,7 +41,7 @@ class School(Base):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.name} ({self.faculty})"
+        return f"{self.name}, {self.faculty}"
 
 
 class Course(Base):

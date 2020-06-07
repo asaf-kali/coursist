@@ -13,7 +13,6 @@ def healthy(request):
 
 urlpatterns = [
     path("", index, name="index"),
-    path("health/", healthy, name="health-check"),
     path("ajax/", AjaxView.as_view(), name="ajax"),
     path("courses/", CoursesView.as_view(), name="courses"),
     path("courses/<int:course_number>/", CourseDetailsView.as_view(), name="course-details"),
