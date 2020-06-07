@@ -211,13 +211,9 @@ DBBACKUP_STORAGE_OPTIONS = {"location": "./backups"}
 
 # Star rating
 STAR_RATINGS_STAR_HEIGHT = 16
-# STAR_RATINGS_ANONYMOUS = False
-# STAR_RATINGS_RATING_MODEL = "academic_helper.ExtendedRating"
 
 # Reviews
 COMMENTS_APP = "course_comments"
-# REVIEW_PUBLISH_UNMODERATED = True
-# REVIEW_SHOW_RATING_TEXT = False
 
 # Cron
 CRON_CLASSES = [
