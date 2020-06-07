@@ -11,25 +11,31 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+from logging import NOTSET, WARNING, CRITICAL
+from sys import stdout, stderr
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+import requests
+
 from academic_helper.utils.environment import is_prod
+from academic_helper.utils.sentry import init_sentry
 
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "coursist.xyz"]
+
+if is_prod():
+    try:
+        internal_ip = requests.get("http://instance-data/latest/meta-data/local-ipv4").text
+    except requests.exceptions.ConnectionError:
+        pass
+    else:
+        ALLOWED_HOSTS.append(internal_ip)
+    del requests
+
+DEBUG = not is_prod()
+
+SECRET_KEY = os.getenv("SECRET_KEY", "6*cne7$@#zo,;gl7#$%^*HSfda,msp2-034u5jt'vf=jvhj")
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
-
-SECRET_KEY = os.getenv("SECRET_KEY", "6*cne7zoh!2qr*teq_8#(y0d8o-15504&+5y3tvp+c@1f=jvhj")
-DEBUG = False if is_prod() else True
-
-HEALTH_CHECK_SRC = os.getenv("HEALTH_CHECK_SRC", None)
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "coursist.xyz"]
-if HEALTH_CHECK_SRC:
-    ALLOWED_HOSTS += [HEALTH_CHECK_SRC]
-
 # Application definition
-
 INSTALLED_APPS = [
     # "reviews",
     # comments
@@ -43,6 +49,8 @@ INSTALLED_APPS = [
     "dbbackup",
     # Our app
     "academic_helper",
+    # Health check
+    "health_check",
     # "schedule",
     # Django base
     "django.contrib.admin",
@@ -100,24 +108,79 @@ WSGI_APPLICATION = "Coursist.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": os.path.join(BASE_DIR, "db.sqlite3"),}}
+DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": os.path.join(BASE_DIR, "db.sqlite3"), }}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",},
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",},
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",},
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",},
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator", },
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator", },
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator", },
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator", },
 ]
+
+LOGGING_DIR = os.path.join(BASE_DIR, "logs")
+os.makedirs(LOGGING_DIR, exist_ok=True)
+
+# Logging
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": True,
+    "formatters": {
+        "verbose": {"format": "[%(asctime)s] [%(module)s/%(lineno)s] [%(threadName)s] - [%(levelname)s]: %(message)s"},
+        "simple": {"format": "[%(asctime)s] [%(levelname)-.4s]: %(message)s", "datefmt": "%Y-%m-%d %H:%M:%S"},
+    },
+    "filters": {
+        # "require_debug_true": {"()": "django.utils.log.RequireDebugTrue",},
+        "std_filter": {"()": "academic_helper.utils.logger.LevelFilter", "low": NOTSET, "high": WARNING},
+        "err_filter": {"()": "academic_helper.utils.logger.LevelFilter", "low": WARNING, "high": CRITICAL},
+    },
+    "handlers": {
+        "console_out": {
+            "class": "logging.StreamHandler",
+            "filters": ["std_filter"],
+            "formatter": "simple",
+            "stream": stdout,
+        },
+        "console_err": {
+            "class": "logging.StreamHandler",
+            "filters": ["err_filter"],
+            "formatter": "simple",
+            "stream": stderr,
+        },
+        "debug_handler": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "filename": os.path.join(LOGGING_DIR, "django.log"),
+            "formatter": "verbose",
+        },
+        "requests_handler": {
+            "class": "logging.handlers.TimedRotatingFileHandler",
+            "filename": os.path.join(LOGGING_DIR, "requests.log"),
+            "when": "D",
+            "formatter": "verbose",
+        },
+        "site_handler": {
+            "class": "logging.handlers.TimedRotatingFileHandler",
+            "filename": os.path.join(LOGGING_DIR, "coursist.log"),
+            "when": "D",
+            "formatter": "verbose",
+        },
+    },
+    "loggers": {
+        "coursist": {"handlers": ["console_out", "console_err", "site_handler"], "level": "DEBUG", "propagate": True},
+        "django": {"handlers": ["console_out", "debug_handler"], "level": "INFO", "propagate": True, },
+        "django.request": {"handlers": ["requests_handler"], "level": "INFO", "propagate": True},
+    },
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
 AUTH_USER_MODEL = "academic_helper.CoursistUser"
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "en-US"
 
 TIME_ZONE = "Asia/Jerusalem"
 

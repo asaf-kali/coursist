@@ -5,6 +5,7 @@ from django.urls import reverse
 from django.views.generic import DetailView, ListView
 
 from academic_helper.models import Course
+from academic_helper.utils.logger import log
 from academic_helper.views.basic import ExtendedViewMixin
 
 
@@ -48,6 +49,7 @@ class CoursesView(ExtendedViewMixin, ListView):
         if not request.is_ajax():
             raise NotImplementedError()
         text = request.POST["free_text"]
+        log.info(f"Searching for {text}...")
         queryset = Course.find_by(text)
         result = [c.as_dict for c in queryset]
         for course in result:
