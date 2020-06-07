@@ -3,9 +3,6 @@
 {% get_comment_list for course as comment_list %}
 
 {% for course_comment in comment_list %}
-    Semester rating: {{ course_comment.semster_rating }}
-    <p>Posted by: {{ course_comment.get_user_name_to_show }} </p>
-    <p>on {{ course_comment.submit_date }}</p>
-    <p>Comment: {{ course_comment.comment }}</p>
-    {{ course_comment.semester_rating }}
+    {% include 'courses/single_comment.html' with course_comment=course_comment %}
+
 {% endfor %}

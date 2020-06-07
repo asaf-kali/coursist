@@ -17,7 +17,25 @@ class CourseComment(CommentAbstractModel):
         """
         return self.user_name if not self.is_anonymous else "Anonymous"
 
+    def get_rating_score(self, rating_dummy):
+        semester_rating = UserRating.objects.filter(user=self.user, rating__object_id=rating_dummy.id)
+        if len(semester_rating) == 1:
+            return semester_rating[0].score
+        if len(semester_rating) == 0:
+            return -1
+        assert 0, 'There should be no more than 1 on these.'
+
     @property
     def semester_rating(self):
         course = Course.objects.get(pk=self.object_pk)
-        return UserRating.objects.get(user=self.user, rating=course.semester_rating)
+        return self.get_rating_score(course.semester_rating)
+
+    @property
+    def finals_rating(self):
+        course = Course.objects.get(pk=self.object_pk)
+        return self.get_rating_score(course.finals_rating)
+
+    @property
+    def interesting_rating(self):
+        course = Course.objects.get(pk=self.object_pk)
+        return self.get_rating_score(course.interesting_rating)
