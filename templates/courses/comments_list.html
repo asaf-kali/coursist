@@ -1,0 +1,8 @@
+{% load comments %}
+
+{% get_comment_list for course as comment_list %}
+
+{% for course_comment in comment_list %}
+    {% include 'courses/single_comment.html' with course_comment=course_comment %}
+
+{% endfor %}
