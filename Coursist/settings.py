@@ -37,8 +37,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Application definition
 INSTALLED_APPS = [
+    # comments
+    "django_comments",
+    "course_comments",
     # Rating
-    "reviews",
     "star_ratings",
     # Cron
     "django_cron",
@@ -208,12 +210,9 @@ DBBACKUP_STORAGE_OPTIONS = {"location": "./backups"}
 
 # Star rating
 STAR_RATINGS_STAR_HEIGHT = 16
-# STAR_RATINGS_ANONYMOUS = False
-# STAR_RATINGS_RATING_MODEL = "academic_helper.ExtendedRating"
 
 # Reviews
-REVIEW_PUBLISH_UNMODERATED = True
-REVIEW_SHOW_RATING_TEXT = False
+COMMENTS_APP = "course_comments"
 
 # Cron
 CRON_CLASSES = [
