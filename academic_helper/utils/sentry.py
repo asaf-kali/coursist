@@ -10,6 +10,7 @@ DSN = os.getenv("SENTRY_DSN", None)
 
 def init_sentry():
     from academic_helper.utils.logger import log
+
     if not DSN:
         log.info("Sentry DSN env var not found")
         return

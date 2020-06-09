@@ -1,4 +1,3 @@
-
 def get_model():
     from course_comments.models import CourseComment
 

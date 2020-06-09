@@ -1,7 +1,7 @@
 from django.db import models
 from django_comments.abstracts import CommentAbstractModel
-
 from star_ratings.models import UserRating
+
 from academic_helper.models import Course
 
 
@@ -23,7 +23,7 @@ class CourseComment(CommentAbstractModel):
             return semester_rating[0].score
         if len(semester_rating) == 0:
             return -1
-        assert 0, 'There should be no more than 1 on these.'
+        assert False, "There should be no more than 1 on these."
 
     @property
     def semester_rating(self):
