@@ -31,7 +31,6 @@ prod:
 	python manage.py migrate
 
 com:
-	make black
 	git add .
 	git status
 	git commit -m "Auto commit"

@@ -16,7 +16,7 @@ from sys import stdout, stderr
 
 import requests
 
-from academic_helper.utils.environment import is_prod
+from academic_helper.utils.environment import is_prod, Environment, ENV
 from academic_helper.utils.sentry import init_sentry
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", "coursist.xyz"]
@@ -50,7 +50,8 @@ INSTALLED_APPS = [
     "academic_helper",
     # Health check
     "health_check",
-    # "schedule",
+    # Storage
+    "django_s3_storage",
     # Django base
     "django.contrib.admin",
     "django.contrib.auth",
@@ -107,16 +108,16 @@ WSGI_APPLICATION = "Coursist.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": os.path.join(BASE_DIR, "db.sqlite3"),}}
+DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": os.path.join(BASE_DIR, "db.sqlite3"), }}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",},
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",},
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",},
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",},
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator", },
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator", },
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator", },
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator", },
 ]
 
 LOGGING_DIR = os.path.join(BASE_DIR, "logs")
@@ -169,7 +170,7 @@ LOGGING = {
     },
     "loggers": {
         "coursist": {"handlers": ["console_out", "console_err", "site_handler"], "level": "DEBUG", "propagate": True},
-        "django": {"handlers": ["console_out", "console_err", "debug_handler"], "level": "INFO", "propagate": True,},
+        "django": {"handlers": ["console_out", "console_err", "debug_handler"], "level": "INFO", "propagate": True, },
         "django.request": {"handlers": ["requests_handler"], "level": "INFO", "propagate": True},
     },
 }
@@ -190,13 +191,26 @@ USE_L10N = True
 USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.0/howto/static-files/
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
-STATIC_URL = "/static/"
-STATIC_ROOT = os.path.join(BASE_DIR, "..", "www", "static")
+if ENV == Environment.prod:
+    # AWS settings
+    AWS_REGION = os.getenv("AWS_REGION", "eu-central-1")
+    DEFAULT_FILE_STORAGE = "django_s3_storage.storage.S3Storage"
+    AWS_S3_BUCKET_NAME = os.getenv("AWS_S3_BUCKET_NAME", "coursist")
+    AWS_S3_CUSTOM_DOMAIN = f"{AWS_S3_BUCKET_NAME}.s3.amazonaws.com"
+    # Static settings
+    STATICFILES_STORAGE = "django_s3_storage.storage.StaticS3Storage"
+    AWS_S3_BUCKET_NAME_STATIC = AWS_S3_BUCKET_NAME
+    AWS_S3_KEY_PREFIX_STATIC = "static"
+    STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_S3_KEY_PREFIX_STATIC}/"
+else:
+    STATIC_URL = "/static/"
+    MEDIA_URL = "/media/"
+    STATIC_ROOT = os.path.join(BASE_DIR, "files/static")
+    MEDIA_ROOT = os.path.join(BASE_DIR, "files/media")
 
 # Auth
 AUTH_ACTIVATION = False
