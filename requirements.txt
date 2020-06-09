@@ -1,5 +1,5 @@
-requests
-beautifulsoup4
+requests==2.23.0
+beautifulsoup4==4.9.1
 asgiref==3.2.7
 Django==3.0.7
 pytz==2020.1
@@ -11,3 +11,4 @@ django_cron==0.5.1
 django-health-check==3.12.1
 sentry-sdk==0.14.4
 django-contrib-comments==1.9.2
+django-s3-storage==0.13.2
