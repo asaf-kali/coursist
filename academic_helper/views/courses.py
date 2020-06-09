@@ -50,9 +50,9 @@ class CoursesView(ExtendedViewMixin, ListView):
         if not request.is_ajax():
             raise NotImplementedError()
         text = request.POST["free_text"]
-        school = request.POST["school"]
+        department = request.POST["department"]
         faculty = request.POST["faculty"]
-        queryset = courses.search(text, school, faculty)[:40]
+        queryset = courses.search(text, department, faculty)[:40]
         result = [c.as_dict for c in queryset]
         result.sort(key=lambda c: c["score"], reverse=True)
         for course in result:

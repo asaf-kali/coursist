@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup
 from django.db.transaction import atomic
 
 from academic_helper.logic.errors import ShnatonParserError, FetchRawDataError, HtmlFormatError
-from academic_helper.models import Course, School, Faculty
+from academic_helper.models import Course, Faculty, Department
 from academic_helper.models.course_occurrence import (
     CourseOccurrence,
     Semester,
@@ -259,13 +259,13 @@ def parse_general_course_info(source, year, course):
 def parse_faculty(source, course):
     faculty_container = source.find(class_="courseTitle")
     if len(faculty_container) == 0:
-        raise HtmlFormatError("Faculty / school not found")
+        raise HtmlFormatError("Faculty / department not found")
     # maxsplit = 1 because some faculties have more than one colon
     data = faculty_container.string.split(":", maxsplit=1)
     if len(data) != 2:
-        raise HtmlFormatError(f"Faculty / school bad formatting: {data}")
+        raise HtmlFormatError(f"Faculty / department bad formatting: {data}")
     course["faculty"] = data[0]
-    course["school"] = data[1]
+    course["department"] = data[1]
 
 
 def create_course_class(group: ClassGroup, i: int, raw_group: dict, raw_semester: str, teachers: List[str]):
@@ -385,9 +385,9 @@ class ShnatonParser:
             raise FetchRawDataError("No raw data could be parsed")
 
         raw_faculty = raw_data["faculty"].strip(" :\t")
-        raw_school = raw_data["school"].strip(" :\t")
+        raw_department = raw_data["department"].strip(" :\t")
         faculty = Faculty.objects.get_or_create(name=raw_faculty)[0]
-        school = School.objects.get_or_create(name=raw_school, faculty=faculty)[0]
+        department = Department.objects.get_or_create(name=raw_department, faculty=faculty)[0]
 
         raw_course_number = int(raw_data["id"])
         if raw_course_number != course_number:
@@ -397,7 +397,9 @@ class ShnatonParser:
         raw_course_name = raw_data["name"].replace("_", "")
         # if "name_en" in raw_data and len(raw_data["name_en"].replace(" ", "")) > 5:
         #     course_name = raw_data["name_en"]
-        course = Course.objects.get_or_create(name=raw_course_name, course_number=course_number, school=school)[0]
+        course = Course.objects.get_or_create(name=raw_course_name, course_number=course_number, department=department)[
+            0
+        ]
 
         course_semesters = parse_course_semester(raw_data["semester"])
         occurrence_credits = parse_course_credits(year, raw_data)

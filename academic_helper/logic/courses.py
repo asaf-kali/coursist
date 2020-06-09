@@ -13,12 +13,12 @@ def search_teacher(name: str):
     return Course.objects.filter(course_number__in=course_numbers)
 
 
-def search(text: str, school: str = "", faculty: str = ""):
-    log.info(f"Searching for {wrap(text)}, school {wrap(school)}, faculty {wrap(faculty)}")
+def search(text: str, department: str = "", faculty: str = ""):
+    log.info(f"Searching for {wrap(text)}, department {wrap(department)}, faculty {wrap(faculty)}")
     courses = Course.objects.filter(
         (Q(name__contains=text) | Q(course_number__icontains=text))
-        & Q(school__name__contains=school)
-        & Q(school__faculty__name__contains=faculty)
+        & Q(department__name__contains=department)
+        & Q(department__faculty__name__contains=faculty)
     )
     if len(text) >= 3:
         courses |= search_teacher(text)

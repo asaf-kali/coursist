@@ -21,7 +21,7 @@ class Faculty(Base):
         return self.name
 
 
-class School(Base):
+class Department(Base):
     name: str = models.CharField(max_length=50)
     faculty = models.ForeignKey(Faculty, on_delete=models.CASCADE)
 
@@ -38,15 +38,15 @@ class School(Base):
 class Course(Base):
     course_number: int = models.IntegerField()
     name: str = models.CharField(max_length=100)
-    school = models.ForeignKey(School, on_delete=models.SET_NULL, null=True, blank=True)
+    department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True, blank=True)
 
     class Meta:
         ordering = ["course_number"]
 
     def save(self, *args, **kwargs):
         self.name = self.name.title()
-        if isinstance(self.school, str):
-            self.school = School.objects.get_or_create(name=self.school)[0]
+        if isinstance(self.department, str):
+            self.department = Department.objects.get_or_create(name=self.department)[0]
         super().save(*args, **kwargs)
 
     def __str__(self) -> str:

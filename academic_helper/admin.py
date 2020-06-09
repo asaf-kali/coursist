@@ -1,9 +1,9 @@
 from django.contrib import admin
 
 from academic_helper.models import (
-    StudyPlan,
+    DegreeProgram,
     StudyBlock,
-    CompletedCourse,
+    UserCourseChoice,
     ClassSchedule,
     Course,
     Faculty,
@@ -15,7 +15,7 @@ from academic_helper.models import (
     ClassGroup,
     CoursistUser,
     RatingDummy,
-    School,
+    Department,
 )
 
 
@@ -33,11 +33,11 @@ class FacultyAdmin(admin.ModelAdmin):
 admin.site.register(Faculty, FacultyAdmin)
 
 
-class SchoolAdmin(admin.ModelAdmin):
+class DepartmentAdmin(admin.ModelAdmin):
     search_fields = ["pk", "name", "faculty__name"]
 
 
-admin.site.register(School, SchoolAdmin)
+admin.site.register(Department, DepartmentAdmin)
 
 
 class CourseAdmin(admin.ModelAdmin):
@@ -107,14 +107,14 @@ class CompletedCourseAdmin(admin.ModelAdmin):
     search_fields = ["course__name", "block__name", "user__username"]
 
 
-admin.site.register(CompletedCourse, CompletedCourseAdmin)
+admin.site.register(UserCourseChoice, CompletedCourseAdmin)
 
 
-class StudyPlanAdmin(admin.ModelAdmin):
+class DegreeProgramAdmin(admin.ModelAdmin):
     search_fields = ["name"]
 
 
-admin.site.register(StudyPlan, StudyPlanAdmin)
+admin.site.register(DegreeProgram, DegreeProgramAdmin)
 
 
 class RatingDummyAdmin(admin.ModelAdmin):
