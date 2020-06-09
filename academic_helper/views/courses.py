@@ -13,6 +13,7 @@ class CourseDetailsView(DetailView, ExtendedViewMixin):
     model = Course
     template_name = "courses/course-details.html"
 
+
     @property
     def title(self) -> str:
         return f"Course {self.object.course_number}"
