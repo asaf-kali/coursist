@@ -1,6 +1,8 @@
 import logging
 from logging import Filter
 
+from django.conf import settings
+
 
 class LevelFilter(Filter):
     """
@@ -20,6 +22,11 @@ class LevelFilter(Filter):
 
 def wrap(obj) -> str:
     return f"[{obj}]"
+
+
+def reconfigure_logging():
+    log_configurator = logging.config.DictConfigurator(settings.LOGGING)
+    log_configurator.configure()
 
 
 log = logging.getLogger("coursist")

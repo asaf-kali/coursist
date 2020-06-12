@@ -3,10 +3,10 @@ Course + Assist, get it?
 
 ## Description
 This project is intended for university students all around the world.<br>
-The main features that this project contains are:
+The main features that this project supplies are:
 1. Social course review system.
-1. Course program planning for the entire degree.
 1. Semestrial courses schedule building tool.
+1. Course program planning for the entire degree.
 
 ## Installation
 *Important: You will need `python 3.7+` to run this project.*

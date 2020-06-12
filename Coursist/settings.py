@@ -11,15 +11,18 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-from logging import NOTSET, WARNING, CRITICAL
+from logging import NOTSET, WARNING, CRITICAL, INFO
 from sys import stdout, stderr
 
 import requests
+from boto3 import Session
 
 from academic_helper.utils.environment import is_prod, Environment, ENV
 from academic_helper.utils.sentry import init_sentry
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", "coursist.xyz"]
+
+AWS_REGION = os.getenv("AWS_REGION", "eu-central-1")
 
 if is_prod():
     try:
@@ -108,16 +111,16 @@ WSGI_APPLICATION = "Coursist.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": os.path.join(BASE_DIR, "db.sqlite3"),}}
+DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": os.path.join(BASE_DIR, "db.sqlite3"), }}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",},
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",},
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",},
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",},
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator", },
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator", },
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator", },
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator", },
 ]
 
 LOGGING_DIR = os.path.join(BASE_DIR, "logs")
@@ -128,12 +131,15 @@ LOGGING = {
     "version": 1,
     "disable_existing_loggers": True,
     "formatters": {
-        "verbose": {"format": "[%(asctime)s] [%(module)s/%(lineno)s] [%(threadName)s] - [%(levelname)s]: %(message)s"},
+        "verbose": {
+            "format": "[%(asctime)s] [%(levelname)-.4s]: %(message)s @@@ [%(threadName)s] [%(filename)s:%(lineno)s]"
+        },
         "simple": {"format": "[%(asctime)s] [%(levelname)-.4s]: %(message)s", "datefmt": "%Y-%m-%d %H:%M:%S"},
+        "aws": {"format": "[%(levelname)-.4s]: %(message)s @@@ [%(threadName)s] [%(pathname)s:%(lineno)s]"},
     },
     "filters": {
         # "require_debug_true": {"()": "django.utils.log.RequireDebugTrue",},
-        "std_filter": {"()": "academic_helper.utils.logger.LevelFilter", "low": NOTSET, "high": WARNING},
+        "std_filter": {"()": "academic_helper.utils.logger.LevelFilter", "low": INFO, "high": WARNING},
         "err_filter": {"()": "academic_helper.utils.logger.LevelFilter", "low": WARNING, "high": CRITICAL},
     },
     "handlers": {
@@ -149,31 +155,57 @@ LOGGING = {
             "formatter": "simple",
             "stream": stderr,
         },
-        "debug_handler": {
-            "level": "DEBUG",
-            "class": "logging.FileHandler",
-            "filename": os.path.join(LOGGING_DIR, "django.log"),
-            "formatter": "verbose",
-        },
         "requests_handler": {
             "class": "logging.handlers.TimedRotatingFileHandler",
             "filename": os.path.join(LOGGING_DIR, "requests.log"),
-            "when": "D",
+            "when": "midnight",
+            "formatter": "verbose",
+        },
+        "django_handler": {
+            "class": "logging.handlers.TimedRotatingFileHandler",
+            "filename": os.path.join(LOGGING_DIR, "django.log"),
+            "when": "midnight",
             "formatter": "verbose",
         },
         "site_handler": {
             "class": "logging.handlers.TimedRotatingFileHandler",
             "filename": os.path.join(LOGGING_DIR, "coursist.log"),
-            "when": "D",
+            "when": "midnight",
             "formatter": "verbose",
         },
     },
     "loggers": {
         "coursist": {"handlers": ["console_out", "console_err", "site_handler"], "level": "DEBUG", "propagate": True},
-        "django": {"handlers": ["console_out", "console_err", "debug_handler"], "level": "INFO", "propagate": True,},
+        "django": {"handlers": ["console_out", "console_err", "debug_handler"], "level": "INFO", "propagate": True, },
         "django.request": {"handlers": ["requests_handler"], "level": "INFO", "propagate": True},
     },
 }
+
+if ENV != Environment.local:
+    session = Session(region_name=AWS_REGION)
+    LOGGING["handlers"].update(
+        {
+            "cloudwatch-site": {
+                "level": "DEBUG",
+                "class": "watchtower.CloudWatchLogHandler",
+                "boto3_session": session,
+                "log_group": f"coursist-{ENV.name}",
+                "stream_name": "site",
+                "formatter": "aws",
+            },
+            "cloudwatch-other": {
+                "level": "DEBUG",
+                "class": "watchtower.CloudWatchLogHandler",
+                "boto3_session": session,
+                "log_group": f"coursist-{ENV.name}",
+                "stream_name": "other",
+                "formatter": "aws",
+            },
+        }
+    )
+    LOGGING["loggers"]["coursist"]["handlers"].append("cloudwatch-site")
+    LOGGING["loggers"]["django"]["handlers"].append("cloudwatch-other")
+    LOGGING["loggers"]["django.request"]["handlers"].append("cloudwatch-other")
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
@@ -197,7 +229,6 @@ STATICFILES_DIRS = [
 
 if ENV == Environment.prod:
     # AWS settings
-    AWS_REGION = os.getenv("AWS_REGION", "eu-central-1")
     DEFAULT_FILE_STORAGE = "django_s3_storage.storage.S3Storage"
     AWS_S3_BUCKET_NAME = os.getenv("AWS_S3_BUCKET_NAME", "coursist")
     AWS_S3_CUSTOM_DOMAIN = f"{AWS_S3_BUCKET_NAME}.s3.amazonaws.com"

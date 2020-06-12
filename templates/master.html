@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>{{ title }}</title>
+    <title>{% if title %}{{ title }}{% else %}Coursist{% endif %}</title>
     <link rel="icon" href="{% static 'images/icon-64.png' %}">
     {#  Styles  #}
     <link rel="stylesheet" href="{% static 'styles/bootstrap.min.css' %}">
@@ -68,13 +68,13 @@
         </ul>
     </div>
 </nav>
-<section class="container-fluid px-0" >
+<section class="container-fluid px-0">
     <!--Grid row-->
     <div class="row mr-0">
         <!--Grid column-->
         <div class="col-md-12 px-0">
-            <div class="header-image card card-image" style="min-height: 60vh">
-                <div class="opaque-wrapper" style="min-height: 60vh">
+            <div class="header-image card">
+                <div class="opaque-wrapper" style="min-height: inherit;">
                     {% block content_header %} {% endblock %}
                 </div>
             </div>

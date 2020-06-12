@@ -1,129 +1,134 @@
 * {
-	box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 body {
-	margin-top: 60px;
+    margin-top: 60px;
+    overflow-y: scroll;
 }
 
 .bg-navbar {
-	background: #ffcc66;
-	overflow: hidden;
-	position: fixed;
-	top: 0;
-	width: 100%;
+    background: #ffcc66;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    width: 100%;
 }
 
 .header-image {
-	border-radius: 0px !important;
-	background-size: cover;
-	background-position-y: 50%;
-	background-image: url(../images/search-bg.jpeg);
+    border-radius: 0;
+    background-size: cover;
+    background-position-y: 50%;
+    background-image: url(../images/search-bg.jpeg);
+    min-height: 35vh;
+    max-height: 35vh;
+    height: 100%;
 }
+
 .opaque-wrapper {
-	background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 .search-param-wrapper {
-	background: rgba(255, 204, 102, 0.5);
-	border-radius: 10px;
-	padding: 15px;
+    background: rgba(255, 204, 102, 0.5);
+    border-radius: 10px;
+    padding: 15px;
 }
 
 .search-param-wrapper .title {
-	font-weight: bold;
-	font-size: 16px;
+    font-weight: bold;
+    font-size: 16px;
 }
 
 .search-param-wrapper .search-input {
-	width: 100%;
-	border: 1px solid #000;
-	padding: 5px 10px;
+    width: 100%;
+    border: 1px solid #000;
+    padding: 5px 10px;
 }
 
 .search-param-wrapper .search-input:focus {
-	outline: none;
+    outline: none;
 }
 
 .course-name-wrapper {
-	background: #ffffff;
-	border-radius: 10px;
-	text-align: right;
+    background: #ffffff;
+    border-radius: 10px;
+    text-align: right;
 }
 
 .course-name-input {
-	width: 94%;
-	border: 0;
-	border-radius: 10px;
-	padding: 5px 10px;
+    width: 94%;
+    border: 0;
+    border-radius: 10px;
+    padding: 5px 10px;
 }
 
 .search-btn {
-	width: 5%;
-	background: rgba(0,0,0,0);
-	border: 0;
-	cursor: pointer;
-	font-size: 22px;
-	padding: 0px;
+    width: 5%;
+    background: rgba(0, 0, 0, 0);
+    border: 0;
+    cursor: pointer;
+    font-size: 22px;
+    padding: 0;
 }
 
 .course-trailer {
-	padding: 5px;
+    padding: 5px;
 }
 
 .course-trailer .course-trailer-content {
-		border: 1px solid #000;
+    border: 1px solid #000;
 }
 
 .add-btn {
-	background: rgba(255, 255, 255, 0.5);
-	border: 0;
-	cursor: pointer;
-	font-size: 55px;
-	padding: 0px;
-	border-radius: 10px;
+    background: rgba(255, 255, 255, 0.5);
+    border: 0;
+    cursor: pointer;
+    font-size: 55px;
+    padding: 0;
+    border-radius: 10px;
 
 }
 
 .rating-wrapper {
-	border-radius: 50%;
-	border: 1px solid #000;
-	padding: 30px;
-	height: 250px;
-	width: 250px;
-	text-align: center;
+    border-radius: 50%;
+    border: 1px solid #000;
+    padding: 30px;
+    height: 250px;
+    width: 250px;
+    text-align: center;
 }
 
 .center-block {
-  display: inline-block;
-  margin-right: auto;
-  margin-left: auto;
+    display: inline-block;
+    margin-right: auto;
+    margin-left: auto;
 }
 
 .sign-out-btn {
-	border-radius: 10%;
-	background: rgba(0,0,0,0);
-	border: 1px solid #3d3d3d;
-	cursor: pointer;
-	padding: 5px;
-	text-align: center;
-	font-size: 10px;
+    border-radius: 10%;
+    background: rgba(0, 0, 0, 0);
+    border: 1px solid #3d3d3d;
+    cursor: pointer;
+    padding: 5px;
+    text-align: center;
+    font-size: 10px;
 }
 
 @media (min-width: 992px) {
-	.navbar {
-		height: 60px;
-	}
+    .navbar {
+        height: 60px;
+    }
 
-	.header-image {
-		min-height: 200px;
-	}
+    .header-image {
+        /*min-height: 200px;*/
+    }
 
-	.header-image.card {
-		border: 0;
-	}
+    .header-image.card {
+        border: 0;
+    }
 
-	.opaque-wrapper {
-		min-height: 200px;
-	}
+    .opaque-wrapper {
+        min-height: 200px;
+    }
 }

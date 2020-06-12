@@ -14,7 +14,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
+from django.views.generic import RedirectView
 
 urlpatterns = [
     path("", include("academic_helper.urls")),
@@ -22,4 +23,5 @@ urlpatterns = [
     path("health_check/", include("health_check.urls")),
     path("ratings/", include("star_ratings.urls", namespace="ratings")),
     path("comments/", include("django_comments.urls")),
+    re_path(r"^favicon\.ico$", RedirectView.as_view(url="/static/favicon.ico", permanent=True)),
 ]
