@@ -49,8 +49,13 @@ class CoursesView(ExtendedViewMixin, ListView):
         if not request.is_ajax():
             raise NotImplementedError()
         text = request.POST["free_text"]
+        school = request.POST["school"]
+        faculty = request.POST["faculty"]
         log.info(f"Searching for {text}...")
-        queryset = Course.find_by(text)
+        log.info(f"Searching for school {school}...")
+        log.info(f"Searching for faculty {faculty}...")
+        queryset = Course.find_by(text,school,faculty)
+
         result = [c.as_dict for c in queryset]
         for course in result:
             course["url"] = reverse("course-details", args=[course["course_number"]])

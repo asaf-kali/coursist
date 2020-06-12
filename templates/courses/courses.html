@@ -21,7 +21,9 @@
                 () => {
                     hide("courses-list");
                     let free_text = $("#course_id").val();
-                    return {"free_text": free_text};
+                    let school = $("#faculty").val();
+                    let faculty = $("#hug").val();
+                    return {"free_text": free_text, "school": school, "faculty":faculty};
                 },
                 (response) => {
                     const courses = response["courses"];
