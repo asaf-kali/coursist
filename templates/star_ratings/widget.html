@@ -1,9 +1,8 @@
 {% extends "star_ratings/widget_base.html" %}
 
 {% block rating_detail %}
-    <div style="margin-top: -10%;">
-        <span style="font-size: smaller; color: #888888;">({{ rating.count }} דירוגים) </span>
-    </div>
+    <br><br>
+    <span style="font-size: smaller; color: #888888;">({{ rating.count }} דירוגים) </span>
 {% endblock rating_detail %}
 
 {#{% if not user.is_authenticated and not anonymous_ratings and not read_only %}#}
