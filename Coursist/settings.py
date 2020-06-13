@@ -123,10 +123,11 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator", },
 ]
 
+# Logging
+
 LOGGING_DIR = os.path.join(BASE_DIR, "logs")
 os.makedirs(LOGGING_DIR, exist_ok=True)
 
-# Logging
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": True,
@@ -140,7 +141,7 @@ LOGGING = {
     "filters": {
         # "require_debug_true": {"()": "django.utils.log.RequireDebugTrue",},
         "std_filter": {"()": "academic_helper.utils.logger.LevelFilter", "low": INFO, "high": WARNING},
-        "err_filter": {"()": "academic_helper.utils.logger.LevelFilter", "low": WARNING, "high": CRITICAL},
+        "err_filter": {"()": "academic_helper.utils.logger.LevelFilter", "low": WARNING},
     },
     "handlers": {
         "console_out": {
