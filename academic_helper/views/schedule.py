@@ -1,8 +1,11 @@
+import json
+
 from django.db.models import Q
 from django.http import JsonResponse, HttpResponseBadRequest
 
 from academic_helper.logic.errors import UserNotLoggedInError, CourseNotFoundError
-from academic_helper.logic.schedule import set_user_schedule_group, get_user_choices, get_all_classes
+from academic_helper.logic.schedule import set_user_schedule_group, \
+    get_user_choices, get_all_classes, get_courses_by_groups
 from academic_helper.models.course import Course
 from academic_helper.views.basic import ExtendedViewMixin
 
@@ -42,6 +45,11 @@ class ScheduleView(ExtendedViewMixin):
             return JsonResponse({"status": "error", "message": "User not logged in"})
         return JsonResponse({"status": "success"})
 
+    def get_courses_by_groups(self, groups):
+        courses = get_courses_by_groups(groups)
+        return JsonResponse({"status": "success", "courses": courses},
+                            json_dumps_params={"ensure_ascii": False})
+
     def post(self, request, *args, **kwargs):
         if not request.is_ajax():
             return
@@ -54,5 +62,8 @@ class ScheduleView(ExtendedViewMixin):
         if "group_choice" in request.POST:
             choice = request.POST["group_choice"]
             return self.on_user_group_choice(choice)
+        if "groups":
+            groups = json.loads(request.POST["groups"])['groups']
+            return self.get_courses_by_groups(groups)
         else:
             return HttpResponseBadRequest()

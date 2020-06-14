@@ -452,6 +452,8 @@ $(document).ready(function () {
     $('#course_input').on("input", function () {
         courses_autocomplete(this.value);
     });
+
+    schedule.loadSavedCourses();
 });
 
 /**
@@ -512,12 +514,11 @@ function autocompleteErrorCb() {
  * Adds a course to the course list.
  */
 function addCourse(course) {
-    console.log(course);
     if (schedule.hasCourse(course)) {
         return;
     }
 
-    schedule.addCourse(course, addCourseSuccessCb, addCourseErrorCb);
+    schedule.addCourse(course, addCourseSuccessCb, addCourseErrorCb, false);
 }
 
 function addCourseSuccessCb(response) {
@@ -546,7 +547,7 @@ function addCourseSuccessCb(response) {
     });
 
     let groupsContainer = $('#course_groups_' + course_number);
-    displayCourseGroups(groupsContainer, course_number, groups);
+    displayCourseGroups(groupsContainer, course_number, groups, response.auto_loaded);
 }
 
 function addCourseErrorCb() {
@@ -556,7 +557,7 @@ function addCourseErrorCb() {
 /**
  * Displays the groups of the given course.
  */
-function displayCourseGroups(container, courseNumber, groups) {
+function displayCourseGroups(container, courseNumber, groups, autoLoaded) {
     let class_types = schedule.getClassTypes(courseNumber);
     for (let i = 0; i < class_types.length; i++) {
         let cur_class_type = class_types[i];
@@ -570,14 +571,29 @@ function displayCourseGroups(container, courseNumber, groups) {
         let passed_first = false;
         groups.forEach((group) => {
             if (group['class_type'] === cur_class_type) {
-                passed_first = displayGroup(group, cur_class_type, passed_first, courseNumber, group_list);
+                passed_first = displayGroup(group, cur_class_type, passed_first, courseNumber, group_list, autoLoaded);
             }
         });
     }
 }
 
-function displayGroup(group, cur_class_type, passed_first, courseNumber, group_list) {
-    let css_class = (passed_first === false) ? 'active' : '';
+function displayGroup(group, cur_class_type, passed_first, courseNumber, group_list, autoLoaded) {
+    let css_class = '';
+
+    if (autoLoaded) {
+        // check in cookie if its the selected group
+        if (schedule.cookieHasGroup(group['id'])) {
+            updateScheduleDisplay(courseNumber, group);
+            css_class = 'active';
+        }
+    } else {
+        // Display first of each class type in the schedule
+        if (passed_first === false) {
+            css_class = 'active';
+            schedule.cookieStoreGroup(group["id"]);
+            updateScheduleDisplay(courseNumber, group);
+        }
+    }
 
     let group_item = hb_templates['schedule-course-item-group-item']({
         'css_class': css_class,
@@ -594,16 +610,12 @@ function displayGroup(group, cur_class_type, passed_first, courseNumber, group_l
             $(this).siblings().removeClass('active');
             $(this).addClass('active');
             updateScheduleDisplay(courseNumber, group);
+            schedule.cookieStoreGroup(group["id"]);
             ajax({"group_choice": group["id"]}, () => {
                 console.log(`Successfully added group ${group["id"]} to schedule`);
             });
         }
     });
-
-    // Display first of each class type in the schedule
-    if (passed_first === false) {
-        updateScheduleDisplay(courseNumber, group);
-    }
 
     return true;
 }
@@ -673,6 +685,7 @@ function getGroupsToRemove(courseNumber, group) {
 
 function removeCourseGroups(groupsToRemove) {
     for (let i = 0; i < groupsToRemove.length; i++) {
+        schedule.cookieDeleteGroup(groupsToRemove[i]);
         $('[data-group=class_item_' + groupsToRemove[i] + ']').remove();
     }
 }

@@ -1,4 +1,6 @@
 class ScheduleLogic {
+    COOKIE_NAME = 'schedule';
+
     constructor() {
         this.courses = {};
     }
@@ -25,8 +27,9 @@ class ScheduleLogic {
      * @param course The course to add.
      * @param successCallback Callback to call on success.
      * @param errorCallback Callback to call on error.
+     * @param autoLoaded Whether this course was auto loaded, or manually loaded.
      */
-    addCourse(course, successCallback, errorCallback) {
+    addCourse(course, successCallback, errorCallback, autoLoaded) {
         ajax({'course_number': course['course_number']},
         (response) => {
             let groups = response.groups;
@@ -35,9 +38,77 @@ class ScheduleLogic {
                 'groups': groups
             };
             response['course'] = course;
+            response['auto_loaded'] = autoLoaded;
             successCallback(response);
         }, () => {
             errorCallback();
+        });
+    }
+
+    cookieStoreGroup(groupId) {
+        let storedGroups = {'groups': []};
+
+        if (!Cookies.get(this.COOKIE_NAME)) {
+            Cookies.set(this.COOKIE_NAME, JSON.stringify(storedGroups));
+            console.log('Created new cookie ' + this.COOKIE_NAME);
+        }
+
+        storedGroups = JSON.parse(Cookies.get(this.COOKIE_NAME));
+        if (storedGroups['groups'].includes(groupId)) {
+            console.log('Tried to add group ' + groupId + ' which is already stored.');
+            return;
+        }
+
+        storedGroups['groups'].push(groupId);
+        Cookies.set(this.COOKIE_NAME, JSON.stringify(storedGroups));
+        console.log('Added group ' + groupId + '. New value is: ' + JSON.stringify(storedGroups));
+    }
+
+    cookieDeleteGroup(groupId) {
+        if (!Cookies.get(this.COOKIE_NAME)) {
+            return;
+        }
+
+        let storedGroups = JSON.parse(Cookies.get(this.COOKIE_NAME));
+        if (storedGroups['groups'].includes(groupId)) {
+            let idx = storedGroups['groups'].indexOf(groupId);
+            storedGroups['groups'].splice(idx, 1);
+            Cookies.set(this.COOKIE_NAME, JSON.stringify(storedGroups));
+            console.log('Deleted ' + groupId + '. New value is: ' + storedGroups['groups']);
+        }
+    }
+
+    cookieHasGroup(groupId) {
+        if (!Cookies.get(this.COOKIE_NAME)) {
+            return;
+        }
+
+        let storedGroup = JSON.parse(Cookies.get(this.COOKIE_NAME));
+        return storedGroup['groups'].includes(groupId);
+    }
+
+    loadSavedCourses() {
+        if (!Cookies.get(this.COOKIE_NAME)) {
+            return;
+        }
+
+        const storedGroups = JSON.parse(Cookies.get(this.COOKIE_NAME));
+        if (storedGroups['groups'].length === 0) {
+            return;
+        }
+
+        ajax({'groups': JSON.stringify(storedGroups)},
+        (response) => {
+            let courses = response.courses;
+            if (courses.length === 0) {
+                return;
+            }
+
+            courses.forEach(function (course) {
+                schedule.addCourse(course, addCourseSuccessCb, addCourseErrorCb, true);
+            });
+        }, () => {
+            console.log('Error in loadSavedCourses.');
         });
     }
 
@@ -137,6 +208,9 @@ class ScheduleLogic {
         for (let i = 0; i < course_groups.length; i++) {
             let group_id = course_groups[i]['id'];
             $('[data-group=class_item_' + group_id + ']').remove();
+            if (this.cookieHasGroup(group_id)) {
+                this.cookieDeleteGroup(group_id);
+            }
         }
         delete this.courses[course_number];
     }

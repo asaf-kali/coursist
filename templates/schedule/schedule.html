@@ -4,6 +4,7 @@
 {% block head %}
     <link rel="stylesheet" href="{% static 'styles/schedule.css' %}">
 
+    <script src="{% static 'scripts/js.cookie.min.js' %}"></script>
     <script src="{% static 'scripts/handlebars.js' %}"></script>
     <script name="schedule-loader" type="text/x-handlebars-template">
         {% raw_include 'schedule/schedule-loader.html' %}
