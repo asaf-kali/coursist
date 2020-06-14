@@ -4,7 +4,10 @@
 {% block head %}
     <link rel="stylesheet" href="{% static 'styles/schedule.css' %}">
 
-    <script src={% static 'scripts/handlebars.js' %}></script>
+    <script src="{% static 'scripts/handlebars.js' %}"></script>
+    <script name="schedule-loader" type="text/x-handlebars-template">
+        {% raw_include 'schedule/schedule-loader.html' %}
+    </script>
     <script name="schedule-course-autocomplete-item" type="text/x-handlebars-template">
         {% raw_include 'schedule/schedule-course-autocomplete-item.html' %}
     </script>
@@ -43,8 +46,7 @@
                 <div id="search_form">
                     <div class="course_search_wrapper clear">
                         <input type="text" name="course_input" id="course_input"
-                               placeholder="הכניסו שם או מספר קורס"
-                               oninput="courses_autocomplete(this.value, '{{ csrf_token }}')"/>
+                               placeholder="הכניסו שם או מספר קורס" />
                     </div>
                     <div id="search_results">
                         <ul></ul>
@@ -76,7 +78,7 @@
         <div class="clear-fix"></div>
     </div>
     <script src="{% static 'scripts/schedule-util.js' %}" type="text/javascript"></script>
-    <script src="{% static 'scripts/schedule-helper.js' %}" type="text/javascript"></script>
+    <script src="{% static 'scripts/schedule-ui.js' %}" type="text/javascript"></script>
     <script src="{% static 'scripts/schedule-logic.js' %}" type="text/javascript"></script>
     <script>
         CSRF_TOKEN = '{{ csrf_token }}';
