@@ -4,5 +4,16 @@
 {% block head %}
 {% endblock %}
 
+{% block content_header %}
+
+{% endblock %}
+
 {% block content_body %}
+    <div style="text-align: center;">
+    {% if not user.is_annonymous %}
+        שלום {{ user.username }}, ברוך הבא!
+    {% endif %}
+    <br>
+    Shani - this is your place to shine!
+    </div>
 {% endblock %}
