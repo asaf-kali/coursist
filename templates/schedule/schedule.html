@@ -6,6 +6,9 @@
 
     <script src="{% static 'scripts/js.cookie.min.js' %}"></script>
     <script src="{% static 'scripts/handlebars.js' %}"></script>
+    <script name="schedule-legend" type="text/x-handlebars-template">
+        {% include 'schedule/schedule-legend.html' %}
+    </script>
     <script name="schedule-loader" type="text/x-handlebars-template">
         {% raw_include 'schedule/schedule-loader.html' %}
     </script>
@@ -44,8 +47,8 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-3">
-                <div id="search_form">
-                    <div class="course_search_wrapper clear">
+                <div id="search_form" class="mb-2">
+                    <div class="course_search_wrapper">
                         <input type="text" name="course_input" id="course_input"
                                placeholder="הכניסו שם או מספר קורס" />
                     </div>
@@ -64,6 +67,7 @@
                            href="#semester-1-wrapper">סמסטר א'</a>
                         <a class="nav-item nav-link" id="semester-2-tab" data-toggle="tab" href="#semester-2-wrapper">סמסטר
                             ב'</a>
+                        <a class="nav-item nav-link" id="schedule-legend" href="javascript:void(0);">מקרא</a>
                     </div>
                 </nav>
                 <div class="tab-content mt-3" id="nav-tabContent">

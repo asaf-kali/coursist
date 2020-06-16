@@ -1,5 +1,6 @@
 class ScheduleLogic {
     COOKIE_NAME = 'schedule';
+    COOKIE_EXPIRES = 365 * 2; // 2 years
 
     constructor() {
         this.courses = {};
@@ -54,7 +55,7 @@ class ScheduleLogic {
         let storedGroups = {'groups': []};
 
         if (!Cookies.get(this.COOKIE_NAME)) {
-            Cookies.set(this.COOKIE_NAME, JSON.stringify(storedGroups));
+            Cookies.set(this.COOKIE_NAME, JSON.stringify(storedGroups), { expires: this.COOKIE_EXPIRES });
             console.log('Created new cookie ' + this.COOKIE_NAME);
         }
 
@@ -65,7 +66,7 @@ class ScheduleLogic {
         }
 
         storedGroups['groups'].push(groupId);
-        Cookies.set(this.COOKIE_NAME, JSON.stringify(storedGroups));
+        Cookies.set(this.COOKIE_NAME, JSON.stringify(storedGroups), { expires: this.COOKIE_EXPIRES });
         console.log('Added group ' + groupId + '. New value is: ' + JSON.stringify(storedGroups));
     }
 
@@ -82,7 +83,7 @@ class ScheduleLogic {
         if (storedGroups['groups'].includes(groupId)) {
             let idx = storedGroups['groups'].indexOf(groupId);
             storedGroups['groups'].splice(idx, 1);
-            Cookies.set(this.COOKIE_NAME, JSON.stringify(storedGroups));
+            Cookies.set(this.COOKIE_NAME, JSON.stringify(storedGroups), { expires: this.COOKIE_EXPIRES });
             console.log('Deleted ' + groupId + '. New value is: ' + storedGroups['groups']);
         }
     }

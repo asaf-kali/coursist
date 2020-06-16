@@ -452,6 +452,14 @@ $(document).ready(function () {
     $('#course_input').on("input", function () {
         courses_autocomplete(this.value);
     });
+
+    const item_html = hb_templates['schedule-legend']();
+    $('#schedule-legend').popover({
+        'content': item_html,
+        'placement': 'bottom',
+        'html': true,
+        'trigger': 'hover',
+    });
 });
 
 /**

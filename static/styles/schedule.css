@@ -740,3 +740,46 @@
     background: #ebebeb;
     color: #000;
 }
+
+.legend {
+    margin: 0;
+    padding: 0;
+   list-style: none;
+}
+.legend li:before {
+    content: '\2587';
+    padding-left: 5px;
+    vertical-align: text-bottom;
+}
+
+.legend li.legend-event-1:before {
+    color: var(--cd-color-event-1);
+}
+
+.legend li.legend-event-2:before {
+    color: var(--cd-color-event-2);
+}
+
+.legend li.legend-event-3:before {
+    color: var(--cd-color-event-3);
+}
+
+.legend li.legend-event-4:before {
+    color: var(--cd-color-event-4);
+}
+
+.legend li.legend-event-5:before {
+    color: var(--cd-color-event-5);
+}
+
+.legend li.legend-event-6:before {
+    color: var(--cd-color-event-6);
+}
+
+.legend li.legend-event-7:before {
+    color: var(--cd-color-event-7);
+}
+
+.legend li.legend-event-default:before {
+    color: var(--cd-color-event-default);
+}
