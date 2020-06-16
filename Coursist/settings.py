@@ -190,7 +190,11 @@ LOGGING = {
     "root": {"handlers": ["console_out", "console_err", "root_file"], "level": "INFO"},
     "loggers": {
         "coursist": {"handlers": ["console_out", "console_err", "coursist_file"], "level": "DEBUG", "propagate": False},
-        "django": {"handlers": ["django_file", "debug_file"], "level": "DEBUG", "propagate": False},
+        "django": {
+            "handlers": ["console_out", "console_err", "django_file", "debug_file"],
+            "level": "DEBUG",
+            "propagate": False,
+        },
         "django.utils.autoreload": {"level": "INFO", "propagate": True},
         "qinspect": {"handlers": ["debug_file", "root_file"], "level": "DEBUG", "propagate": False},
     },
