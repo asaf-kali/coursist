@@ -3,6 +3,7 @@ class ScheduleLogic {
 
     constructor() {
         this.courses = {};
+        this.savedGroups = [];
     }
 
     /**
@@ -46,6 +47,10 @@ class ScheduleLogic {
     }
 
     cookieStoreGroup(groupId) {
+        if (LOGGED_IN) {
+            return;
+        }
+
         let storedGroups = {'groups': []};
 
         if (!Cookies.get(this.COOKIE_NAME)) {
@@ -65,6 +70,10 @@ class ScheduleLogic {
     }
 
     cookieDeleteGroup(groupId) {
+        if (LOGGED_IN) {
+            return;
+        }
+
         if (!Cookies.get(this.COOKIE_NAME)) {
             return;
         }
@@ -87,28 +96,22 @@ class ScheduleLogic {
         return storedGroup['groups'].includes(groupId);
     }
 
-    loadSavedCourses() {
-        if (!Cookies.get(this.COOKIE_NAME)) {
-            return;
-        }
+    choicesHasGroup(groupId) {
+        return this.savedGroups.includes(groupId);
+    }
 
-        const storedGroups = JSON.parse(Cookies.get(this.COOKIE_NAME));
-        if (storedGroups['groups'].length === 0) {
-            return;
-        }
+    userStoreGroup(groupId) {
+        ajax({"group_choice": groupId}, () => {
+            console.log(`Successfully added group ${groupId} to schedule`);
+        });
+    }
 
-        ajax({'groups': JSON.stringify(storedGroups)},
-        (response) => {
-            let courses = response.courses;
-            if (courses.length === 0) {
-                return;
-            }
+    loadSavedCourses(choices) {
+        const parsed_choices = JSON.parse(choices);
+        this.savedGroups = parsed_choices["group_ids"];
 
-            courses.forEach(function (course) {
-                schedule.addCourse(course, addCourseSuccessCb, addCourseErrorCb, true);
-            });
-        }, () => {
-            console.log('Error in loadSavedCourses.');
+        parsed_choices["courses"].forEach(function (course) {
+            schedule.addCourse(course, addCourseSuccessCb, addCourseErrorCb, true);
         });
     }
 
@@ -205,13 +208,19 @@ class ScheduleLogic {
 
     removeCourse(course_number) {
         let course_groups = this.courses[course_number]['groups'];
+        let group_ids = {"group_ids": []};
         for (let i = 0; i < course_groups.length; i++) {
             let group_id = course_groups[i]['id'];
+            group_ids["group_ids"].push(group_id);
             $('[data-group=class_item_' + group_id + ']').remove();
             if (this.cookieHasGroup(group_id)) {
                 this.cookieDeleteGroup(group_id);
             }
         }
+
+        ajax({"groups_to_del": JSON.stringify(group_ids)}, () => {
+            console.log(`Successfully deleted group ${group_ids["group_ids"]} from schedule`);
+        });
         delete this.courses[course_number];
     }
 }

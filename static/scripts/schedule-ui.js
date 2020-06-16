@@ -452,8 +452,6 @@ $(document).ready(function () {
     $('#course_input').on("input", function () {
         courses_autocomplete(this.value);
     });
-
-    schedule.loadSavedCourses();
 });
 
 /**
@@ -581,8 +579,8 @@ function displayGroup(group, cur_class_type, passed_first, courseNumber, group_l
     let css_class = '';
 
     if (autoLoaded) {
-        // check in cookie if its the selected group
-        if (schedule.cookieHasGroup(group['id'])) {
+        // check in saved groups if its a selected group
+        if (schedule.choicesHasGroup(group['id'])) {
             updateScheduleDisplay(courseNumber, group);
             css_class = 'active';
         }
@@ -591,6 +589,7 @@ function displayGroup(group, cur_class_type, passed_first, courseNumber, group_l
         if (passed_first === false) {
             css_class = 'active';
             schedule.cookieStoreGroup(group["id"]);
+            schedule.userStoreGroup(group["id"]);
             updateScheduleDisplay(courseNumber, group);
         }
     }
@@ -611,9 +610,7 @@ function displayGroup(group, cur_class_type, passed_first, courseNumber, group_l
             $(this).addClass('active');
             updateScheduleDisplay(courseNumber, group);
             schedule.cookieStoreGroup(group["id"]);
-            ajax({"group_choice": group["id"]}, () => {
-                console.log(`Successfully added group ${group["id"]} to schedule`);
-            });
+            schedule.userStoreGroup(group["id"]);
         }
     });
 
@@ -721,8 +718,3 @@ $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
     const schedule_idx = $(target).data('schedule');
     scheduleTemplateArray[schedule_idx].refreshSchedule();
 });
-
-function initWithChoices(choices) {
-    // TODO: Take it from here
-    console.log(choices);
-}
