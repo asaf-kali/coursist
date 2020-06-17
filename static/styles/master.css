@@ -20,7 +20,8 @@ body {
     background-size: cover;
     background-position-y: 50%;
     background-image: url(../images/search-bg.jpeg);
-
+    min-height: 320px;
+    max-height: 320px;
     height: 100%;
 }
 

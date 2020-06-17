@@ -1,4 +1,4 @@
-cd "$HOME"/coursist/ || exit 1
+cd "$HOME"/ || exit 1
 source env/bin/activate
 
 echo "Killing server..."
