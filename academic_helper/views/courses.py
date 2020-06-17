@@ -52,7 +52,7 @@ class CoursesView(ExtendedViewMixin, ListView):
         school = request.POST["school"]
         faculty = request.POST["faculty"]
         log.info(f"Searching for {text}, school {school}, faculty {faculty}...")
-        queryset = Course.find_by(text, school, faculty)
+        queryset = Course.find_by(text, school, faculty)[:25]
         result = [c.as_dict for c in queryset]
         for course in result:
             course["url"] = reverse("course-details", args=[course["course_number"]])
