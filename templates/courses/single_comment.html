@@ -1,8 +1,21 @@
 {% load comments %}
 
-<p style="border:3px; border-style:solid; border-color:#FF0000; padding: 1em;">
-    Posted by: {{ course_comment.get_user_name_to_show }}
-    on {{ course_comment.submit_date }}
-    Comment: {{ course_comment.comment }}
-    semester rating: {{ course_comment.semester_rating }}, finals rating: {{ course_comment.finals_rating }}, interesting rating: {{ course_comment.interesting_rating }}
-</p>
+
+<div class="card" style="margin-bottom: 5px">
+    <div class="card-body">
+        <h5 class="card-title"> {{ course_comment.get_user_name_to_show }}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">on {{ course_comment.submit_date }}</h6>
+        <p class="card-text">{{ course_comment.comment }}</p>
+        <hr>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 text-center"> semester rating:<br>
+                    {{ course_comment.semester_rating }} </div>
+                <div class="col-md-4 text-center">finals rating:<br>
+                    {{ course_comment.finals_rating }}  </div>
+                <div class="col-md-4 text-center"> interesting rating:<br>
+                    {{ course_comment.interesting_rating }} </div>
+            </div>
+        </div>
+    </div>
+</div>
