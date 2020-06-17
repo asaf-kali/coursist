@@ -2,8 +2,10 @@
 {% load static %}
 {% load custom_tags %}
 
+<p id="invisibleClickable"></p>
 {% block head %}
     <script src={% static 'scripts/handlebars.js' %}></script>
+
     <script name="course-single" type="text/x-handlebars-template">
         {% raw_include 'courses/course-item.html' %}
     </script>
@@ -28,6 +30,7 @@
                 (response) => {
                     const courses = response["courses"];
                     console.log(`Got ${courses.length} courses`);
+
                     show("courses-list", () => {
                         renderSearchResults(courses);
                     });
@@ -100,25 +103,37 @@
             </div>
         </div>
     </div>
+    <script>$(document).ready(function() {
+            //document.getElementById("search_btn").click();
+            //...get the button
+            // Cancel the default action, if needed
+            jQuery(function(){
+               jQuery('#search_btn').click();
+            });
+        }
+    );</script>
 
     <script>
-        var input = document.getElementById("course_id");
 
-        // Execute a function when the user releases a key on the keyboard
-        input.addEventListener("keyup", function(event) {
-        // Number 13 is the "Enter" key on the keyboard
-            if (event.keyCode === 13) {
-                // Cancel the default action, if needed
-                event.preventDefault();
-                // Trigger the button element with a click
-                document.getElementById("search_btn").click();
-            }
-        });
+    // Execute a function when the user releases a key on the keyboard
+    document.addEventListener("keydown", function(event) {
+    // Number 13 is the "Enter" key on the keyboard
+    if (event.keyCode === 13) {
+    // Cancel the default action, if needed
+    event.preventDefault();
+    // Trigger the button element with a click
+    document.getElementById("search_btn").click();
+    }
+    });
+
+
     </script>
 
 {% endblock %}
 
 {% block content_body %}
+
+
     <div class="container" id="courses-list">
         {% for course in object_list %}
             <div class="card float-left" style="width: 24%; height: 10rem; margin-left: 10px; margin-bottom: 10px">
@@ -138,5 +153,9 @@
             </div>
         {% endfor %}
     </div>
+
+
+
+
 {% endblock %}
 
