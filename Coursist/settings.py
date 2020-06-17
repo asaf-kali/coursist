@@ -87,6 +87,8 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+if ENV != Environment.prod:
+    MIDDLEWARE += ["qinspect.middleware.QueryInspectMiddleware"]
 
 ROOT_URLCONF = "Coursist.urls"
 
@@ -189,12 +191,8 @@ LOGGING = {
     },
     "root": {"handlers": ["console_out", "console_err", "root_file"], "level": "INFO"},
     "loggers": {
-        "coursist": {"handlers": ["console_out", "console_err", "coursist_file"], "level": "DEBUG", "propagate": False},
-        "django": {
-            "handlers": ["console_out", "console_err", "django_file", "debug_file"],
-            "level": "DEBUG",
-            "propagate": False,
-        },
+        "coursist": {"handlers": ["coursist_file"], "level": "DEBUG", "propagate": True},
+        "django": {"handlers": ["console_err", "django_file", "debug_file"], "level": "DEBUG", "propagate": False,},
         "django.utils.autoreload": {"level": "INFO", "propagate": True},
         "qinspect": {"handlers": ["debug_file", "root_file"], "level": "DEBUG", "propagate": False},
     },
@@ -290,3 +288,6 @@ COMMENTS_APP = "course_comments"
 CRON_CLASSES = [
     "academic_helper.logic.crons.BackupCron",
 ]
+
+# Query inspect
+QUERY_INSPECT_ENABLED = DEBUG

@@ -1,3 +1,45 @@
+const SEMESTERS = {
+    '1': 'סמסטר א',
+    '2': 'סמסטר ב',
+    '3': 'סמסטר ג',
+    '4': 'סמסטר קיץ',
+    '5': 'שנתי',
+};
+const CLASS_TYPES = {
+    '1': 'שיעור',
+    '2': 'תרגול',
+    '3': 'סמינר',
+    '4': 'מעבדה',
+    '5': 'סדנה',
+    '6': 'מטלה',
+    '7': 'שיעור קליני',
+    '8': 'סיור',
+    '9': 'מכינה',
+    '10': 'הדרכה',
+    '11': 'שיעור ומעבדה',
+    '12': 'שיעור ותרגיל',
+    '13': 'עבודה מעשית',
+    '14': 'שיעור וסדנה',
+    '15': 'שיעור והדרכה',
+    '16': 'שיעור וסמינר',
+    '17': 'מחנה',
+};
+
+function classTypeToName(class_type) {
+    if (class_type in CLASS_TYPES) {
+        return CLASS_TYPES[class_type];
+    }
+    return 'Unknown class type';
+}
+
+function semesterToName(semester) {
+    console.log(semester);
+    if (semester in SEMESTERS) {
+        return SEMESTERS[semester];
+    }
+    return 'Unknown semester';
+}
+
 class ScheduleLogic {
     COOKIE_NAME = 'schedule';
     COOKIE_EXPIRES = 365 * 2; // 2 years
@@ -16,11 +58,11 @@ class ScheduleLogic {
      */
     getCoursesFromServer(searchVal, successCallback, errorCallback) {
         ajax({'search_val': searchVal},
-        (response) => {
-            successCallback(response);
-        }, () => {
-            errorCallback();
-        });
+            (response) => {
+                successCallback(response);
+            }, () => {
+                errorCallback();
+            });
     }
 
     /**
@@ -33,18 +75,18 @@ class ScheduleLogic {
      */
     addCourse(course, successCallback, errorCallback, autoLoaded) {
         ajax({'course_number': course['course_number']},
-        (response) => {
-            let groups = response.groups;
-            this.courses[course['course_number']] = {
-                'course': course,
-                'groups': groups
-            };
-            response['course'] = course;
-            response['auto_loaded'] = autoLoaded;
-            successCallback(response);
-        }, () => {
-            errorCallback();
-        });
+            (response) => {
+                let groups = response.groups;
+                this.courses[course['course_number']] = {
+                    'course': course,
+                    'groups': groups
+                };
+                response['course'] = course;
+                response['auto_loaded'] = autoLoaded;
+                successCallback(response);
+            }, () => {
+                errorCallback();
+            });
     }
 
     cookieStoreGroup(groupId) {
@@ -55,7 +97,7 @@ class ScheduleLogic {
         let storedGroups = {'groups': []};
 
         if (!Cookies.get(this.COOKIE_NAME)) {
-            Cookies.set(this.COOKIE_NAME, JSON.stringify(storedGroups), { expires: this.COOKIE_EXPIRES });
+            Cookies.set(this.COOKIE_NAME, JSON.stringify(storedGroups), {expires: this.COOKIE_EXPIRES});
             console.log('Created new cookie ' + this.COOKIE_NAME);
         }
 
@@ -66,7 +108,7 @@ class ScheduleLogic {
         }
 
         storedGroups['groups'].push(groupId);
-        Cookies.set(this.COOKIE_NAME, JSON.stringify(storedGroups), { expires: this.COOKIE_EXPIRES });
+        Cookies.set(this.COOKIE_NAME, JSON.stringify(storedGroups), {expires: this.COOKIE_EXPIRES});
         console.log('Added group ' + groupId + '. New value is: ' + JSON.stringify(storedGroups));
     }
 
@@ -83,7 +125,7 @@ class ScheduleLogic {
         if (storedGroups['groups'].includes(groupId)) {
             let idx = storedGroups['groups'].indexOf(groupId);
             storedGroups['groups'].splice(idx, 1);
-            Cookies.set(this.COOKIE_NAME, JSON.stringify(storedGroups), { expires: this.COOKIE_EXPIRES });
+            Cookies.set(this.COOKIE_NAME, JSON.stringify(storedGroups), {expires: this.COOKIE_EXPIRES});
             console.log('Deleted ' + groupId + '. New value is: ' + storedGroups['groups']);
         }
     }
@@ -150,49 +192,6 @@ class ScheduleLogic {
         return class_types;
     }
 
-    classTypeToName(class_type) {
-        let types = {
-            '1': 'שיעור',
-            '2': 'תרגול',
-            '3': 'סמינר',
-            '4': 'מעבדה',
-            '5': 'סדנה',
-            '6': 'מטלה',
-            '7': 'שיעור קליני',
-            '8': 'סיור',
-            '9': 'מכינה',
-            '10': 'הדרכה',
-            '11': 'שיעור ומעבדה',
-            '12': 'שיעור ותרגיל',
-            '13': 'עבודה מעשית',
-            '14': 'שיעור וסדנה',
-            '15': 'שיעור והדרכה',
-            '16': 'שיעור וסמינר',
-            '17': 'מחנה',
-        };
-
-        if (class_type in types) {
-            return types[class_type];
-        }
-
-        return 'Unknown class type';
-    }
-
-    semesterToName(semester) {
-        let semesters = {
-            '1': 'סמסטר א',
-            '2': 'סמסטר ב',
-            '3': 'סמסטר ג',
-            '4': 'סמסטר קיץ',
-            '5': 'שנתי',
-        };
-
-        if (semester in semesters) {
-            return semesters[semester];
-        }
-
-        return 'Unknown semester';
-    }
 
     getGroupTeachers(group) {
         let teachers = "";

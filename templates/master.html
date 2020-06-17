@@ -51,7 +51,7 @@
                 {% if user.is_anonymous %}
                     <a class="nav-link" href="{% url 'login' %}" style="color: white;">Log in</a>
                 {% else %}
-                    Logged in as: {{ user }}&nbsp;&nbsp;
+                      שלום {{ user }}&nbsp;&nbsp;
                 {% endif %}
             </li>
             {% if not user.is_anonymous %}
