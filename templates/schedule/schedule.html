@@ -4,7 +4,14 @@
 {% block head %}
     <link rel="stylesheet" href="{% static 'styles/schedule.css' %}">
 
-    <script src={% static 'scripts/handlebars.js' %}></script>
+    <script src="{% static 'scripts/js.cookie.min.js' %}"></script>
+    <script src="{% static 'scripts/handlebars.js' %}"></script>
+    <script name="schedule-legend" type="text/x-handlebars-template">
+        {% include 'schedule/schedule-legend.html' %}
+    </script>
+    <script name="schedule-loader" type="text/x-handlebars-template">
+        {% raw_include 'schedule/schedule-loader.html' %}
+    </script>
     <script name="schedule-course-autocomplete-item" type="text/x-handlebars-template">
         {% raw_include 'schedule/schedule-course-autocomplete-item.html' %}
     </script>
@@ -40,11 +47,10 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-3">
-                <div id="search_form">
-                    <div class="course_search_wrapper clear">
+                <div id="search_form" class="mb-2">
+                    <div class="course_search_wrapper">
                         <input type="text" name="course_input" id="course_input"
-                               placeholder="הכניסו שם או מספר קורס"
-                               oninput="courses_autocomplete(this.value, '{{ csrf_token }}')"/>
+                               placeholder="הכניסו שם או מספר קורס" />
                     </div>
                     <div id="search_results">
                         <ul></ul>
@@ -61,6 +67,7 @@
                            href="#semester-1-wrapper">סמסטר א'</a>
                         <a class="nav-item nav-link" id="semester-2-tab" data-toggle="tab" href="#semester-2-wrapper">סמסטר
                             ב'</a>
+                        <a class="nav-item nav-link" id="schedule-legend" href="javascript:void(0);">מקרא</a>
                     </div>
                 </nav>
                 <div class="tab-content mt-3" id="nav-tabContent">
@@ -76,10 +83,12 @@
         <div class="clear-fix"></div>
     </div>
     <script src="{% static 'scripts/schedule-util.js' %}" type="text/javascript"></script>
-    <script src="{% static 'scripts/schedule-helper.js' %}" type="text/javascript"></script>
+    <script src="{% static 'scripts/schedule-ui.js' %}" type="text/javascript"></script>
     <script src="{% static 'scripts/schedule-logic.js' %}" type="text/javascript"></script>
+    {{ choices | json_script:"choices-data" }}
     <script>
         CSRF_TOKEN = '{{ csrf_token }}';
-        initWithChoices({{ choices|safe }});
+        LOGGED_IN = {{ logged_in|lower|default:"false" }};
+        schedule.loadSavedCourses(document.getElementById('choices-data').innerText);
     </script>
 {% endblock content_body %}

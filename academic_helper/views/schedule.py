@@ -1,8 +1,11 @@
+import json
+
 from django.db.models import Q
 from django.http import JsonResponse, HttpResponseBadRequest
 
 from academic_helper.logic.errors import UserNotLoggedInError, CourseNotFoundError
-from academic_helper.logic.schedule import set_user_schedule_group, get_user_choices, get_all_classes
+from academic_helper.logic.schedule import set_user_schedule_group, \
+    get_user_choices, get_all_classes, del_user_schedule_groups
 from academic_helper.models.course import Course
 from academic_helper.views.basic import ExtendedViewMixin
 
@@ -14,9 +17,27 @@ class ScheduleView(ExtendedViewMixin):
     def title(self) -> str:
         return "Schedule Planner"
 
+    def get(self, request, *args, **kwargs):
+        response = super().get(request, *args, **kwargs)
+        if self.user.is_authenticated and "schedule" in self.request.COOKIES:
+            # safe to delete the cookie here, because super has already called
+            # get_context_data, which already used this cookie
+            response.delete_cookie("schedule")
+
+        return response
+
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["choices"] = get_user_choices(self.user)
+
+        cookie_choices = []
+        if "schedule" in self.request.COOKIES:
+            cookie_choices = json.loads(self.request.COOKIES["schedule"])
+            cookie_choices = cookie_choices["groups"]
+
+        context["choices"] = get_user_choices(self.user, cookie_choices)
+        context["logged_in"] = self.user.is_authenticated
+
         return context
 
     def search(self, search_val: str):
@@ -42,6 +63,13 @@ class ScheduleView(ExtendedViewMixin):
             return JsonResponse({"status": "error", "message": "User not logged in"})
         return JsonResponse({"status": "success"})
 
+    def on_user_delete_groups(self, choices):
+        try:
+            del_user_schedule_groups(self.user, choices)
+        except UserNotLoggedInError:
+            return JsonResponse({"status": "error", "message": "User not logged in"})
+        return JsonResponse({"status": "success"})
+
     def post(self, request, *args, **kwargs):
         if not request.is_ajax():
             return
@@ -54,5 +82,8 @@ class ScheduleView(ExtendedViewMixin):
         if "group_choice" in request.POST:
             choice = request.POST["group_choice"]
             return self.on_user_group_choice(choice)
+        if "groups_to_del" in request.POST:
+            choices = json.loads(request.POST["groups_to_del"])["group_ids"]
+            return self.on_user_delete_groups(choices)
         else:
             return HttpResponseBadRequest()

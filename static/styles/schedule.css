@@ -1,24 +1,13 @@
 :root {
-    --cd-color-event-1: hsl(199, 25%, 46%);
-    --cd-color-event-1-h: 199;
-    --cd-color-event-1-s: 25%;
-    --cd-color-event-1-l: 46%;
-    --cd-color-event-2: hsl(271, 23%, 26%);
-    --cd-color-event-2-h: 271;
-    --cd-color-event-2-s: 23%;
-    --cd-color-event-2-l: 26%;
-    --cd-color-event-3: hsl(162, 14%, 68%);
-    --cd-color-event-3-h: 162;
-    --cd-color-event-3-s: 14%;
-    --cd-color-event-3-l: 68%;
-    --cd-color-event-4: hsl(31, 89%, 68%);
-    --cd-color-event-4-h: 31;
-    --cd-color-event-4-s: 89%;
-    --cd-color-event-4-l: 68%;
-    --cd-color-text: hsl(0, 0%, 13%);
-    --cd-color-text-h: 0;
-    --cd-color-text-s: 0%;
-    --cd-color-text-l: 13%;
+    --cd-color-event-1: orange;
+    --cd-color-event-2: lightblue;
+    --cd-color-event-3: yellow;
+    --cd-color-event-4: lightgreen;
+    --cd-color-event-5: lightpink;
+    --cd-color-event-6: cyan;
+    --cd-color-event-7: lightcoral;
+    --cd-color-event-default: tan;
+    --cd-color-text: #000000;
     --cd-color-border: hsl(0, 0%, 92%);
     --cd-color-border-h: 0;
     --cd-color-border-s: 0%;
@@ -222,7 +211,7 @@
     display: block;
     height: 100%;
     padding: 5px;
-    box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: inset 5px 0 0 rgba(0, 0, 0, 0.2);
     text-decoration: none;
 }
 .cd-schedule__event a::before {
@@ -246,7 +235,7 @@
     }
     .js .cd-schedule__event a {
         padding: 5px;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1), inset 0 -3px 0 rgba(0, 0, 0, 0.2);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1), inset 5px 0 0 rgba(0, 0, 0, 0.2);
     }
 }
 @media (min-width: 64rem) {
@@ -291,24 +280,55 @@
 }
 .cd-schedule__event [data-event="event-1"],
 .cd-schedule-modal[data-event="event-1"] .cd-schedule-modal__header-bg {
-    background: hsl(199, 25%, 46%);
     background: var(--cd-color-event-1);
 }
 .cd-schedule__event [data-event="event-2"],
 .cd-schedule-modal[data-event="event-2"] .cd-schedule-modal__header-bg {
-    background: hsl(271, 23%, 26%);
     background: var(--cd-color-event-2);
 }
 .cd-schedule__event [data-event="event-3"],
 .cd-schedule-modal[data-event="event-3"] .cd-schedule-modal__header-bg {
-    background: hsl(162, 14%, 68%);
     background: var(--cd-color-event-3);
 }
 .cd-schedule__event [data-event="event-4"],
 .cd-schedule-modal[data-event="event-4"] .cd-schedule-modal__header-bg {
-    background: hsl(31, 89%, 68%);
     background: var(--cd-color-event-4);
 }
+.cd-schedule__event [data-event="event-5"],
+.cd-schedule-modal[data-event="event-5"] .cd-schedule-modal__header-bg {
+    background: var(--cd-color-event-5);
+}
+.cd-schedule__event [data-event="event-5"],
+.cd-schedule-modal[data-event="event-5"] .cd-schedule-modal__header-bg {
+    background: var(--cd-color-event-5);
+}
+.cd-schedule__event [data-event="event-6"],
+.cd-schedule-modal[data-event="event-6"] .cd-schedule-modal__header-bg {
+    background: var(--cd-color-event-6);
+}
+.cd-schedule__event [data-event="event-7"],
+.cd-schedule-modal[data-event="event-7"] .cd-schedule-modal__header-bg {
+    background: var(--cd-color-event-7);
+}
+.cd-schedule__event [data-event="event-8"],
+.cd-schedule-modal[data-event="event-8"] .cd-schedule-modal__header-bg,
+.cd-schedule__event [data-event="event-9"],
+.cd-schedule-modal[data-event="event-9"] .cd-schedule-modal__header-bg,
+.cd-schedule__event [data-event="event-10"],
+.cd-schedule-modal[data-event="event-10"] .cd-schedule-modal__header-bg,
+.cd-schedule__event [data-event="event-11"],
+.cd-schedule-modal[data-event="event-11"] .cd-schedule-modal__header-bg,
+.cd-schedule__event [data-event="event-12"],
+.cd-schedule-modal[data-event="event-12"] .cd-schedule-modal__header-bg,
+.cd-schedule__event [data-event="event-13"],
+.cd-schedule-modal[data-event="event-13"] .cd-schedule-modal__header-bg,
+.cd-schedule__event [data-event="event-14"],
+.cd-schedule-modal[data-event="event-14"] .cd-schedule-modal__header-bg,
+.cd-schedule__event [data-event="event-15"],
+.cd-schedule-modal[data-event="event-15"] .cd-schedule-modal__header-bg {
+    background: var(--cd-color-event-default);
+}
+
 .cd-schedule-modal {
     position: fixed;
     z-index: 3;
@@ -719,4 +739,47 @@
 .course_groups_wrapper ul li.active {
     background: #ebebeb;
     color: #000;
+}
+
+.legend {
+    margin: 0;
+    padding: 0;
+   list-style: none;
+}
+.legend li:before {
+    content: '\2587';
+    padding-left: 5px;
+    vertical-align: text-bottom;
+}
+
+.legend li.legend-event-1:before {
+    color: var(--cd-color-event-1);
+}
+
+.legend li.legend-event-2:before {
+    color: var(--cd-color-event-2);
+}
+
+.legend li.legend-event-3:before {
+    color: var(--cd-color-event-3);
+}
+
+.legend li.legend-event-4:before {
+    color: var(--cd-color-event-4);
+}
+
+.legend li.legend-event-5:before {
+    color: var(--cd-color-event-5);
+}
+
+.legend li.legend-event-6:before {
+    color: var(--cd-color-event-6);
+}
+
+.legend li.legend-event-7:before {
+    color: var(--cd-color-event-7);
+}
+
+.legend li.legend-event-default:before {
+    color: var(--cd-color-event-default);
 }
