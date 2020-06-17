@@ -4,6 +4,7 @@ files/*
 **/shnaton_mock/
 logs/*
 temp.json
+.*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

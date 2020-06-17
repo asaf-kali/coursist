@@ -31,7 +31,7 @@ def get_user_choices(user, cookie_choices):
 def set_user_schedule_group(user, group_id):
     log.info(f"set_user_schedule_group for user {wrap(user)} with group_id {wrap(group_id)}")
     if user.is_anonymous:
-        log.warning("set_user_schedule_group called but user is_anonymous")
+        # log.warning("set_user_schedule_group called but user is_anonymous")
         raise UserNotLoggedInError()
     group = ClassGroup.objects.get(pk=group_id)
     existing = ClassSchedule.objects.filter(
