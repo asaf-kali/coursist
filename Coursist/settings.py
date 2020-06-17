@@ -86,6 +86,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "qinspect.middleware.QueryInspectMiddleware"
 ]
 
 ROOT_URLCONF = "Coursist.urls"
@@ -111,16 +112,16 @@ WSGI_APPLICATION = "Coursist.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": os.path.join(BASE_DIR, "db.sqlite3"),}}
+DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": os.path.join(BASE_DIR, "db.sqlite3"), }}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",},
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",},
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",},
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",},
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator", },
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator", },
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator", },
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator", },
 ]
 
 # Logging
@@ -137,7 +138,7 @@ LOGGING = {
         "verbose": {"format": "[%(asctime)s] [%(levelname)-.4s]: %(message)s @@@ [%(filename)s:%(lineno)s]"},
         "debug": {
             "format": "[%(asctime)s] [%(name)s] [%(levelname)-.4s]: %(message)s @@@ "
-            "[%(threadName)s] [%(pathname)s:%(lineno)s]"
+                      "[%(threadName)s] [%(pathname)s:%(lineno)s]"
         },
     },
     "filters": {
@@ -191,7 +192,7 @@ LOGGING = {
     "loggers": {
         "coursist": {"handlers": ["console_out", "console_err", "coursist_file"], "level": "DEBUG", "propagate": False},
         "django": {
-            "handlers": ["console_out", "console_err", "django_file", "debug_file"],
+            "handlers": ["console_err", "django_file", "debug_file"],
             "level": "DEBUG",
             "propagate": False,
         },
@@ -290,3 +291,6 @@ COMMENTS_APP = "course_comments"
 CRON_CLASSES = [
     "academic_helper.logic.crons.BackupCron",
 ]
+
+# Query inspect
+QUERY_INSPECT_ENABLED = DEBUG

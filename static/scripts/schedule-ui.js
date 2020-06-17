@@ -569,7 +569,7 @@ function displayCourseGroups(container, courseNumber, groups, autoLoaded) {
         let cur_class_type = class_types[i];
         let group_header = hb_templates['schedule-course-item-group-header']({
             'class_type': cur_class_type,
-            'class_type_name': schedule.classTypeToName(cur_class_type)
+            'class_type_name': classTypeToName(cur_class_type)
         });
         container.append(group_header);
 
@@ -607,6 +607,7 @@ function displayGroup(group, cur_class_type, passed_first, courseNumber, group_l
         'course_number': courseNumber,
         'group_id': group['id'],
         'mark': group['mark'],
+        'semester': semesterToName(group['semester']),
         'teachers': schedule.getGroupTeachers(group)
     });
     group_list.append(group_item);
