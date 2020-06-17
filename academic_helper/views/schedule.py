@@ -4,8 +4,12 @@ from django.db.models import Q
 from django.http import JsonResponse, HttpResponseBadRequest
 
 from academic_helper.logic.errors import UserNotLoggedInError, CourseNotFoundError
-from academic_helper.logic.schedule import set_user_schedule_group, \
-    get_user_choices, get_all_classes, del_user_schedule_groups
+from academic_helper.logic.schedule import (
+    set_user_schedule_group,
+    get_user_choices,
+    get_all_classes,
+    del_user_schedule_groups,
+)
 from academic_helper.models.course import Course
 from academic_helper.views.basic import ExtendedViewMixin
 
@@ -25,7 +29,6 @@ class ScheduleView(ExtendedViewMixin):
             response.delete_cookie("schedule")
 
         return response
-
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

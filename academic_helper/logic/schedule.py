@@ -1,8 +1,7 @@
 from typing import List
 
 from academic_helper.logic.errors import UserNotLoggedInError, CourseNotFoundError
-from academic_helper.models import ClassGroup, ClassSchedule, Course, \
-    CourseClass
+from academic_helper.models import ClassGroup, ClassSchedule, Course, CourseClass
 from academic_helper.utils.logger import wrap, log
 
 
