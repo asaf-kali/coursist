@@ -1,6 +1,5 @@
 {% extends "master.html" %}
 
-{% load i18n %}
 {% load custom_tags %}
 {% get_settings_value auth_active "AUTH_ACTIVATION" %}
 
@@ -9,23 +8,24 @@
     {% get_providers as socialaccount_providers %}
 {% endif %}
 {% block content_body %}
-    <h1>{% trans "Sign In" %}</h1>
+    <h1>התחברות</h1>
 
     {% if socialaccount_providers %}
-        <p>{% blocktrans with site.name as site_name %}
+        <p>
             Please sign in with one of your existing third party accounts
             or <a href="{{ signup_url }}">Sign up</a>
-        {% endblocktrans %}</p>
+        </p>
         <div class="socialaccount_ballot">
             <ul class="socialaccount_providers">
                 {% include "socialaccount/snippets/provider_list.html" with process="login" %}
             </ul>
-            <div class="login-or">{% trans 'or' %}</div>
+            <div class="login-or">or</div>
         </div>
         {% include "socialaccount/snippets/login_extra.html" %}
     {% else %}
-        <p>{% blocktrans %}If you have not created an account yet, then please
-            <a href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}</p>
+        {#          original =  If you have not created an account yet, then please sign up first. #}
+        <p>אם עדיין לא יצרתם משתמש, בבקשה
+            <a href="{{ signup_url }}">הרשמו</a>.</p>
     {% endif %}
 
     <form class="login" method="POST" action="{% url 'account_login' %}">
@@ -34,8 +34,9 @@
         {% if redirect_field_value %}
             <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
         {% endif %}
-        <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
-        <button class="primaryAction" type="submit">{% trans "Sign In" %}</button>
+        <button class="primaryAction" type="submit">התחבר</button>
+        <br>
+        <a class="button secondaryAction" href="{% url 'account_reset_password' %}">שכחתם את הסיסמא?</a>
     </form>
 
 {% endblock %}
