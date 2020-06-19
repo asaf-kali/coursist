@@ -63,10 +63,11 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    # Facebook login
+    #login
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
+    # Facebook login
     "allauth.socialaccount.providers.facebook",
     # "allauth.socialaccount.providers.google",
 ]
@@ -93,7 +94,10 @@ ROOT_URLCONF = "Coursist.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR, "templates"),os.path.join(BASE_DIR, "templates", "account")],
+        "DIRS": [os.path.join(BASE_DIR, "templates"),
+                 os.path.join(BASE_DIR, "templates", "account"),
+                 os.path.join(BASE_DIR, "templates", "socialaccount")],
+
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [

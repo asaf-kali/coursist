@@ -10,6 +10,18 @@
 {% block content_body %}
     <h1>התחברות</h1>
 
+    <p>
+        Please sign in with one of your existing third party accounts
+        or <a href="{{ signup_url }}">Sign up</a>
+    </p>
+    <div class="socialaccount_ballot">
+        <ul class="socialaccount_providers">
+            {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+        </ul>
+        <div class="login-or">or</div>
+    </div>
+    {% include "socialaccount/snippets/login_extra.html" %}
+
     {% if socialaccount_providers %}
         <p>
             Please sign in with one of your existing third party accounts
