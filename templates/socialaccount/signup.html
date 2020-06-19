@@ -1,0 +1,19 @@
+{% extends "master.html" %}
+
+{% block content_body %}
+    <h1>הרשמה כפולה</h1>
+
+    A message from evyatar100: This page used to be shown when a user tries to sign in with facebook (or google), with
+    an email, that is associated with an existing user. I tried to fix this (login_adapter.py), by I'm not sure the fix
+    works 100%. so we will leave this file here until production.
+
+<form class="signup" id="signup_form" method="post" action="{% url 'socialaccount_signup' %}">
+  {% csrf_token %}
+  {{ form.as_p }}
+  {% if redirect_field_value %}
+  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+  {% endif %}
+  <button type="submit">הרשמה</button>
+</form>
+
+{% endblock %}

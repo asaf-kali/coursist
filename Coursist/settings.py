@@ -68,7 +68,7 @@ INSTALLED_APPS = [
     "allauth.account",
     "allauth.socialaccount",
     # Facebook login
-    # "allauth.socialaccount.providers.facebook",
+    "allauth.socialaccount.providers.facebook",
     # "allauth.socialaccount.providers.google",
 ]
 
@@ -281,6 +281,12 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = "optional"  # TODO change to mandatory
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 ACCOUNT_AUTHENTICATION_METHOD = "username_email"  # may sign in with either email or username
+# SOCIALACCOUNT_AUTO_SIGNUP = True
+SOCIALACCOUNT_EMAIL_REQUIRED = True
+
+SOCIALACCOUNT_ADAPTER = "academic_helper.login_adapter.MySocialAccountAdapter"
+
+
 
 # DB Backup
 DBBACKUP_STORAGE = "django.core.files.storage.FileSystemStorage"
@@ -299,3 +305,5 @@ CRON_CLASSES = [
 
 # Query inspect
 QUERY_INSPECT_ENABLED = DEBUG
+
+
