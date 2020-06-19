@@ -1,4 +1,3 @@
-from allauth.account.views import LoginView as SuperLoginView, SignupView as SuperSignupView
 from django.core.handlers.wsgi import WSGIRequest
 from django.http import JsonResponse
 from django.urls import reverse
@@ -9,19 +8,6 @@ from academic_helper.views.basic import ExtendedViewMixin
 
 class AboutView(ExtendedViewMixin):
     template_name = "other/about.html"
-
-
-class LoginView(SuperLoginView):
-    template_name = "other/login.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["signup_url"] = reverse("signup")
-        return context
-
-
-class SignupView(SuperSignupView):
-    template_name = "other/signup.html"
 
 
 class AjaxView(ExtendedViewMixin):

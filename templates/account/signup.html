@@ -3,7 +3,7 @@
 
 {% block content_body %}
     <h1>{% trans "Sign Up" %}</h1>
-    {% url 'login' as login_url %}
+    {% url 'account_login' as login_url %}
     <p>
         {% blocktrans %}Already have an account? <a href="{{ login_url }}">Sign in</a>.{% endblocktrans %}
     </p>
