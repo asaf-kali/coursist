@@ -2,42 +2,29 @@
 {% load ratings %}
 
 <style>
-    .table-padded {
-        width: 35vw;
-        border: 3px solid black;
-        text-align: center;
-    }
-
-    .table-padded td {
-        padding: 10px;
-    }
 </style>
-<table class="table-padded">
-    <tr>
-        <td colspan="2">
-            <b>{{ course_comment.get_user_name_to_show }}</b>
-            <span style="font-size: smaller;">({{ course_comment.submit_date }})</span><br><br>
-        </td>
-    </tr>
-    <tr>
-        <td style="background-color: lightgray;">
-            {{ course_comment.comment|linebreaks }}<br>
-        </td>
-        <td style="width: 35%;">
-            <table style="width: 100%;">
-                <tr>
-                    <td>Semester</td>
-                    <td>{{ course_comment.semester_rating.score }}</td>
-                </tr>
-                <tr>
-                    <td>Finals</td>
-                    <td>{{ course_comment.finals_rating.score }}</td>
-                </tr>
-                <tr>
-                    <td>Interesting</td>
-                    <td>{{ course_comment.interesting_rating.score }}</td>
-                </tr>
-            </table>
-        </td>
-    </tr>
-</table>
+<div class="card" style="margin-bottom: 5px">
+    <table>
+        <tr>
+            <td style="width: 20%; direction: rtl; text-align: center;">
+                <h5 class="card-title"> {{ course_comment.get_user_name_to_show }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">בתאריך
+                    {{ course_comment.submit_date.date }}</h6>
+            </td>
+            <td rowspan="2">
+                <p class="card-text">{{ course_comment.comment }}</p>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: center;">
+                סמסטר:
+                {{ course_comment.semester_rating.score }}<br>
+                בחינות:
+                {{ course_comment.finals_rating.score }}<br>
+                עניין:
+                {{ course_comment.interesting_rating.score }}
+            </td>
+        </tr>
+    </table>
+</div>
+

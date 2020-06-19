@@ -173,8 +173,8 @@ class ShnatonParser:
         if raw_data is None:
             return None
 
-        raw_faculty = raw_data["faculty"].strip()
-        raw_school = raw_data["school"].strip()
+        raw_faculty = raw_data["faculty"].strip(" :\t")
+        raw_school = raw_data["school"].strip(" :\t")
         faculty = Faculty.objects.get_or_create(name=raw_faculty)[0]
         school = School.objects.get_or_create(name=raw_school, faculty=faculty)[0]
 
@@ -297,6 +297,10 @@ class ShnatonParser:
         course = dict()
         # parse faculty and school
         ShnatonParser.parse_faculty(source, course)
+        if "faculty" not in course or "school" not in course:
+            log.warning(f"Skipping course {course_id} because of bad html")
+            # course faculty / school not found
+            return None
 
         # parse general course info
         ShnatonParser.parse_general_course_info(source, year, course)

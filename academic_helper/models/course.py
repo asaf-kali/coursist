@@ -21,6 +21,7 @@ from academic_helper.models.extended_rating import RatingDummy
 
 class Faculty(Base):
     name: str = models.CharField(max_length=50)
+
     # university: University = models.ForeignKey(University, on_delete=models.CASCADE)
 
     class Meta:
@@ -78,5 +79,9 @@ class Course(Base):
         return RatingDummy.dummy_for(self, "Interesting")
 
     @staticmethod
-    def find_by(text: str):
-        return Course.objects.filter(Q(name__contains=text) | Q(course_number__icontains=text)).all()
+    def find_by(text: str, school: str, faculty: str):
+        return Course.objects.filter(
+            (Q(name__contains=text) | Q(course_number__icontains=text))
+            & Q(school__name__icontains=school)
+            & Q(school__faculty__name__icontains=faculty)
+        ).all()

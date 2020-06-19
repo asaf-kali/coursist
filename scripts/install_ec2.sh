@@ -27,6 +27,5 @@ sudo rm /tmp/Python-"$VERSION".tgz
 sudo ln -s /opt/python"$VESRION_SHORT"/bin/python"$VESRION_SHORT_DOT" /usr/bin/python"$VESRION_VERY_SHORT"
 sudo ln -s /opt/python"$VESRION_SHORT"/bin/pip"$VESRION_SHORT_DOT" /usr/bin/pip"$VESRION_VERY_SHORT"
 
-# TODO: Add important lines to ~/.bashrc:
-# export LD_LIBRARY_PATH="/usr/local/lib"
-# export COURSIST_ENV="prod"
+echo 'export LD_LIBRARY_PATH="/usr/local/lib"' >>~/.bashrc
+echo 'export COURSIST_ENV="prod"' >>~/.bashrc
