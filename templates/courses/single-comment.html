@@ -1,0 +1,30 @@
+{% load comments %}
+{% load ratings %}
+
+<style>
+</style>
+<div class="card" style="margin-bottom: 5px">
+    <table>
+        <tr>
+            <td style="width: 20%; direction: rtl; text-align: center;">
+                <h5 class="card-title"> {{ course_comment.get_user_name_to_show }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">בתאריך
+                    {{ course_comment.submit_date.date }}</h6>
+            </td>
+            <td rowspan="2">
+                <p class="card-text">{{ course_comment.comment }}</p>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: center;">
+                סמסטר:
+                {{ course_comment.semester_rating.score }}<br>
+                בחינות:
+                {{ course_comment.finals_rating.score }}<br>
+                עניין:
+                {{ course_comment.interesting_rating.score }}
+            </td>
+        </tr>
+    </table>
+</div>
+

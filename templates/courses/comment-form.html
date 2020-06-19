@@ -4,8 +4,7 @@
 <form action="{% comment_form_target %}" method="POST">
     {% csrf_token %}
     <div>{{ form.comment }}</div>
-    <div>hide username {{ form.is_anonymous }}</div>
-
+    <div>{{ form.is_anonymous }}תגובה אנונימית </div>
 {#        {{ form.honeypot }} {# TODO make it work: https://django-contrib-comments.readthedocs.io/en/latest/quickstart.html#id1#}
     {{ form.content_type }}
     {{ form.object_pk }}

@@ -1,14 +1,13 @@
 import re
 
 from django.core.handlers.wsgi import WSGIRequest
-from django.shortcuts import render
 from django.views.generic import TemplateView
 
 from academic_helper.models import CoursistUser
 
 
-def index(request):
-    return render(request, "other/index.html")
+class IndexView(TemplateView):
+    template_name = "other/index.html"
 
 
 class ExtendedViewMixin(TemplateView):

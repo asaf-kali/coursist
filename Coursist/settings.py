@@ -63,11 +63,12 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    # Facebook login
+    # Login
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
-    "allauth.socialaccount.providers.facebook",
+    # Facebook login
+    # "allauth.socialaccount.providers.facebook",
     # "allauth.socialaccount.providers.google",
 ]
 
@@ -95,7 +96,11 @@ ROOT_URLCONF = "Coursist.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR, "templates")],
+        "DIRS": [
+            os.path.join(BASE_DIR, "templates"),
+            os.path.join(BASE_DIR, "templates", "account"),
+            os.path.join(BASE_DIR, "templates", "socialaccount"),
+        ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -272,7 +277,10 @@ else:
 AUTH_ACTIVATION = False
 SITE_ID = 1
 LOGIN_REDIRECT_URL = "/"
-ACCOUNT_EMAIL_VERIFICATION = "none"
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = "optional"  # TODO change to mandatory
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+ACCOUNT_AUTHENTICATION_METHOD = "username_email"  # may sign in with either email or username
 
 # DB Backup
 DBBACKUP_STORAGE = "django.core.files.storage.FileSystemStorage"
@@ -281,7 +289,7 @@ DBBACKUP_STORAGE_OPTIONS = {"location": "./backups"}
 # Star rating
 STAR_RATINGS_STAR_HEIGHT = 16
 
-# Reviews
+# Comments
 COMMENTS_APP = "course_comments"
 
 # Cron

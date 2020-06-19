@@ -1,21 +1,3 @@
 {% load comments %}
 
 
-<div class="card" style="margin-bottom: 5px">
-    <div class="card-body">
-        <h5 class="card-title"> {{ course_comment.get_user_name_to_show }}</h5>
-        <h6 class="card-subtitle mb-2 text-muted">on {{ course_comment.submit_date }}</h6>
-        <p class="card-text">{{ course_comment.comment }}</p>
-        <hr>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4 text-center"> semester rating:<br>
-                    {{ course_comment.semester_rating }} </div>
-                <div class="col-md-4 text-center">finals rating:<br>
-                    {{ course_comment.finals_rating }}  </div>
-                <div class="col-md-4 text-center"> interesting rating:<br>
-                    {{ course_comment.interesting_rating }} </div>
-            </div>
-        </div>
-    </div>
-</div>

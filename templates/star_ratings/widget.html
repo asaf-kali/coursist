@@ -2,7 +2,9 @@
 
 {% block rating_detail %}
     <br><br>
-    <span style="font-size: smaller; color: #888888;">({{ rating.count }} דירוגים) </span>
+    <span style="font-size: smaller; color: #888888;">
+        ({{ rating.count }} דירוגים)
+    </span>
 {% endblock rating_detail %}
 
 {#{% if not user.is_authenticated and not anonymous_ratings and not read_only %}#}
