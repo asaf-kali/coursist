@@ -9,6 +9,9 @@ class CourseComment(CommentAbstractModel):
     is_anonymous = models.BooleanField(
         "is anonymous", default=False, help_text="Check this box if we should hide the  user name."
     )
+    show_email = models.BooleanField(
+        "show email", default=True, help_text="Check this box if we should show the email address."
+    )
 
     @property
     def get_user_name_to_show(self):

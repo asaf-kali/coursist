@@ -8,8 +8,13 @@
         <tr>
             <td style="width: 20%; direction: rtl; text-align: center;">
                 <h5 class="card-title"> {{ course_comment.get_user_name_to_show }}</h5>
-                <h6 class="card-subtitle mb-2 text-muted">בתאריך
-                    {{ course_comment.submit_date.date }}</h6>
+                <h9 class="card-subtitle mb-2 text-muted">בתאריך
+                    {{ course_comment.submit_date.date }}</h9>
+                {% if course_comment.show_email %}
+                    {{ course_comment.user_email }}
+                {% endif %}
+
+
             </td>
             <td rowspan="2">
                 <p class="card-text">{{ course_comment.comment }}</p>

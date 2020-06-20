@@ -5,6 +5,7 @@
     {% csrf_token %}
     <div>{{ form.comment }}</div>
     <div>{{ form.is_anonymous }}תגובה אנונימית </div>
+    <div>{{ form.show_email }}הצג כתובת Email </div>
 {#        {{ form.honeypot }} {# TODO make it work: https://django-contrib-comments.readthedocs.io/en/latest/quickstart.html#id1#}
     {{ form.content_type }}
     {{ form.object_pk }}
