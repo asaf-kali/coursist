@@ -9,9 +9,9 @@
             <td style="width: 20%; direction: rtl; text-align: center;">
                 <h5 class="card-title"> {{ course_comment.get_user_name_to_show }}</h5>
                 <h9 class="card-subtitle mb-2 text-muted">בתאריך
-                    {{ course_comment.submit_date.date }}</h9>
+                    {{ course_comment.submit_date.date }}</h9><br>
                 {% if course_comment.show_email %}
-                    {{ course_comment.user_email }}
+                    {{ course_comment.user_email }}<br>
                 {% endif %}
 
 
