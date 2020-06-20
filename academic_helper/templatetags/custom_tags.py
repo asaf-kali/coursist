@@ -50,7 +50,10 @@ def rating_for_comment(context, num):
     template_name = 'star_ratings/widget_for_comment.html'
     icon_height = settings.STAR_SIZE_FOR_COMMENT
 
-    percentage = num / star_count * 100
+    if isinstance(num, int) and 1 <= num <= star_count:
+        percentage = num / star_count * 100
+    else:
+        percentage = 0
 
     return loader.get_template(template_name).render({
         'request': request,
