@@ -281,13 +281,19 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = "optional"  # TODO change to mandatory
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 ACCOUNT_AUTHENTICATION_METHOD = "username_email"  # may sign in with either email or username
+# SOCIALACCOUNT_AUTO_SIGNUP = True
+SOCIALACCOUNT_EMAIL_REQUIRED = True
+SOCIALACCOUNT_ADAPTER = "academic_helper.login_adapter.MySocialAccountAdapter"
+
 
 # DB Backup
 DBBACKUP_STORAGE = "django.core.files.storage.FileSystemStorage"
 DBBACKUP_STORAGE_OPTIONS = {"location": "./backups"}
 
 # Star rating
-STAR_RATINGS_STAR_HEIGHT = 16
+STAR_RATINGS_STAR_HEIGHT = 24
+STAR_RATINGS_RANGE = 5  # needed for rating_for_comment
+STAR_SIZE_FOR_COMMENT = 14
 
 # Comments
 COMMENTS_APP = "course_comments"
@@ -299,3 +305,5 @@ CRON_CLASSES = [
 
 # Query inspect
 QUERY_INSPECT_ENABLED = DEBUG
+
+

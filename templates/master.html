@@ -49,9 +49,14 @@
         <ul class="navbar-nav ml-auto">
             <li>
                 {% if user.is_anonymous %}
-                    <a class="nav-link" href="{% url 'account_login' %}">Log in</a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'account_login' %}">התחברות</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'account_signup' %}">הרשמה</a>
+                    </li>
                 {% else %}
-                      שלום {{ user }}&nbsp;&nbsp;
+                      שלום {{ user }}
                 {% endif %}
             </li>
             {% if not user.is_anonymous %}

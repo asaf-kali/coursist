@@ -1,5 +1,5 @@
 {% load comments %}
-{% load ratings %}
+{% load custom_tags %}
 
 <style>
 </style>
@@ -18,11 +18,13 @@
         <tr>
             <td style="text-align: center;">
                 סמסטר:
-                {{ course_comment.semester_rating.score }}<br>
+                {% rating_for_comment course_comment.semester_rating.score %}
+                <br>
                 בחינות:
-                {{ course_comment.finals_rating.score }}<br>
+                {% rating_for_comment course_comment.finals_rating.score %}
+                <br>
                 עניין:
-                {{ course_comment.interesting_rating.score }}
+                {% rating_for_comment course_comment.interesting_rating.score %}
             </td>
         </tr>
     </table>
