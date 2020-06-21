@@ -2,7 +2,7 @@
 {% load i18n %}
 
 {% block content_body %}
-    <div class="card">
+    <div class="card" style="width: 50%; margin: 0 auto;">
         <div class="card-header text-center">
             <h1>הרשמה</h1>
         </div>
@@ -10,7 +10,7 @@
             <div class="row justify-content-center">
                 <div class="col-sm-4 mt-4">
                     <p class="text-center">
-                        כבר יש לכם משתמש?  <a href="{{ login_url }}">התחברו</a>.
+                        כבר יש לכם משתמש? <a href="{{ login_url }}">התחברו</a>.
                     </p>
 
                     {% if form.errors %}
@@ -47,18 +47,18 @@
         </div>
     </div>
 
-{#    <h1>הרשמה</h1>#}
-{#    {% url 'account_login' as login_url %}#}
-{#    <p>#}
-{#        כבר נרשמת? <a href="{{ login_url }}">התחבר</a>.#}
-{#    </p>#}
-{#    <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">#}
-{#        {% csrf_token %}#}
-{#        {{ form.as_p }}#}
-{#        {% if redirect_field_value %}#}
-{#            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>#}
-{#        {% endif %}#}
-{#        <button type="submit">הרשמה</button>#}
-{#    </form>#}
+    {#    <h1>הרשמה</h1>#}
+    {#    {% url 'account_login' as login_url %}#}
+    {#    <p>#}
+    {#        כבר נרשמת? <a href="{{ login_url }}">התחבר</a>.#}
+    {#    </p>#}
+    {#    <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">#}
+    {#        {% csrf_token %}#}
+    {#        {{ form.as_p }}#}
+    {#        {% if redirect_field_value %}#}
+    {#            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>#}
+    {#        {% endif %}#}
+    {#        <button type="submit">הרשמה</button>#}
+    {#    </form>#}
 
 {% endblock %}

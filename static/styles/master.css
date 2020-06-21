@@ -106,13 +106,10 @@ body {
 }
 
 .sign-out-btn {
-    border-radius: 10%;
-    background: rgba(0, 0, 0, 0);
-    border: 1px solid #3d3d3d;
+    background: none;
+    border: none;
+    color: #069;
     cursor: pointer;
-    padding: 5px;
-    text-align: center;
-    font-size: 10px;
 }
 
 @media (min-width: 992px) {

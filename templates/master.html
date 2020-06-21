@@ -47,26 +47,24 @@
     </div>
     <div class="collapse navbar-collapse dual-collapse w-100 order-2">
         <ul class="navbar-nav ml-auto">
-            <li>
-                {% if user.is_anonymous %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'account_login' %}">התחברות</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'account_signup' %}">הרשמה</a>
-                    </li>
-                {% else %}
-                      שלום {{ user }}
-                {% endif %}
-            </li>
-            {% if not user.is_anonymous %}
-                <li>
+            {% if user.is_anonymous %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'account_login' %}">התחברות</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'account_signup' %}">הרשמה</a>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    שלום {{ user }}
+                </li>
+                <li class="nav-item" style="vertical-align: middle;">
                     <form method="post" action="{% url 'account_logout' %}">
                         {% csrf_token %}
                         {% if redirect_field_value %}
                             <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
                         {% endif %}
-                        <button type="submit" class="sign-out-btn">התנתקות</button>
+                        <button type="submit" class="sign-out-btn nav-link">התנתקות</button>
                     </form>
                 </li>
             {% endif %}

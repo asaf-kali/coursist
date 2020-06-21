@@ -8,7 +8,7 @@
     {% get_providers as socialaccount_providers %}
 {% endif %}
 {% block content_body %}
-    <div class="card">
+    <div class="card" style="width: 50%; margin: 0 auto;">
         <div class="card-header text-center">
             <h1>התחברות</h1>
         </div>
@@ -49,7 +49,8 @@
                         <div class="form-check">
                             {{ form.remember }}
                             <label class="form-check-label" for="id_remember">זכור אותי</label>
-                            <a class="button secondaryAction" style="float:left" href="{% url 'account_reset_password' %}">שכחת את הסיסמה?</a>
+                            <a class="button secondaryAction" style="float:left"
+                               href="{% url 'account_reset_password' %}">שכחת את הסיסמה?</a>
                         </div>
                         {% if redirect_field_value %}
                             <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
