@@ -1,7 +1,10 @@
 from django import template
 from django.conf import settings
 from django.template.loader import get_template
+from django.templatetags.static import static
 from django.utils.safestring import mark_safe
+from django.template import loader
+
 
 register = template.Library()
 
@@ -34,3 +37,36 @@ def raw_include(name: str):
     with open(path) as file:
         output = file.read()
     return mark_safe(output)
+
+
+@register.simple_tag(takes_context=True)
+def rating_for_comment(context, num):
+    request = context.get('request')
+    if request is None:
+        raise Exception('Make sure you have "django.core.context_processors.request" in your templates context processor list')
+
+    star_count = settings.STAR_RATINGS_RANGE
+    stars = [i for i in range(1, star_count + 1)]
+    template_name = 'star_ratings/widget_for_comment.html'
+    icon_height = settings.STAR_SIZE_FOR_COMMENT
+
+    if isinstance(num, int) and 1 <= num <= star_count:
+        percentage = num / star_count * 100
+    else:
+        percentage = 0
+
+    return loader.get_template(template_name).render({
+        'request': request,
+        'stars': stars,
+        'star_count': star_count,
+        'read_only': True,
+        'editable': False,
+        'icon_height': icon_height,
+        'icon_width': icon_height,
+        'sprite_width': icon_height * 3,
+        'sprite_image': static('images/stars.png'),
+        'percentage': percentage,
+        'id': 'dsr{}'.format(0),
+    }, request=request)
+
+
