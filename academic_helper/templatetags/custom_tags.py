@@ -40,7 +40,7 @@ def raw_include(name: str):
 
 
 @register.simple_tag(takes_context=True)
-def rating_for_comment(context, num):
+def simple_rating(context, score):
     request = context.get('request')
     if request is None:
         raise Exception('Make sure you have "django.core.context_processors.request" in your templates context processor list')
@@ -50,8 +50,8 @@ def rating_for_comment(context, num):
     template_name = 'star_ratings/widget_for_comment.html'
     icon_height = settings.STAR_SIZE_FOR_COMMENT
 
-    if isinstance(num, int) and 1 <= num <= star_count:
-        percentage = num / star_count * 100
+    if isinstance(score, int) and 1 <= score <= star_count:
+        percentage = score / star_count * 100
     else:
         percentage = 0
 
