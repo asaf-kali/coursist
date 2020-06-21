@@ -67,8 +67,7 @@ INSTALLED_APPS = [
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
-    # Facebook login
-    # "allauth.socialaccount.providers.facebook",
+    "allauth.socialaccount.providers.facebook",  # Facebook login
     # "allauth.socialaccount.providers.google",
 ]
 
@@ -274,7 +273,7 @@ else:
     MEDIA_ROOT = os.path.join(BASE_DIR, "files/media")
 
 # Auth
-AUTH_ACTIVATION = False
+SOCIAL_AUTH_ACTIVATION = False
 SITE_ID = 1
 LOGIN_REDIRECT_URL = "/"
 ACCOUNT_EMAIL_REQUIRED = True

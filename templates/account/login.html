@@ -1,13 +1,14 @@
 {% extends "master.html" %}
 
 {% load custom_tags %}
-{% get_settings_value auth_active "AUTH_ACTIVATION" %}
 
-{% if auth_active %}
-    {% load account socialaccount %}
-    {% get_providers as socialaccount_providers %}
-{% endif %}
 {% block content_body %}
+    {% get_settings_value auth_active "SOCIAL_AUTH_ACTIVATION" %}
+
+    {% if auth_active %}
+        {% load account socialaccount %}
+        {% get_providers as socialaccount_providers %}
+    {% endif %}
     <div class="card">
         <div class="card-header text-center">
             <h1>התחברות</h1>
@@ -17,7 +18,7 @@
                 <div class="col-sm-4 mt-4">
                     {% if socialaccount_providers %}
                         <p> התחברו באמצעות חשבון קיים של שירות צד שלישי
-                            או <a href="{{ signup_url }}">הירשמו</a>
+                            <a href="{{ signup_url }}">הירשמו</a>
                         </p>
                         <div class="socialaccount_ballot">
                             <ul class="socialaccount_providers">
