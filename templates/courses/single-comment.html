@@ -18,13 +18,13 @@
         <tr>
             <td style="text-align: center;">
                 סמסטר:
-                {% rating_for_comment course_comment.semester_rating.score %}
+                {% simple_rating course_comment.semester_rating.score %}
                 <br>
                 בחינות:
-                {% rating_for_comment course_comment.finals_rating.score %}
+                {% simple_rating course_comment.finals_rating.score %}
                 <br>
                 עניין:
-                {% rating_for_comment course_comment.interesting_rating.score %}
+                {% simple_rating course_comment.interesting_rating.score %}
             </td>
         </tr>
     </table>
