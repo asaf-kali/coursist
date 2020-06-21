@@ -166,6 +166,7 @@ LOGGING = {
         "root_file": {
             "class": "logging.handlers.TimedRotatingFileHandler",
             "filename": os.path.join(LOGGING_DIR, "root.log"),
+            "encoding": "utf-8",
             "formatter": "verbose",
             "level": "INFO",
             "when": "midnight",
@@ -174,12 +175,14 @@ LOGGING = {
         "coursist_file": {
             "class": "logging.handlers.TimedRotatingFileHandler",
             "filename": os.path.join(LOGGING_DIR, "coursist.log"),
+            "encoding": "utf-8",
             "formatter": "verbose",
             "when": "midnight",
         },
         "django_file": {
             "class": "logging.handlers.TimedRotatingFileHandler",
             "filename": os.path.join(LOGGING_DIR, "django.log"),
+            "encoding": "utf-8",
             "formatter": "verbose",
             "level": "INFO",
             "when": "midnight",
@@ -188,6 +191,7 @@ LOGGING = {
         "debug_file": {
             "class": "logging.handlers.TimedRotatingFileHandler",
             "filename": os.path.join(LOGGING_DIR, "debug.log"),
+            "encoding": "utf-8",
             "formatter": "debug",
             "when": "midnight",
             "backupCount": 7,
@@ -280,13 +284,13 @@ ACCOUNT_EMAIL_VERIFICATION = "optional"  # TODO change to mandatory
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 ACCOUNT_AUTHENTICATION_METHOD = "username_email"  # may sign in with either email or username
 ACCOUNT_FORMS = {
-    'login': 'academic_helper.forms.CustomLoginForm.CustomLoginForm',
-    'signup': 'academic_helper.forms.CustomSignupForm.CustomSignupForm',
-    'reset_password': 'academic_helper.forms.CustomPasswordResetForm.CustomPasswordResetForm',
+    "login": "academic_helper.forms.CustomLoginForm.CustomLoginForm",
+    "signup": "academic_helper.forms.CustomSignupForm.CustomSignupForm",
+    "reset_password": "academic_helper.forms.CustomPasswordResetForm.CustomPasswordResetForm",
 }
 # Social auth
 # SOCIALACCOUNT_AUTO_SIGNUP = True
-SOCIAL_AUTH_ACTIVATION = False
+SOCIAL_AUTH_ACTIVATION = ENV == Environment.prod
 SOCIALACCOUNT_EMAIL_REQUIRED = True
 SOCIALACCOUNT_ADAPTER = "academic_helper.login_adapter.MySocialAccountAdapter"
 
@@ -309,5 +313,3 @@ CRON_CLASSES = [
 
 # Query inspect
 QUERY_INSPECT_ENABLED = DEBUG
-
-

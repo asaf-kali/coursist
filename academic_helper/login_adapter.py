@@ -14,10 +14,10 @@ import json
 
 
 class MySocialAccountAdapter(DefaultSocialAccountAdapter):
-    '''
+    """
     Overrides allauth.socialaccount.adapter.DefaultSocialAccountAdapter.pre_social_login to
     perform some actions right after successful login
-    '''
+    """
 
     def pre_social_login(self, request, sociallogin):
         # just to make @receiver(pre_social_login) possible
@@ -35,10 +35,10 @@ def link_to_local_user(sender, request, sociallogin, **kwargs):
     * https://github.com/pennersr/django-allauth/issues/215
 
     """
-    email_address = sociallogin.account.extra_data['email']
+    email_address = sociallogin.account.extra_data["email"]
     User = get_user_model()
     users = User.objects.filter(email=email_address)
     if users:
         # allauth.account.app_settings.EmailVerificationMethod
-        perform_login(request, users[0], email_verification='optional')
+        perform_login(request, users[0], email_verification="optional")
         raise ImmediateHttpResponse(redirect(settings.LOGIN_REDIRECT_URL.format(id=request.user.id)))

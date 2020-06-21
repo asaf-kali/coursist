@@ -41,13 +41,15 @@ def raw_include(name: str):
 
 @register.simple_tag(takes_context=True)
 def simple_rating(context, score):
-    request = context.get('request')
+    request = context.get("request")
     if request is None:
-        raise Exception('Make sure you have "django.core.context_processors.request" in your templates context processor list')
+        raise Exception(
+            'Make sure you have "django.core.context_processors.request" in your templates context processor list'
+        )
 
     star_count = settings.STAR_RATINGS_RANGE
     stars = [i for i in range(1, star_count + 1)]
-    template_name = 'star_ratings/widget_for_comment.html'
+    template_name = "star_ratings/widget_for_comment.html"
     icon_height = settings.STAR_SIZE_FOR_COMMENT
 
     if isinstance(score, int) and 1 <= score <= star_count:
@@ -55,18 +57,19 @@ def simple_rating(context, score):
     else:
         percentage = 0
 
-    return loader.get_template(template_name).render({
-        'request': request,
-        'stars': stars,
-        'star_count': star_count,
-        'read_only': True,
-        'editable': False,
-        'icon_height': icon_height,
-        'icon_width': icon_height,
-        'sprite_width': icon_height * 3,
-        'sprite_image': static('images/stars.png'),
-        'percentage': percentage,
-        'id': 'dsr{}'.format(0),
-    }, request=request)
-
-
+    return loader.get_template(template_name).render(
+        {
+            "request": request,
+            "stars": stars,
+            "star_count": star_count,
+            "read_only": True,
+            "editable": False,
+            "icon_height": icon_height,
+            "icon_width": icon_height,
+            "sprite_width": icon_height * 3,
+            "sprite_image": static("images/stars.png"),
+            "percentage": percentage,
+            "id": "dsr{}".format(0),
+        },
+        request=request,
+    )
