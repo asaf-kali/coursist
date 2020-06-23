@@ -56,13 +56,14 @@
                 </li>
             {% else %}
                 <li class="nav-item">
-                    שלום {{ user }}
+                    <a class="nav-link" href="">שלום {{ user }}</a>
                 </li>
-                <li class="nav-item" style="vertical-align: middle;">
-                    <form method="post" action="{% url 'account_logout' %}">
+                <li class="nav-item">
+                    <form method="post" action="{% url 'account_logout' %}" style="margin: 0 auto;">
                         {% csrf_token %}
                         {% if redirect_field_value %}
-                            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+                            <input type="hidden" name="{{ redirect_field_name }}"
+                                   value="{{ redirect_field_value }}"/>
                         {% endif %}
                         <button type="submit" class="sign-out-btn nav-link">התנתקות</button>
                     </form>

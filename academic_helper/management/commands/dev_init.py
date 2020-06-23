@@ -1,10 +1,23 @@
 from django.core.management import BaseCommand
 
 from academic_helper.logic.shnaton_parser import ShnatonParser
-from academic_helper.models import Course, StudyBlock, StudyPlan
+from academic_helper.models import Course, StudyBlock, StudyPlan, CoursistUser
 from academic_helper.utils.logger import log
 
 courses_to_fetch = [94640, 94625, 67504, 67101, 67392, 67829]  # Intro  # Crypto  # Impr
+
+
+def create_admin():
+    admin, created = CoursistUser.objects.get_or_create(
+        username="admin",
+        first_name="Local",
+        last_name="Adminovski",
+        is_superuser=True,
+        is_staff=True,
+        email="admin@coursist.xyz",
+    )
+    admin.set_password("123456")
+    admin.save()
 
 
 def fetch_courses():
