@@ -9,13 +9,13 @@
         {% load account socialaccount %}
         {% get_providers as socialaccount_providers %}
     {% endif %}
-    <div class="card">
+    <div class="card" style="width: 50%; margin: 0 auto;">
         <div class="card-header text-center">
             <h1>התחברות</h1>
         </div>
         <div class="card-body">
             <div class="row justify-content-center">
-                <div class="col-sm-4 mt-4">
+                <div class="mt-4 card-form">
                     {% if socialaccount_providers %}
                         <p> אם עדיין לא נרשמתם, התחברו באמצעות פייסבוק או
                             <a href="{{ signup_url }}">הירשמו</a>

@@ -20,8 +20,8 @@ body {
     background-size: cover;
     background-position-y: 50%;
     background-image: url(../images/search-bg.jpeg);
-    min-height: 350px;
-    max-height: 350px;
+    min-height: 275px;
+    max-height: 275px;
     height: 100%;
 }
 
@@ -110,6 +110,11 @@ body {
     border: none;
     color: #069;
     cursor: pointer;
+}
+
+.card-form {
+    max-width: 80%;
+    min-width: 50%;
 }
 
 @media (min-width: 992px) {

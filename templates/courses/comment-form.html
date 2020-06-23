@@ -4,12 +4,14 @@
 <form action="{% comment_form_target %}" method="POST">
     {% csrf_token %}
     <div>{{ form.comment }}</div>
-    <div>{{ form.is_anonymous }}תגובה אנונימית </div>
-{#        {{ form.honeypot }} {# TODO make it work: https://django-contrib-comments.readthedocs.io/en/latest/quickstart.html#id1#}
+    <br>
+    <div>{{ form.is_anonymous }}&nbsp;תגובה אנונימית</div>
+    {#        {{ form.honeypot }} {# TODO make it work: https://django-contrib-comments.readthedocs.io/en/latest/quickstart.html#id1#}
     {{ form.content_type }}
     {{ form.object_pk }}
     {{ form.timestamp }}
     {{ form.security_hash }}
-    <input type="hidden" name="next" value="{{ request.build_absolute_uri }}" />
-    <input type="submit" value="Add comment" id="id_submit" />
+    <input type="hidden" name="next" value="{{ request.build_absolute_uri }}"/>
+    <br>
+    <input type="submit" class="btn btn-primary" value="הוסף תגובה" id="id_submit"/>
 </form>
