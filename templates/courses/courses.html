@@ -5,7 +5,6 @@
 <p id="invisibleClickable"></p>
 {% block head %}
     <script src={% static 'scripts/handlebars.js' %}></script>
-
     <script name="course-single" type="text/x-handlebars-template">
         {% raw_include 'courses/course-item.html' %}
     </script>
@@ -33,7 +32,6 @@
                 (response) => {
                     const courses = response["courses"];
                     console.log(`Got ${courses.length} courses`);
-
                     show("courses-list", () => {
                         renderSearchResults(courses);
                     });
@@ -43,10 +41,20 @@
                 '{{ csrf_token }}');
         });
     </script>
+    <style>
+        div.course-item {
+            width: 23%;
+            height: 9.5rem;
+            margin: 7px;
+            border: 1px solid var(--yellow);
+            border-radius: 20px;
+            background-color: #fffff3;
+        }
+    </style>
 {% endblock %}
 
 {% block content_header %}
-    <div class="text-white text-center d-flex align-items-center py-5 px-4">
+    <div class="text-white text-center d-flex align-items-center">
         <div class="container">
             <br><br>
             <div class="row">
@@ -124,7 +132,8 @@
 {% endblock %}
 
 {% block content_body %}
-    <div class="container" id="courses-list">
+    <div class="container" style="width: 95%; height: 100%; justify-content: center; align-items: center;"
+         id="courses-list">
     </div>
 {% endblock %}
 

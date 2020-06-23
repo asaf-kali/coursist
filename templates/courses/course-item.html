@@ -1,9 +1,10 @@
-<div class="card float-left" style="width: 24%; height: 10rem; margin-left: 10px; margin-bottom: 10px">
-    <div class="card-body text-center">
-        <a href="{{ course.url }}">
+<div class="card float-left course-item">
+    <a href="{{ course.url }}" style="text-decoration: none;">
+        <div class="card-body text-center">
+            <h6 class="card-subtitle mb-2 text-muted">
+                <br>{{ course.course_number }}
+            </h6>
             <h5 class="card-title" style="color: black">{{ course.name }}</h5>
-        </a>
-        <h6 class="card-subtitle mb-2 text-muted">{{ course.course_number }}</h6>
-        <a href="{{ course.url }}"><img alt="arrow" src="{{ arrow_url }}"/></a>
-    </div>
+        </div>
+    </a>
 </div>

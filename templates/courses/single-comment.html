@@ -2,31 +2,48 @@
 {% load custom_tags %}
 
 <style>
+    .cool-border {
+        border: 3px solid var(--gray);
+        border-radius: 20px;
+    }
+
+    table.comment {
+        margin: 10px;
+    }
+
+    table.comment td {
+        padding: 15px;
+    }
 </style>
-<div class="card" style="margin-bottom: 5px">
-    <table>
+<div class="card cool-border" style="width: 70%;">
+    <table class="comment">
         <tr>
-            <td style="width: 20%; direction: rtl; text-align: center;">
+            <td style="width: 40%; direction: rtl; text-align: center;">
                 <h5 class="card-title"> {{ course_comment.get_user_name_to_show }}</h5>
                 <h6 class="card-subtitle mb-2 text-muted">בתאריך
                     {{ course_comment.submit_date.date }}</h6>
             </td>
-            <td rowspan="2">
-                <p class="card-text">{{ course_comment.comment }}</p>
+            <td rowspan="2" style="border-right: 2px solid var(--yellow); vertical-align: top;">
+                <p class="card-text">
+                    {{ course_comment.comment }}
+                </p>
             </td>
         </tr>
         <tr>
             <td style="text-align: center;">
-                סמסטר:
-                {% simple_rating course_comment.semester_rating.score %}
-                <br>
-                בחינות:
-                {% simple_rating course_comment.finals_rating.score %}
-                <br>
-                עניין:
-                {% simple_rating course_comment.interesting_rating.score %}
+                <div style="text-align: left; display: inline-block;">
+                    סמסטר:
+                    &nbsp;{% simple_rating course_comment.semester_rating.score %}
+                    <br>
+                    בחינות:
+                    &nbsp;{% simple_rating course_comment.finals_rating.score %}
+                    <br>
+                    עניין:
+                    &nbsp;{% simple_rating course_comment.interesting_rating.score %}
+                </div>
             </td>
         </tr>
     </table>
 </div>
 
+<br>

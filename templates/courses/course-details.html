@@ -39,8 +39,10 @@
     <hr>
     <table style="width: 100%;">
         <tr>
-            <td style="width: 25%;">
-                להוסיף כאן בקשה מהמשתמש להוספת תגובה, קצת להדריך אותו מה כדאי שיהיה בה - פירוט על המרצה, כיצד בנוי הקורס, מה מרכיבי הציון, מה היה חיובי ומה היה שלילי וכו'.
+            <td style="width: 35%; padding: 30px; text-align: center;">
+                להוסיף כאן בקשה מהמשתמש להוספת תגובה, קצת להדריך אותו מה כדאי שיהיה בה - פירוט על המרצה, כיצד בנוי
+                הקורס, מה מרכיבי הציון, מה היה חיובי ומה היה שלילי וכו'.
+                <br><br>
                 <div style="margin: 0 auto;">
                     {% if not user.is_anonymous %}
                         {% include 'courses/comment-form.html' with couse=course %}
