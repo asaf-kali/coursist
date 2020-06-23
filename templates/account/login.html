@@ -3,12 +3,13 @@
 {% load custom_tags %}
 {% get_settings_value auth_active "AUTH_ACTIVATION" %}
 
-{% if auth_active %}
-    {% load account socialaccount %}
-    {% get_providers as socialaccount_providers %}
-{% endif %}
 {% block content_body %}
-    <div class="card" style="width: 50%; margin: 0 auto;">
+    {% get_settings_value auth_active "SOCIAL_AUTH_ACTIVATION" %}
+    {% if auth_active %}
+        {% load account socialaccount %}
+        {% get_providers as socialaccount_providers %}
+    {% endif %}
+    <div class="card">
         <div class="card-header text-center">
             <h1>התחברות</h1>
         </div>
@@ -16,14 +17,14 @@
             <div class="row justify-content-center">
                 <div class="col-sm-4 mt-4">
                     {% if socialaccount_providers %}
-                        <p> התחברו באמצעות חשבון קיים של שירות צד שלישי
-                            או <a href="{{ signup_url }}">הירשמו</a>
+                        <p> אם עדיין לא נרשמתם, התחברו באמצעות פייסבוק או
+                            <a href="{{ signup_url }}">הירשמו</a>
                         </p>
                         <div class="socialaccount_ballot">
                             <ul class="socialaccount_providers">
                                 {% include "socialaccount/snippets/provider_list.html" with process="login" %}
                             </ul>
-                            <div class="login-or">או</div>
+                            <div class="login-or"></div>
                         </div>
                         {% include "socialaccount/snippets/login_extra.html" %}
                     {% else %}
