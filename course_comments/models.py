@@ -42,5 +42,5 @@ class CourseComment(CommentAbstractModel):
     @property
     def get_unique_url(self):
         current_site = Site.objects.get_current().domain
-        print(f'url = {current_site}/comments/{self.user}.{self.object_pk}.{self.id}')
-        return f"{current_site}/comments/{self.user}.{self.object_pk}.{self.id}"
+        print(f'url = {current_site}comment/{self.id}')
+        return f"{current_site}"

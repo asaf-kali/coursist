@@ -19,4 +19,5 @@ urlpatterns = [
     path("accounts/", include("allauth.urls"), name="accounts"),
     path("about/", AboutView.as_view(), name="about"),
     path("schedule/", ScheduleView.as_view(), name="schedule"),
+    path("comment/<int:course_number>", IndexView.as_view(), name="comment"),
 ]
