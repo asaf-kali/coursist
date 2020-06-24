@@ -3,6 +3,7 @@ from django_comments.abstracts import CommentAbstractModel
 from star_ratings.models import UserRating
 
 from academic_helper.models import Course
+from django.contrib.sites.models import Site
 
 
 class CourseComment(CommentAbstractModel):
@@ -37,3 +38,9 @@ class CourseComment(CommentAbstractModel):
     def interesting_rating(self):
         course = Course.objects.get(pk=self.object_pk)
         return self.get_rating(course.interesting_rating)
+
+    @property
+    def get_unique_url(self):
+        current_site = Site.objects.get_current().domain
+        print(f'url = {current_site}/comments/{self.user}.{self.object_pk}.{self.id}')
+        return f"{current_site}/comments/{self.user}.{self.object_pk}.{self.id}"

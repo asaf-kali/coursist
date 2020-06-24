@@ -2,7 +2,7 @@
 
 {% get_comment_form for course as form %}
 <form action="{% comment_form_target %}" method="POST">
-    <div class="card cool-border" style="width: 70%; background-color: #cbd3da">
+    <div class="card cool-border" style="width: 70%; background-color: #f5f5f5">
         <table class="comment">
             <tr>
                 <td style="width: 40%; direction: rtl; text-align: center;">
@@ -19,7 +19,7 @@
                         {{ form.timestamp }}
                         {{ form.security_hash }}
                         <input type="hidden" name="next" value="{{ request.build_absolute_uri }}"/>
-                        <input type="submit" class="btn btn-primary" value="הוסף תגובה" id="id_submit"/>
+                        <input type="submit" class="btn btn-primary" value="הוספת תגובה" id="id_submit"/>
                         {{ form.is_anonymous }}&nbsp;תגובה אנונימית
                     </p>
                 </td>
