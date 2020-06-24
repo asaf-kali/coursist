@@ -113,8 +113,9 @@ body {
 }
 
 .card-form {
-    max-width: 80%;
-    min-width: 50%;
+    max-width: 600px;
+    min-width: 300px;
+    margin: 0 auto;
 }
 
 @media (min-width: 992px) {
