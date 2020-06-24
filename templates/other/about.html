@@ -2,27 +2,47 @@
 {% load static %}
 
 {% block head %}
+    <style>
+        div.disclaimer {
+            opacity: 0.7;
+            background-color: #fff8f8;
+            margin: 0 auto;
+            border: 2px solid #f5bcbc;
+            border-radius: 20px;
+            width: 90%;
+        }
+    </style>
+{% endblock %}
+
+{% block content_header %}
+    <div class="container-fluid text-center text-white">
+        <br><br><br>
+        <div class="col-sm-12">
+            <h1>אודות הפרוייקט</h1>
+        </div>
+        <br><br>
+    </div>
 {% endblock %}
 
 {% block content_body %}
-    <div class="card text-center">
+    <div class="card text-center card-form" style="min-width: 35%">
         <div class="card-header">
-            <h1>About</h1>
+            <h1>Coursist</h1>
         </div>
         <div class="card-body" style="margin: 0 auto;">
-            <h5 class="card-title">Coursist</h5>
-            <div class="card-text" style="direction: ltr; text-align: left;">
-                This project is intended for university students all around the world.<br>
-                The main features that this project supplies are:<br>
+            <div class="card-text" style="text-align: right;">
+                קורסיסט הוא פרוייקט קוד פתוח, ומהווה אב-טיפוס לאתר שיכול לשמש סטודנטים מכל רחבי העולם.<br>
+                המטרות המרכזיות שהפרוייקט שואף לעמוד בהן:
+                <br><br>
                 <ol>
                     <li>
-                        Social course review system.
+                        דירוג ובקרה חברתית של קורסים ומרצים על-ידי סטודנטים.
                     </li>
                     <li>
-                        Semestrial courses schedule building tool.
+                        כלי עזר לתכנון מערכת שעות סמסטריאלית.
                     </li>
                     <li>
-                        Course program planning for the entire degree.
+                        כלי עזר לתכנון מסלול התואר עד לסיומו.
                     </li>
                 </ol>
             </div>
@@ -30,6 +50,13 @@
             <a href="https://github.com/asaf-kali/coursist" class="btn btn-primary">Go to github repo</a>
         </div>
         <br>
+        <div class="card-text disclaimer">
+            <br>
+            * דיסקליימר: האתר נבנה בפרוייקט במסגרת הקורס "67118 - סדנא בקוד פתוח" של האוניברסיטה העברית,<br>
+            ואין היוצרים שלו אחראיים על התכנים בו, אבטחתם ונכונותם.
+            <br><br>
+        </div>
+        <br><br>
         <div class="card-footer text-muted">
             Created on April 2020
         </div>

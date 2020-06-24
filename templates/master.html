@@ -40,9 +40,11 @@
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'about' %}">אודות</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'admin:index' %}">ניהול</a>
-            </li>
+            {% if user.is_staff %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'admin:index' %}">ניהול</a>
+                </li>
+            {% endif %}
         </ul>
     </div>
     <div class="collapse navbar-collapse dual-collapse w-100 order-2">
