@@ -2,18 +2,33 @@
 {% load static %}
 
 {% block head %}
+    <style>
+        img.no-content {
+            margin: 0 auto;
+            display: block;
+            border: 3px solid black;
+            border-radius: 20px;
+            opacity: 0.8;
+            width: 650px;
+        }
+    </style>
 {% endblock %}
 
 {% block content_header %}
-
+    <div class="container-fluid text-center text-white">
+        <br><br><br>
+        <div class="col-sm-12">
+            <h1>Coursist</h1>
+            <p>
+                מענה פשוט לכל הבעיות המסובכות של התואר
+            </p>
+        </div>
+        <br><br>
+    </div>
 {% endblock %}
 
 {% block content_body %}
-    <div style="text-align: center;">
-    {% if not user.is_annonymous %}
-        שלום {{ user.username }}, ברוך הבא!
-    {% endif %}
-    <br>
-    Shani - this is your place to shine!
-    </div>
+    <br><br>
+    <br><br>
+    <img alt="No content" src="{% static 'images/no-content.jpg' %}" class="no-content">
 {% endblock %}
