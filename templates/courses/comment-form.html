@@ -1,9 +1,28 @@
 {% load comments %}
 
+<style>
+
+    .form-border {
+        border: 3px solid var(--gray);
+        border-radius: 20px;
+        width: 70%;
+        background-color: #f5f5f5
+    }
+
+    table.form {
+        margin: 10px;
+    }
+
+    table.form td {
+        padding: 15px;
+    }
+
+</style>
+
 {% get_comment_form for course as form %}
 <form action="{% comment_form_target %}" method="POST">
-    <div class="card cool-border" style="width: 70%; background-color: #f5f5f5">
-        <table class="comment">
+    <div class="card form-border">
+        <table class="form">
             <tr>
                 <td style="width: 40%; direction: rtl; text-align: center;">
                     תעזרו לחברים לדעת על הקורס!<br><br>מה כולל הקורס?<br>האם החומר עניין אותך?<br>איך היה המרצה?<br>כמה עבודות/תרגילים?<br>כמה זמן מעבר לשעות בכיתה נדרש?
