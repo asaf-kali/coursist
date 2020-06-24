@@ -39,8 +39,9 @@
     <hr>
     <table style="width: 100%;">
         <tr>
-            <td style="width: 35%; padding: 30px; text-align: center;">
-                תעזרו לחברים לדעת על הקורס!<br><br>מה כולל הקורס?<br>האם החומר עניין אותך?<br>איך היה המרצה?<br>כמה עבודות/תרגילים?<br>כמה זמן מעבר לשעות בכיתה נדרש?
+            <td style="width: 20%; padding: 30px; text-align: center;">
+            </td>
+            <td>
                 <br><br>
                 <div style="margin: 0 auto;">
                     {% if not user.is_anonymous %}
@@ -49,8 +50,6 @@
                         על מנת להוסיף תגובה, אנא התחברו.
                     {% endif %}
                 </div>
-            </td>
-            <td>
                 {% include 'courses/comments-list.html' with couse=course %}
             </td>
         </tr>

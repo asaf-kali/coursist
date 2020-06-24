@@ -2,16 +2,35 @@
 
 {% get_comment_form for course as form %}
 <form action="{% comment_form_target %}" method="POST">
-    {% csrf_token %}
-    <div>{{ form.comment }}</div>
-    <br>
-    <div>{{ form.is_anonymous }}&nbsp;תגובה אנונימית</div>
-    {#        {{ form.honeypot }} {# TODO make it work: https://django-contrib-comments.readthedocs.io/en/latest/quickstart.html#id1#}
-    {{ form.content_type }}
-    {{ form.object_pk }}
-    {{ form.timestamp }}
-    {{ form.security_hash }}
-    <input type="hidden" name="next" value="{{ request.build_absolute_uri }}"/>
-    <br>
-    <input type="submit" class="btn btn-primary" value="הוסף תגובה" id="id_submit"/>
+    <div class="card cool-border" style="width: 70%; background-color: #cbd3da">
+        <table class="comment">
+            <tr>
+                <td style="width: 40%; direction: rtl; text-align: center;">
+                    תעזרו לחברים לדעת על הקורס!<br><br>מה כולל הקורס?<br>האם החומר עניין אותך?<br>איך היה המרצה?<br>כמה עבודות/תרגילים?<br>כמה זמן מעבר לשעות בכיתה נדרש?
+                </td>
+                <td rowspan="2" style="border-right: 2px solid var(--gray); vertical-align: top;">
+                    <p class="card-text">
+                        {% csrf_token %}
+                        <div>{{ form.comment }}</div>
+                        <br>
+                        {#        {{ form.honeypot }} {# TODO make it work: https://django-contrib-comments.readthedocs.io/en/latest/quickstart.html#id1#}
+                        {{ form.content_type }}
+                        {{ form.object_pk }}
+                        {{ form.timestamp }}
+                        {{ form.security_hash }}
+                        <input type="hidden" name="next" value="{{ request.build_absolute_uri }}"/>
+                        <input type="submit" class="btn btn-primary" value="הוסף תגובה" id="id_submit"/>
+                        {{ form.is_anonymous }}&nbsp;תגובה אנונימית
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">
+                    <div style="text-align: left; display: inline-block;">
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
 </form>
