@@ -28,6 +28,11 @@
         {% raw_include 'schedule/schedule-single-event.html' %}
     </script>
     <script>document.getElementsByTagName("html")[0].className += " js";</script>
+    <style>
+        .search-results {
+            z-index: 10 !important;
+        }
+    </style>
 {% endblock head %}
 {% block content_header %}
     <div class="container-fluid text-center text-white">
@@ -50,9 +55,9 @@
                 <div id="search_form" class="mb-2">
                     <div class="course_search_wrapper">
                         <input type="text" name="course_input" id="course_input"
-                               placeholder="הכניסו שם או מספר קורס" />
+                               placeholder="הכניסו שם או מספר קורס"/>
                     </div>
-                    <div id="search_results">
+                    <div id="search_results" class="search-results">
                         <ul></ul>
                     </div>
                 </div>
