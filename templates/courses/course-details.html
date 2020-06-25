@@ -20,7 +20,6 @@
 {% endblock %}
 
 {% block content_body %}
-    <div id="fb-root"></div>
     <script async defer crossorigin="anonymous"
             src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v7.0&appId=1129461710764059&autoLogAppEvents=1"></script>
     <br>
@@ -39,19 +38,18 @@
     <hr>
     <table style="width: 100%;">
         <tr>
-            <td style="width: 35%; padding: 30px; text-align: center;">
-                להוסיף כאן בקשה מהמשתמש להוספת תגובה, קצת להדריך אותו מה כדאי שיהיה בה - פירוט על המרצה, כיצד בנוי
-                הקורס, מה מרכיבי הציון, מה היה חיובי ומה היה שלילי וכו'.
+            <td style="width: 20%; padding: 30px; text-align: center;">
+            </td>
+            <td>
                 <br><br>
-                <div style="margin: 0 auto;">
+                <div>
                     {% if not user.is_anonymous %}
                         {% include 'courses/comment-form.html' with couse=course %}
                     {% else %}
                         על מנת להוסיף תגובה, אנא התחברו.
                     {% endif %}
                 </div>
-            </td>
-            <td>
+                <br><br>
                 {% include 'courses/comments-list.html' with couse=course %}
             </td>
         </tr>

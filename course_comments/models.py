@@ -2,7 +2,8 @@ from django.db import models
 from django_comments.abstracts import CommentAbstractModel
 from star_ratings.models import UserRating
 
-from academic_helper.models import Course
+from academic_helper.models import Course, log
+from django.contrib.sites.models import Site
 
 
 class CourseComment(CommentAbstractModel):

@@ -1,17 +1,69 @@
 {% load comments %}
 
+<style>
+
+    .form-border {
+        border: 3px solid var(--gray);
+        border-radius: 20px;
+        width: 70%;
+        background-color: #f5f5f5
+    }
+
+    table.form {
+        margin: 10px;
+    }
+
+    table.form td {
+        padding: 15px;
+    }
+
+    .main-content {
+        border-right: 2px solid var(--gray);
+        vertical-align: top;
+        text-align: center;
+        display: block;
+    }
+
+    div.comment-wrapper {
+        width: 80%;
+        display: inline-block;
+    }
+
+    div.comment-wrapper textarea {
+        width: 100%;
+    }
+
+</style>
+
 {% get_comment_form for course as form %}
 <form action="{% comment_form_target %}" method="POST">
     {% csrf_token %}
-    <div>{{ form.comment }}</div>
-    <br>
-    <div>{{ form.is_anonymous }}&nbsp;תגובה אנונימית</div>
-    {#        {{ form.honeypot }} {# TODO make it work: https://django-contrib-comments.readthedocs.io/en/latest/quickstart.html#id1#}
-    {{ form.content_type }}
-    {{ form.object_pk }}
-    {{ form.timestamp }}
-    {{ form.security_hash }}
-    <input type="hidden" name="next" value="{{ request.build_absolute_uri }}"/>
-    <br>
-    <input type="submit" class="btn btn-primary" value="הוסף תגובה" id="id_submit"/>
+    <div class="card form-border">
+        <table class="form">
+            <tr>
+                <td style="width: 40%; direction: rtl; text-align: center;">
+                    תעזרו לחברים לדעת על הקורס!<br><br>מה כולל הקורס?<br>האם החומר עניין אותך?<br>איך היה המרצה?<br>כמה
+                    עבודות/תרגילים?<br>כמה זמן מעבר לשעות בכיתה נדרש?
+                </td>
+                <td rowspan="2" class="main-content">
+                    <p class="card-text">
+                    <div class="comment-wrapper">
+                        {{ form.comment }}
+                    </div>
+                    <br><br>
+                    {# TODO make it work: https://django-contrib-comments.readthedocs.io/en/latest/quickstart.html#id1 #}
+                    {# {{ form.honeypot }} #}
+                    {{ form.content_type }}
+                    {{ form.object_pk }}
+                    {{ form.timestamp }}
+                    {{ form.security_hash }}
+                    {{ form.is_anonymous }}&nbsp;תגובה אנונימית
+                    <br><br>
+                    <input type="submit" class="btn btn-primary" value="הוספת תגובה" id="id_submit"/>
+                    <input type="hidden" name="next" value="{{ request.build_absolute_uri }}"/>
+                </td>
+            </tr>
+        </table>
+    </div>
+
 </form>

@@ -14,6 +14,13 @@
     table.comment td {
         padding: 15px;
     }
+
+    div.like-container {
+        position: absolute;
+        display: block;
+        left: 20px;
+        bottom: 20px;
+    }
 </style>
 <div class="card cool-border" style="width: 70%;">
     <table class="comment">
@@ -27,6 +34,9 @@
                 <p class="card-text">
                     {{ course_comment.comment }}
                 </p>
+                <div class="like-container">
+                    {% include 'other/facebook-like.html' with url=course_comment|unique_url %}
+                </div>
             </td>
         </tr>
         <tr>
