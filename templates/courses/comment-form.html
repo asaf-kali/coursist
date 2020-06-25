@@ -1,12 +1,10 @@
-{% load comments %}
-
 <style>
 
-    .form-border {
+    .comment-form {
         border: 3px solid var(--gray);
         border-radius: 20px;
         width: 70%;
-        background-color: #f5f5f5
+        background-color: #fafafa
     }
 
     table.form {
@@ -18,7 +16,7 @@
     }
 
     .main-content {
-        border-right: 2px solid var(--gray);
+        border-right: 2px solid var(--yellow);
         vertical-align: top;
         text-align: center;
         display: block;
@@ -33,9 +31,15 @@
 
     div.comment-wrapper textarea {
         width: 100%;
+        padding: 15px;
+        border-radius: 20px;
+        resize: none;
+        border: 1px solid var(--gray);
+        outline: none;
+    {#background-color: #f1f1f1;#}
     }
 
-    div.fdasgasdg {
+    div.fdasgasdg {# This name is inetnded to be jibbrish #} {
         position: relative;
         top: -80px;
     }
@@ -46,11 +50,13 @@
     }
 
 </style>
+{% load comments %}
+
 
 {% get_comment_form for course as form %}
 <form action="{% comment_form_target %}" method="POST">
     {% csrf_token %}
-    <div class="card form-border">
+    <div class="card comment-form">
         <table class="form">
             <tr>
                 <td style="width: 40%; direction: rtl; text-align: center;">
