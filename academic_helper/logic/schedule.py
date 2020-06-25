@@ -12,7 +12,10 @@ def get_user_choices(user, cookie_choices):
     else:
         if ClassSchedule.objects.filter(user=user).count() == 0:
             for group_id in cookie_choices:
-                set_user_schedule_group(user, group_id)
+                try:
+                    set_user_schedule_group(user, group_id)
+                except ClassGroup.DoesNotExist:
+                    pass
 
         groups = [choice.group for choice in ClassSchedule.objects.filter(user=user)]
 
