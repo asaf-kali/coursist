@@ -43,7 +43,7 @@ class CoursesView(ExtendedViewMixin, ListView):
 
     @property
     def object_list(self):
-        return Course.objects.all()[:50]
+        return Course.objects.all()[:20]
 
     def post(self, request: WSGIRequest):
         if not request.is_ajax():

@@ -93,14 +93,6 @@ class Base(models.Model):
     class Meta:
         abstract = True
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        if models.DEFERRED in args:
-            # We don't care about the dict logic (do we?)
-            self._initial = dict()
-        else:
-            self._initial = self.as_dict
-
     def is_same_model_as(self, other) -> bool:
         if not isinstance(other, models.Model):
             return False
@@ -120,27 +112,6 @@ class Base(models.Model):
         return True
 
     @property
-    def diff(self) -> dict:
-        d1 = self._initial
-        d2 = self.as_dict
-        diffs = [(k, (v, d2[k])) for k, v in d1.items() if str(v) != str(d2[k])]
-        return dict(diffs)
-
-    @property
-    def has_changed(self) -> bool:
-        return bool(self.diff)
-
-    @property
-    def changed_fields(self) -> KeysView:
-        return self.diff.keys()
-
-    def get_field_diff(self, field_name):
-        """
-        Returns a diff for field if it's changed and None otherwise.
-        """
-        return self.diff.get(field_name, None)
-
-    @property
     def as_dict(self) -> dict:
         fields = [field.name for field in self._meta.fields]
         result = model_to_dict(self, fields=fields)
@@ -158,16 +129,6 @@ class Base(models.Model):
     @property
     def verbose_type(self):
         return self._meta.verbose_name.title()
-
-    def save(self, *args, **kwargs):
-        """
-        Saves model and set initial state.
-        """
-        if self.has_changed and self.id:
-            # TODO: solve hebrew encoding issue
-            log.info(f"{self.verbose_type} {wrap(self.id)} changed: {self.diff}".encode("utf-8"))
-        super().save(*args, **kwargs)
-        self._initial = self.as_dict
 
     @classproperty
     def permissions(cls) -> Permissions:

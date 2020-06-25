@@ -117,16 +117,16 @@ WSGI_APPLICATION = "Coursist.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": os.path.join(BASE_DIR, "db.sqlite3"),}}
+DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": os.path.join(BASE_DIR, "db.sqlite3"), }}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",},
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",},
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",},
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",},
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator", },
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator", },
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator", },
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator", },
 ]
 
 # Logging
@@ -143,7 +143,7 @@ LOGGING = {
         "verbose": {"format": "[%(asctime)s] [%(levelname)-.4s]: %(message)s @@@ [%(filename)s:%(lineno)s]"},
         "debug": {
             "format": "[%(asctime)s] [%(name)s] [%(levelname)-.4s]: %(message)s @@@ "
-            "[%(threadName)s] [%(pathname)s:%(lineno)s]"
+                      "[%(threadName)s] [%(pathname)s:%(lineno)s]"
         },
     },
     "filters": {
@@ -188,6 +188,15 @@ LOGGING = {
             "when": "midnight",
             "backupCount": 14,
         },
+        "django_template_file": {
+            "class": "logging.handlers.TimedRotatingFileHandler",
+            "filename": os.path.join(LOGGING_DIR, "django_template.log"),
+            "encoding": "utf-8",
+            "formatter": "verbose",
+            "level": "DEBUG",
+            "when": "midnight",
+            "backupCount": 7,
+        },
         "debug_file": {
             "class": "logging.handlers.TimedRotatingFileHandler",
             "filename": os.path.join(LOGGING_DIR, "debug.log"),
@@ -200,9 +209,10 @@ LOGGING = {
     "root": {"handlers": ["console_out", "console_err", "root_file"], "level": "INFO"},
     "loggers": {
         "coursist": {"handlers": ["coursist_file"], "level": "DEBUG", "propagate": True},
-        "django": {"handlers": ["console_err", "django_file", "debug_file"], "level": "DEBUG", "propagate": False,},
+        "django": {"handlers": ["console_err", "django_file", "debug_file"], "level": "DEBUG", "propagate": False, },
         "django.utils.autoreload": {"level": "INFO", "propagate": True},
-        "qinspect": {"handlers": ["debug_file", "root_file"], "level": "DEBUG", "propagate": False},
+        "qinspect": {"handlers": ["debug_file", "console_out"], "level": "DEBUG", "propagate": False},
+        "django.template": {"handler": ["django_template_file"], "level": "DEBUG", "propagate": False},
     },
 }
 
