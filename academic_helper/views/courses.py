@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.views.generic import DetailView, ListView
 
-from academic_helper.models import Course
+from academic_helper.models import Course, floatformat
 from academic_helper.utils.logger import log
 from academic_helper.views.basic import ExtendedViewMixin
 
@@ -52,8 +52,10 @@ class CoursesView(ExtendedViewMixin, ListView):
         school = request.POST["school"]
         faculty = request.POST["faculty"]
         log.info(f"Searching for {text}, school {school}, faculty {faculty}...")
-        queryset = Course.find_by(text, school, faculty)[:25]
+        queryset = Course.find_by(text, school, faculty)[:35]
         result = [c.as_dict for c in queryset]
+        result.sort(key=lambda c: c["score"], reverse=True)
         for course in result:
             course["url"] = reverse("course-details", args=[course["course_number"]])
+            course["score"] = floatformat(course["score"])
         return JsonResponse({"courses": result})

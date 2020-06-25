@@ -1,8 +1,10 @@
+from typing import Optional
+
 from django.contrib.admin.options import get_content_type_for_model
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
-from star_ratings.models import AbstractBaseRating
+from star_ratings.models import AbstractBaseRating, UserRating, Rating
 
 from academic_helper.models import Base
 
@@ -24,3 +26,16 @@ class RatingDummy(Base):
     def dummy_for(obj, name: str) -> "RatingDummy":
         content_type = get_content_type_for_model(obj)
         return RatingDummy.objects.get_or_create(content_type=content_type, object_id=obj.id, name=name)[0]
+
+    @property
+    def score(self) -> float:
+        rating = Rating.objects.filter(object_id=self.id, content_type__model="ratingdummy").first()
+        if not rating:
+            return 0
+        return rating.average
+
+    def get_user_rating(self, user) -> Optional[UserRating]:
+        semester_rating = UserRating.objects.filter(user=user, rating__object_id=self.id)
+        if len(semester_rating) == 1:
+            return semester_rating[0]
+        return None

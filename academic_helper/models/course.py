@@ -4,6 +4,7 @@ from typing import Union, Collection
 
 from django.db import models
 from django.db.models import QuerySet, Q
+from django.template.defaultfilters import floatformat
 
 from academic_helper.models.base import Base
 from academic_helper.models.extended_rating import RatingDummy
@@ -62,21 +63,31 @@ class Course(Base):
     def __str__(self) -> str:
         return f"{self.name} ({self.course_number})"
 
+    @property
+    def as_dict(self) -> dict:
+        result = super().as_dict
+        result["score"] = self.score
+        return result
+
     @staticmethod
     def all_courses() -> Union[Collection[Course], QuerySet]:
         return Course.objects.all()
 
     @property
-    def semester_rating(self):
+    def semester_rating(self) -> RatingDummy:
         return RatingDummy.dummy_for(self, "Semester")
 
     @property
-    def finals_rating(self):
+    def finals_rating(self) -> RatingDummy:
         return RatingDummy.dummy_for(self, "Finals")
 
     @property
-    def interesting_rating(self):
+    def interesting_rating(self) -> RatingDummy:
         return RatingDummy.dummy_for(self, "Interesting")
+
+    @property
+    def score(self) -> float:
+        return (self.semester_rating.score + self.finals_rating.score + self.interesting_rating.score) / 3
 
     @staticmethod
     def find_by(text: str, school: str, faculty: str):

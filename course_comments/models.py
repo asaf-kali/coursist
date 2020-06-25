@@ -18,23 +18,18 @@ class CourseComment(CommentAbstractModel):
         """
         return self.user_name if not self.is_anonymous else "Anonymous"
 
-    def get_rating(self, rating_dummy):
-        semester_rating = UserRating.objects.filter(user=self.user, rating__object_id=rating_dummy.id)
-        if len(semester_rating) == 1:
-            return semester_rating[0]
-        return None
+    @property
+    def course(self) -> Course:
+        return Course.objects.get(pk=self.object_pk)
 
     @property
     def semester_rating(self):
-        course = Course.objects.get(pk=self.object_pk)
-        return self.get_rating(course.semester_rating)
+        return self.course.semester_rating.get_user_rating(self.user)
 
     @property
     def finals_rating(self):
-        course = Course.objects.get(pk=self.object_pk)
-        return self.get_rating(course.finals_rating)
+        return self.course.finals_rating.get_user_rating(self.user)
 
     @property
     def interesting_rating(self):
-        course = Course.objects.get(pk=self.object_pk)
-        return self.get_rating(course.interesting_rating)
+        return self.course.interesting_rating.get_user_rating(self.user)
