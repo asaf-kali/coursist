@@ -27,10 +27,22 @@
     div.comment-wrapper {
         width: 80%;
         display: inline-block;
+        z-index: 2;
+        position: sticky;
     }
 
     div.comment-wrapper textarea {
         width: 100%;
+    }
+
+    div.fdasgasdg {
+        position: relative;
+        top: -80px;
+    }
+
+    div.fdasgasdg input {
+        width: 100px;
+        margin: 0 auto;
     }
 
 </style>
@@ -50,9 +62,9 @@
                     <div class="comment-wrapper">
                         {{ form.comment }}
                     </div>
-                    <br><br>
-                    {# TODO make it work: https://django-contrib-comments.readthedocs.io/en/latest/quickstart.html#id1 #}
-                    {# {{ form.honeypot }} #}
+                    <div class="fdasgasdg">
+                        {{ form.honeypot }}
+                    </div>
                     {{ form.content_type }}
                     {{ form.object_pk }}
                     {{ form.timestamp }}
