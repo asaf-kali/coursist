@@ -19,11 +19,11 @@ class CourseDetailsView(DetailView, ExtendedViewMixin):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["semester_rating_description"] = "כמה קשה הקורס במהלך הסמסטר? כמה עמוסים שיעורי הבית? (1-קשה 5-קל)"
-        context["semester_rating_title"] = "קושי במהלך הסמסטר"
-        context["exams_rating_description"] = "כמה קשה הבחינה/פרוייקט גמר? (1-קשה 5-קל)"
-        context["exams_rating_title"] = "בחינות"
-        context["interest_rating_description"] = "כמה מעניין הקורס? כמה כיף? (1-לא מעניין 5-מעניין)"
+        context["semester_rating_description"] = "כמה עמוס הקורס במהלך הסמסטר? כמה קשים שיעורי הבית? (1-קשה, 5-קל)"
+        context["semester_rating_title"] = "סמסטר"
+        context["exams_rating_description"] = "כמה קשה הבחינה/פרוייקט גמר? (1-קשה, 5-קל)"
+        context["exams_rating_title"] = "בחינה"
+        context["interest_rating_description"] = "כמה מעניין הקורס? כמה כיף? (1-לא מעניין, 5-מעניין)"
         context["interest_rating_title"] = "עניין"
         return context
 

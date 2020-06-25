@@ -91,12 +91,16 @@ body {
 }
 
 .rating-wrapper {
+    border: 2px solid var(--gray);
     border-radius: 50%;
-    border: 1px solid #000;
-    padding: 30px;
-    height: 250px;
-    width: 250px;
+    padding-top: 45px;
+    width: 230px;
+    height: 230px;
     text-align: center;
+}
+
+.rating-wrapper:hover {
+    border-color: var(--yellow);
 }
 
 .center-block {
