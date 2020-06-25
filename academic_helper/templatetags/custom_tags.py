@@ -1,10 +1,9 @@
 from django import template
 from django.conf import settings
+from django.template import loader
 from django.template.loader import get_template
 from django.templatetags.static import static
 from django.utils.safestring import mark_safe
-from django.template import loader
-
 
 register = template.Library()
 
@@ -37,6 +36,11 @@ def raw_include(name: str):
     with open(path) as file:
         output = file.read()
     return mark_safe(output)
+
+
+@register.filter
+def unique_url(obj):
+    return f"{obj._meta.label_lower}/{obj.pk}"
 
 
 @register.simple_tag(takes_context=True)

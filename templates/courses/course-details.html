@@ -42,13 +42,14 @@
             </td>
             <td>
                 <br><br>
-                <div style="margin: 0 auto;">
+                <div>
                     {% if not user.is_anonymous %}
                         {% include 'courses/comment-form.html' with couse=course %}
                     {% else %}
                         על מנת להוסיף תגובה, אנא התחברו.
                     {% endif %}
                 </div>
+                <br><br>
                 {% include 'courses/comments-list.html' with couse=course %}
             </td>
         </tr>
