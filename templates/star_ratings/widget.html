@@ -1,7 +1,18 @@
 {% extends "star_ratings/widget_base.html" %}
 
 {% block rating_detail %}
-    <br><br>
+    <br>
+    {#  TODO: This is the ugliest condition ever to be written  #}
+    {% if rating.content_object.name != "Interesting" %}
+        <span style="position: relative; top: -20px; left: 3px;">
+        קשה
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        קל
+    </span>
+    {% endif %}
+    <br>
     <span style="font-size: smaller; color: #888888;">
         ({{ rating.count }} דירוגים)
     </span>
