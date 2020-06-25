@@ -1,3 +1,5 @@
+// Schedule Template - by CodyHouse.co
+// License: https://codyhouse.co/mit
 // Utility function
 function Util () {};
 

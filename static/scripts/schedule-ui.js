@@ -1,4 +1,5 @@
 // Schedule Template - by CodyHouse.co
+// License: https://codyhouse.co/mit
 function ScheduleTemplate(element) {
     this.element = element;
     this.timelineItems = this.element.getElementsByClassName('cd-schedule__timeline')[0].getElementsByTagName('li');
