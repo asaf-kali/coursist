@@ -17,6 +17,7 @@ def redirect_to_courses_view(request):
 
 
 class ExtendedViewMixin(PermissionRequiredMixin, TemplateView):
+
     @property
     def title(self) -> str:
         base_name = self.__class__.__name__
