@@ -68,7 +68,7 @@ INSTALLED_APPS = [
     "allauth.account",
     "allauth.socialaccount",
     "allauth.socialaccount.providers.facebook",  # Facebook login
-    # "allauth.socialaccount.providers.google",
+    "allauth.socialaccount.providers.google",
 ]
 
 AUTHENTICATION_BACKENDS = [
@@ -77,6 +77,34 @@ AUTHENTICATION_BACKENDS = [
     # `allauth` specific authentication methods, such as login by e-mail
     "allauth.account.auth_backends.AuthenticationBackend",
 ]
+
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {"SCOPE": ["profile", "email", ], "AUTH_PARAMS": {"access_type": "online", }},
+    "facebook": {
+        "METHOD": "oauth2",
+        # 'SDK_URL': '//connect.facebook.net/{locale}/sdk.js',
+        "SCOPE": ["email", "public_profile"],
+        "AUTH_PARAMS": {"auth_type": "reauthenticate"},
+        "INIT_PARAMS": {"cookie": True},
+        "FIELDS": [
+            "id",
+            "email",
+            "name",
+            "first_name",
+            "last_name",
+            "verified",
+            "locale",
+            "timezone",
+            "link",
+            "gender",
+            "updated_time",
+        ],
+        "EXCHANGE_TOKEN": True,
+        "LOCALE_FUNC": lambda request: 'en_US',
+        "VERIFIED_EMAIL": False,
+        "VERSION": "v7.0",
+    },
+}
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -300,7 +328,7 @@ ACCOUNT_FORMS = {
 }
 # Social auth
 # SOCIALACCOUNT_AUTO_SIGNUP = True
-SOCIAL_AUTH_ACTIVATION = ENV == Environment.prod
+SOCIAL_AUTH_ACTIVATION = True
 SOCIALACCOUNT_EMAIL_REQUIRED = True
 SOCIALACCOUNT_ADAPTER = "academic_helper.login_adapter.MySocialAccountAdapter"
 

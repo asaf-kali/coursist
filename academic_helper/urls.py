@@ -20,5 +20,5 @@ urlpatterns = [
     path("accounts/", include("allauth.urls"), name="accounts"),
     path("about/", AboutView.as_view(), name="about"),
     path("schedule/", ScheduleView.as_view(), name="schedule"),
-    path("user/<str:username>/", UserView.as_view(), name="user")
+    path("user/<str:username>/", UserView.as_view(), name="user"),
 ]
