@@ -1,5 +1,4 @@
 from django.http import JsonResponse
-from django.shortcuts import redirect
 from django.urls import path, include
 
 from academic_helper.views.basic import IndexView
@@ -14,7 +13,7 @@ def healthy(request):
 
 
 urlpatterns = [
-    path("", redirect('courses'), name="index"),
+    path("", IndexView.as_view(), name="index"),
     path("ajax/", AjaxView.as_view(), name="ajax"),
     path("courses/", CoursesView.as_view(), name="courses"),
     path("courses/<int:course_number>/", CourseDetailsView.as_view(), name="course-details"),
