@@ -3,12 +3,17 @@ import re
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.core.handlers.wsgi import WSGIRequest
 from django.views.generic import TemplateView
-
 from academic_helper.models import CoursistUser
+from django.shortcuts import redirect
 
 
 class IndexView(TemplateView):
     template_name = "other/index.html"
+
+
+def redirect_to_courses_view(request):
+    response = redirect('courses')
+    return response
 
 
 class ExtendedViewMixin(PermissionRequiredMixin, TemplateView):
