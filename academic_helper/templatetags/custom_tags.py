@@ -39,8 +39,8 @@ def raw_include(name: str):
 
 
 @register.filter
-def unique_url(obj):
-    return f"{obj._meta.label_lower}/{obj.pk}"
+def comment_link(comment):
+    return f"?c={comment.pk}"
 
 
 @register.simple_tag(takes_context=True)

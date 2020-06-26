@@ -45,7 +45,7 @@ class CoursesView(ExtendedViewMixin, ListView):
     def object_list(self):
         return Course.objects.all()[:20]
 
-    def post(self, request: WSGIRequest):
+    def post(self, request: WSGIRequest, *args, **kwargs):
         if not request.is_ajax():
             raise NotImplementedError()
         text = request.POST["free_text"]
