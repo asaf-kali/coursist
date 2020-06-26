@@ -22,10 +22,7 @@ def create_admin():
 
 def create_james():
     james, created = CoursistUser.objects.get_or_create(
-        username="james",
-        first_name="James",
-        last_name="Johnson",
-        email="james@coursist.xyz",
+        username="james", first_name="James", last_name="Johnson", email="james@coursist.xyz",
     )
     james.set_password("123456")
     james.save()

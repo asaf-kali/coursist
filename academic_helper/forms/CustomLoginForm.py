@@ -5,7 +5,7 @@ from django import forms
 class CustomLoginForm(LoginForm):
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop("request", None)
-        super(CustomLoginForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         self.fields["login"].widget = forms.TextInput(
             attrs={"placeholder": "שם משתמש או אימייל", "autofocus": "autofocus", "class": "form-control"}

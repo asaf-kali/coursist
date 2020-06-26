@@ -1,0 +1,37 @@
+{% load static %}
+{% load socialaccount %}
+{% get_providers as socialaccount_providers %}
+
+<style>
+    .login-brand {
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        display: inline-block;
+    }
+
+    .google {
+        background-image: url("{% static 'images/login_google.png' %}");
+        width: 191px;
+        height: 46px;
+    }
+
+    .facebook {
+        background-image: url("{% static 'images/login_facebook.png' %}");
+        width: 228px;
+        height: 48px;
+    }
+</style>
+
+<div style="text-align: center;">
+    {% for provider in socialaccount_providers %}
+
+        <a title="{{ provider.name }}" class="socialaccount_provider"
+           href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">
+            <div class="login-brand {{ provider.id }}">
+                &nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
+        </a>
+        <br><br>
+    {% endfor %}
+</div>
