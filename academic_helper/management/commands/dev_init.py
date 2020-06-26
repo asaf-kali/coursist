@@ -20,6 +20,17 @@ def create_admin():
     admin.save()
 
 
+def create_james():
+    james, created = CoursistUser.objects.get_or_create(
+        username="james",
+        first_name="James",
+        last_name="Johnson",
+        email="james@coursist.xyz",
+    )
+    james.set_password("123456")
+    james.save()
+
+
 def fetch_courses():
     log.info("Fetching courses")
     for course_number in courses_to_fetch:
@@ -51,6 +62,8 @@ def create_study_plans(cs_elective_block, must_cs_block):
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
+        create_admin()
+        create_james()
         fetch_courses()
         cs_elective_block, must_cs_block = create_blocks()
         create_study_plans(cs_elective_block, must_cs_block)

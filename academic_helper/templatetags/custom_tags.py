@@ -33,14 +33,14 @@ def raw_include(name: str):
         path = get_template(name).template.origin.name
     except Exception as e:
         return ""
-    with open(path) as file:
+    with open(path, encoding="utf8") as file:
         output = file.read()
     return mark_safe(output)
 
 
 @register.filter
-def unique_url(obj):
-    return f"{obj._meta.label_lower}/{obj.pk}"
+def comment_link(comment):
+    return f"?c={comment.pk}"
 
 
 @register.simple_tag(takes_context=True)

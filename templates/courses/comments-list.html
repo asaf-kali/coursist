@@ -1,7 +1,5 @@
 {% load comments %}
 
-{% get_comment_list for course as comment_list %}
-
-{% for course_comment in comment_list %}
+{% for course_comment in comments %}
     {% include 'courses/single-comment.html' with course_comment=course_comment %}
 {% endfor %}

@@ -1,0 +1,72 @@
+{% extends "master.html" %}
+{% load static %}
+
+{% block head %}
+    <style>
+        table.comment-history {
+            margin: 0 auto;
+            border: 2px solid black;
+            border-radius: 20px;
+            text-align: center;
+            border-collapse: initial;
+        }
+
+        table.comment-history td, th {
+            padding: 25px;
+        }
+    </style>
+{% endblock %}
+
+{% block content_header %}
+    <div class="container-fluid text-center text-white">
+        <br><br><br>
+        <div class="col-sm-12">
+            <h1>{{ user_details.username }}</h1>
+        </div>
+        <br><br>
+    </div>
+{% endblock %}
+
+{% block content_body %}
+
+    התגובות שלי:
+    <br>
+    <table class="comment-history">
+        <tr>
+            <th>קורס</th>
+            <th>תאריך</th>
+            <th>תגובה</th>
+            <th>אנונימי?</th>
+        </tr>
+        {% for comment in comments %}
+            <tr>
+                <td>
+                    {{ comment.course }}
+                </td>
+                <td>
+                    {{ comment.submit_date.date }}
+                </td>
+                <td>
+                    {{ comment.comment }}
+                </td>
+                <td>
+                    <input type="checkbox" name="anonymous-{{ comment.id }}"
+                            {% if comment.is_anonymous %} checked {% endif %}
+                           onclick="setAnonymous({{ comment.id }}, this);"/>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <script>
+
+        CSRF_TOKEN = '{{ csrf_token }}';
+
+        function setAnonymous(comment_id, checkbox) {
+            ajax({"comment_id": comment_id, "is_anonymous": checkbox.checked}, undefined, () => {
+                checkbox.checked = !checkbox.checked;
+            });
+        }
+
+    </script>
+{% endblock %}

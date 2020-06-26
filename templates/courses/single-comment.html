@@ -35,7 +35,7 @@
                     {{ course_comment.comment }}
                 </p>
                 <div class="like-container">
-                    {% include 'other/facebook-like.html' with url=course_comment|unique_url %}
+                    {% include 'other/facebook-like.html' with url=course_comment|comment_link %}
                 </div>
             </td>
         </tr>
