@@ -21,19 +21,21 @@ use the [source](https://docs.python.org/3/tutorial/venv.html) command).
 ## Usage
 #### Basics
 First, you need to run the local server:
-1. Run `python manage.py runserver`.
+1. Run `python manage.py runserver` (If you use `Pycharm` it should detect this is a Django project,
+so you will be able to run the server without a terminal command).
 1. Open [http://localhost:8000](http://localhost:8000) in your preferred web browser.
 
-If everything went well, the server is now running on your local machine. Let's create an admin user:
-1. Run `python manage.py createsuperuser` and follow the creation process.
-1. Open [http://localhost:8000/admin](http://localhost:8000/admin) and log in with your new admin user.
-
-Now you can see and control the entire database and the system's objects.
+If everything went well, the server is now running on your local machine.
+You can use the site as a regular user (Facebook and Google login won't work).<br>
+The installation process also created an admin user: its user name is `admin` and the password is `123456`.
+Open [http://localhost:8000/admin](http://localhost:8000/admin) and log in with your admin user.
+Now you can see and control the entire database and the system's models.
 
 #### Management commands
 The server allows to run these custom commands:
 1. `python manage.py dev_init`: Initiates the database with dummy data for development purposes.
-1. `python manage.py retreive_courses`: Retrieves courses data from specified servers (*TO BE IMPLEMENTED*). 
+1. `python manage.py fetch_courses`: Retrieves courses data from HUJI servers.<br>
+Run `python manage.py help fetch_courses` to learn about the `limit` and `fetch_existing` arguments.
 
 ## Contribution
 Before committing any change, please run `make black` in the terminal. 
