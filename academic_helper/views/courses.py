@@ -5,7 +5,6 @@ from django.urls import reverse
 from django.views.generic import DetailView, ListView
 
 from academic_helper.models import Course, floatformat
-from academic_helper.utils.logger import log
 from academic_helper.views.basic import ExtendedViewMixin
 
 
@@ -51,7 +50,7 @@ class CoursesView(ExtendedViewMixin, ListView):
         text = request.POST["free_text"]
         school = request.POST["school"]
         faculty = request.POST["faculty"]
-        queryset = Course.find_by(text, school, faculty)[:35]
+        queryset = Course.find_by(text, school, faculty)[:40]
         result = [c.as_dict for c in queryset]
         result.sort(key=lambda c: c["score"], reverse=True)
         for course in result:
