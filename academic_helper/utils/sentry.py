@@ -16,3 +16,4 @@ def init_sentry():
         return
     log.info("Configuring Sentry")
     sentry_sdk.init(dsn=DSN, integrations=[DjangoIntegration()], environment=ENV.value, send_default_pii=True)
+    sentry_sdk.integrations.logging.ignore_logger("django.security.DisallowedHost")
