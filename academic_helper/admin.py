@@ -20,63 +20,63 @@ from academic_helper.models import (
 
 
 class CoursistUserAdmin(admin.ModelAdmin):
-    search_fields = ["username", "email", "first_name", "last_name"]
+    search_fields = ["pk", "username", "email", "first_name", "last_name"]
 
 
 admin.site.register(CoursistUser, CoursistUserAdmin)
 
 
 class FacultyAdmin(admin.ModelAdmin):
-    search_fields = ["name"]
+    search_fields = ["pk", "name"]
 
 
 admin.site.register(Faculty, FacultyAdmin)
 
 
 class SchoolAdmin(admin.ModelAdmin):
-    search_fields = ["name", "faculty__name"]
+    search_fields = ["pk", "name", "faculty__name"]
 
 
 admin.site.register(School, SchoolAdmin)
 
 
 class CourseAdmin(admin.ModelAdmin):
-    search_fields = ["course_number", "name"]
+    search_fields = ["pk", "course_number", "name"]
 
 
 admin.site.register(Course, CourseAdmin)
 
 
 class CourseOccurrenceAdmin(admin.ModelAdmin):
-    search_fields = ["course__name", "name", "year", "semester"]
+    search_fields = ["pk", "course__name", "name", "year", "semester"]
 
 
 admin.site.register(CourseOccurrence, CourseOccurrenceAdmin)
 
 
 class CampusAdmin(admin.ModelAdmin):
-    search_fields = ["name"]
+    search_fields = ["pk", "name"]
 
 
 admin.site.register(Campus, CampusAdmin)
 
 
 class HallAdmin(admin.ModelAdmin):
-    search_fields = ["name", "campus__name"]
+    search_fields = ["pk", "name", "campus__name"]
 
 
 admin.site.register(Hall, HallAdmin)
 
 
 class TeacherAdmin(admin.ModelAdmin):
-    search_fields = ["name"]
+    search_fields = ["pk", "name"]
 
 
 admin.site.register(Teacher, TeacherAdmin)
 
 
 class ClassGroupAdmin(admin.ModelAdmin):
-    search_fields = ["mark", "occurrence__course__name", "class_type"]
+    search_fields = ["pk", "mark", "occurrence__course__name", "class_type"]
 
 
 admin.site.register(ClassGroup, ClassGroupAdmin)
@@ -118,7 +118,8 @@ admin.site.register(StudyPlan, StudyPlanAdmin)
 
 
 class RatingDummyAdmin(admin.ModelAdmin):
-    search_fields = ["name"]
+    search_fields = ["name", "object_id"]
+    readonly_fields = ["content_object", "object_id"]
 
 
 admin.site.register(RatingDummy, RatingDummyAdmin)
