@@ -328,7 +328,7 @@ ACCOUNT_FORMS = {
 }
 # Social auth
 # SOCIALACCOUNT_AUTO_SIGNUP = True
-SOCIAL_AUTH_ACTIVATION = True
+SOCIAL_AUTH_ACTIVATION = ENV == Environment.prod
 SOCIALACCOUNT_EMAIL_REQUIRED = True
 SOCIALACCOUNT_ADAPTER = "academic_helper.login_adapter.MySocialAccountAdapter"
 
