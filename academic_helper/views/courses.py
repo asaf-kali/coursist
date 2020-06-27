@@ -51,7 +51,6 @@ class CoursesView(ExtendedViewMixin, ListView):
         text = request.POST["free_text"]
         school = request.POST["school"]
         faculty = request.POST["faculty"]
-        log.info(f"Searching for {text}, school {school}, faculty {faculty}...")
         queryset = Course.find_by(text, school, faculty)[:35]
         result = [c.as_dict for c in queryset]
         result.sort(key=lambda c: c["score"], reverse=True)

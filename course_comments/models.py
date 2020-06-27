@@ -8,6 +8,7 @@ from django_comments.abstracts import CommentAbstractModel
 from star_ratings.models import UserRating
 
 from academic_helper.models import Course
+from academic_helper.utils.logger import log, wrap
 
 
 class CourseComment(CommentAbstractModel):
@@ -37,6 +38,13 @@ class CourseComment(CommentAbstractModel):
     @property
     def interesting_rating(self):
         return self.course.interesting_rating.get_user_rating(self.user)
+
+    def __str__(self):
+        return f"{self.name}: {self.comment[:50]}..."
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        log.info(f"Comment saved: {wrap(self)}")
 
     @staticmethod
     def for_user(user_id) -> Union[QuerySet, List["CourseComment"]]:
