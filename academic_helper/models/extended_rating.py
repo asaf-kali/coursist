@@ -19,6 +19,9 @@ class RatingDummy(Base):
     content_object = GenericForeignKey()
     name: str = models.CharField(max_length=50)
 
+    class Meta:
+        unique_together = ["content_type", "object_id", "name"]
+
     def __str__(self):
         return f"{self.name} rating for {self.content_object}"
 
