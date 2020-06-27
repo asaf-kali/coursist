@@ -79,7 +79,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 SOCIALACCOUNT_PROVIDERS = {
-    "google": {"SCOPE": ["profile", "email",], "AUTH_PARAMS": {"access_type": "online",}},
+    "google": {"SCOPE": ["profile", "email", ], "AUTH_PARAMS": {"access_type": "online", }},
     "facebook": {
         "METHOD": "oauth2",
         # 'SDK_URL': '//connect.facebook.net/{locale}/sdk.js',
@@ -145,16 +145,16 @@ WSGI_APPLICATION = "Coursist.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": os.path.join(BASE_DIR, "db.sqlite3"),}}
+DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": os.path.join(BASE_DIR, "db.sqlite3"), }}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",},
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",},
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",},
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",},
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator", },
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator", },
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator", },
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator", },
 ]
 
 # Logging
@@ -171,7 +171,7 @@ LOGGING = {
         "verbose": {"format": "[%(asctime)s] [%(levelname)-.4s]: %(message)s @@@ [%(filename)s:%(lineno)s]"},
         "debug": {
             "format": "[%(asctime)s] [%(name)s] [%(levelname)-.4s]: %(message)s @@@ "
-            "[%(threadName)s] [%(pathname)s:%(lineno)s]"
+                      "[%(threadName)s] [%(pathname)s:%(lineno)s]"
         },
     },
     "filters": {
@@ -237,7 +237,7 @@ LOGGING = {
     "root": {"handlers": ["console_out", "console_err", "root_file"], "level": "INFO"},
     "loggers": {
         "coursist": {"handlers": ["coursist_file", "console_out", "console_err"], "level": "DEBUG", "propagate": False},
-        "django": {"handlers": ["console_err", "django_file", "debug_file"], "level": "DEBUG", "propagate": False,},
+        "django": {"handlers": ["console_err", "django_file", "debug_file"], "level": "DEBUG", "propagate": False, },
         "django.utils.autoreload": {"level": "INFO", "propagate": True},
         "qinspect": {"handlers": ["debug_file", "console_out"], "level": "DEBUG", "propagate": False},
         "django.template": {"handler": ["django_template_file"], "level": "DEBUG", "propagate": False},
@@ -328,7 +328,7 @@ ACCOUNT_FORMS = {
 }
 # Social auth
 # SOCIALACCOUNT_AUTO_SIGNUP = True
-SOCIAL_AUTH_ACTIVATION = True
+SOCIAL_AUTH_ACTIVATION = ENV == Environment.prod
 SOCIALACCOUNT_EMAIL_REQUIRED = True
 SOCIALACCOUNT_ADAPTER = "academic_helper.login_adapter.MySocialAccountAdapter"
 
