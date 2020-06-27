@@ -1,3 +1,5 @@
+from functools import lru_cache
+
 from django.core.handlers.wsgi import WSGIRequest
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
@@ -13,6 +15,10 @@ class UserView(ExtendedViewMixin, SingleObjectMixin):
     model = CoursistUser
     template_name = "user/user.html"
 
+    @property
+    def title(self) -> str:
+        return f"Coursist - {self.object.username}"
+
     def has_permission(self):
         return self.user.pk == self.object.pk or self.user.has_perm(CoursistUser.permissions.view)
 
@@ -22,6 +28,7 @@ class UserView(ExtendedViewMixin, SingleObjectMixin):
         result["comments"] = CourseComment.for_user(self.object.pk)
         return result
 
+    @lru_cache(maxsize=1)  # TODO: Think good about this, can cause horrible bugs
     def get_object(self, queryset=None):
         queryset = CoursistUser.objects.filter(username=self.kwargs["username"])
         return get_object_or_404(queryset)

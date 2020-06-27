@@ -9,7 +9,6 @@ from django.template.defaultfilters import floatformat
 from academic_helper.models.base import Base
 from academic_helper.models.extended_rating import RatingDummy
 
-
 # class University(Base):
 #     name: str = models.CharField(max_length=50)
 #
@@ -18,6 +17,7 @@ from academic_helper.models.extended_rating import RatingDummy
 #
 #     def str(self):
 #         return self.name
+from academic_helper.utils.logger import log, wrap
 
 
 class Faculty(Base):
@@ -91,8 +91,9 @@ class Course(Base):
 
     @staticmethod
     def find_by(text: str, school: str, faculty: str):
+        log.info(f"Searching for {wrap(text)}, school {wrap(school)}, faculty {wrap(faculty)}")
         return Course.objects.filter(
             (Q(name__contains=text) | Q(course_number__icontains=text))
             & Q(school__name__icontains=school)
             & Q(school__faculty__name__icontains=faculty)
-        ).all()
+        )
