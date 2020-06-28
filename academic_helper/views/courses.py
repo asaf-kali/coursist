@@ -1,10 +1,12 @@
 from django.core.handlers.wsgi import WSGIRequest
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
+from django.template.defaultfilters import floatformat
 from django.urls import reverse
 from django.views.generic import DetailView, ListView
 
-from academic_helper.models import Course, floatformat
+from academic_helper.logic import courses
+from academic_helper.models import Course
 from academic_helper.views.basic import ExtendedViewMixin
 
 
@@ -50,7 +52,7 @@ class CoursesView(ExtendedViewMixin, ListView):
         text = request.POST["free_text"]
         school = request.POST["school"]
         faculty = request.POST["faculty"]
-        queryset = Course.find_by(text, school, faculty)[:40]
+        queryset = courses.search(text, school, faculty)[:40]
         result = [c.as_dict for c in queryset]
         result.sort(key=lambda c: c["score"], reverse=True)
         for course in result:

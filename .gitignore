@@ -1,10 +1,13 @@
 .idea/*
 backups/
 files/*
+# ./shnaton_mock/ is deprecated, if you still have it - rename it to shnaton_cache
 **/shnaton_mock/
+**/shnaton_cache/
 logs/*
 temp.json
 .*
+*.env
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

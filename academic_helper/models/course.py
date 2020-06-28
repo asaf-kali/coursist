@@ -3,21 +3,10 @@ from __future__ import annotations
 from typing import Union, Collection
 
 from django.db import models
-from django.db.models import QuerySet, Q
-from django.template.defaultfilters import floatformat
+from django.db.models import QuerySet
 
 from academic_helper.models.base import Base
 from academic_helper.models.extended_rating import RatingDummy
-
-# class University(Base):
-#     name: str = models.CharField(max_length=50)
-#
-#     class Meta:
-#         verbose_name_plural = "universities"
-#
-#     def str(self):
-#         return self.name
-from academic_helper.utils.logger import log, wrap
 
 
 class Faculty(Base):
@@ -88,12 +77,3 @@ class Course(Base):
     @property
     def score(self) -> float:
         return (self.semester_rating.score + self.finals_rating.score + self.interesting_rating.score) / 3
-
-    @staticmethod
-    def find_by(text: str, school: str, faculty: str):
-        log.info(f"Searching for {wrap(text)}, school {wrap(school)}, faculty {wrap(faculty)}")
-        return Course.objects.filter(
-            (Q(name__contains=text) | Q(course_number__icontains=text))
-            & Q(school__name__icontains=school)
-            & Q(school__faculty__name__icontains=faculty)
-        )
