@@ -1,6 +1,7 @@
 import json
 import random
 
+import sentry_sdk
 from django.core.management import BaseCommand
 
 from academic_helper.logic.shnaton_parser import ShnatonParser
@@ -55,5 +56,6 @@ class Command(BaseCommand):
                 parser.fetch_course(course_number)
             except Exception as e:
                 log.error(f"Could'nt fetch course {course_number}: {e}")
+                sentry_sdk.capture_exception(e)
                 fail_count += 1
         log.info(f"Fail count: {wrap(fail_count)}")
