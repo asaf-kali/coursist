@@ -9,6 +9,3 @@ class TestUrls(SimpleTestCase):
         url = reverse("index")
         res = resolve(url)
         self.assertEquals(res.func, redirect_to_courses_view)
-
-
-# Create your tests here.

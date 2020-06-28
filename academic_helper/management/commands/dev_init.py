@@ -30,8 +30,9 @@ def create_james():
 
 def fetch_courses():
     log.info("Fetching courses")
+    parser = ShnatonParser()
     for course_number in courses_to_fetch:
-        ShnatonParser.fetch_course(course_number)
+        parser.fetch_course(course_number)
 
 
 def create_blocks():
