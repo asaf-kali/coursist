@@ -1,0 +1,247 @@
+<html>
+<head>
+<base href="https://shnaton.huji.ac.il/index.php">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1255" />
+<title>שנתון האוניברסיטה העברית - פרטי קורס</title>
+<link href="styles/styles.css" rel="stylesheet" type="text/css">
+<script src="js/general.js" type="text/javascript"></script>
+<script language="JavaScript" src="js/ajax.js"></script>
+</head>
+<body nKeyPress="if(ie4) SendByKeyPressed(document.forms[0],window.event); else SendByKeyPressed(document.forms[0],event);" >
+<table height="100%" width="100%">
+  <tr>
+    <td class="wrapper" align="center">
+	<table width="779" height="100%">
+      <tr>
+        <td style="background:#0657B4; height:15px;"></td>
+      </tr>
+      <tr>
+        <td height="58" align="right"><img src="images/logo.png"  height="58" border="0" usemap="#Map"></td>
+      </tr>
+      <tr>
+        <td height="23">
+		<table width="100%">
+          <tr>
+            <td  nowrap class="topMenu" onMouseOver="changeClass(this,'topMenu_over');" onMouseOut="changeClass(this,'topMenu');" ><a href="yearbook.php" title="קורסים באנגלית"  class="toplink"  tabindex="7"  >English Courses</a></td>
+ <td class="topMenu" onMouseOver="changeClass(this,'topMenu_over');" onMouseOut="changeClass(this,'topMenu');"  nowrap  ><a href="contact.htm" title="תגובות לשנתון"  class="toplink"  tabindex="6" >צור קשר</a></td>
+ <td class="topMenu" onMouseOver="changeClass(this,'topMenu_over');" onMouseOut="changeClass(this,'topMenu');"  nowrap ><a href="javascript:newWin('http://info.huji.ac.il/university-services/central_students_unit/nahal')" title="נהלי לימודים באתר מנהל תלמידים, אתר חיצוני, בחלון חדש"  class="toplink" tabindex="5" >נהלי הוראה ולימודים</a></td>
+ <td class="topMenu" onMouseOver="changeClass(this,'topMenu_over');" onMouseOut="changeClass(this,'topMenu');" nowrap  ><a href="javascript:newWin('http://ksafim.huji.ac.il/%D7%A9%D7%9B%D7%A8-%D7%9C%D7%99%D7%9E%D7%95%D7%93')" title="שכר לימוד באתר מנהל תלמידים, אתר חיצוני, חלון חדש" class="toplink" tabindex="4"  onclick="">נהלי שכר לימוד</a></td>
+ <td class="topMenu" onMouseOver="changeClass(this,'topMenu_over');" onMouseOut="changeClass(this,'topMenu');" nowrap ><a href="javascript:newWin('http://www.huji.ac.il/huji/aboutHU.htm')" title="הודות האוניברסיטה באתר הראשי, אתר חיצוני, חלון חדש"  class="toplink"  tabindex="3" >אודות האוניברסיטה</a></td>
+ <td class="topMenu" onMouseOver="changeClass(this,'topMenu_over');" onMouseOut="changeClass(this,'topMenu');"  nowrap ><a href="programs.htm" id="mainmenu" title="רב שנתוןת תכניות מפורטות יותר"  class="toplink"  tabindex="2" >תכניות לימודים - כללים ונהלים</a></td>
+ <td class="topMenu" onMouseOver="changeClass(this,'topMenu_over');" onMouseOut="changeClass(this,'topMenu');" nowrap  ><a href="index.php" title="חיפוש בשנתון" class="toplink" tabindex="1" >חיפוש בשנתון</a></td>
+
+          </tr>
+        </table></td>
+      </tr>
+      <tr>
+        <td height="9"></td>
+      </tr>
+      <tr>
+        <td class="formTd" align="center" >
+<form action="/index.php" method="POST" name="shnaton">
+		<input type="hidden" name="peula" value="Simple" >
+		<input type="hidden" name="maslul" value="0" >
+		<input type="hidden" name="shana" value="0" >
+		<table width="100%">
+          <tr>
+                    <td class="titleTd" align="center">
+<select name="year" id="year" >
+					<option label="תש&quot;ס
+" value="2000">תש&quot;ס
+</option>
+<option label="תשס&quot;א
+" value="2001">תשס&quot;א
+</option>
+<option label="תשס&quot;ב
+" value="2002">תשס&quot;ב
+</option>
+<option label="תשס&quot;ג
+" value="2003">תשס&quot;ג
+</option>
+<option label="תשס&quot;ד
+" value="2004">תשס&quot;ד
+</option>
+<option label="תשס&quot;ה
+" value="2005">תשס&quot;ה
+</option>
+<option label="תשס&quot;ו
+" value="2006">תשס&quot;ו
+</option>
+<option label="תשס&quot;ז
+" value="2007">תשס&quot;ז
+</option>
+<option label="תשס&quot;ח
+" value="2008">תשס&quot;ח
+</option>
+<option label="תשס&quot;ט
+" value="2009">תשס&quot;ט
+</option>
+<option label="תש&quot;ע
+" value="2010">תש&quot;ע
+</option>
+<option label="תשע&quot;א
+" value="2011">תשע&quot;א
+</option>
+<option label="תשע&quot;ב
+" value="2012">תשע&quot;ב
+</option>
+<option label="תשע&quot;ג
+" value="2013">תשע&quot;ג
+</option>
+<option label="תשע&quot;ד
+" value="2014">תשע&quot;ד
+</option>
+<option label="תשע&quot;ה
+" value="2015">תשע&quot;ה
+</option>
+<option label="תשע&quot;ו
+" value="2016">תשע&quot;ו
+</option>
+<option label="תשע&quot;ז
+" value="2017">תשע&quot;ז
+</option>
+<option label="תשע&quot;ח
+" value="2018">תשע&quot;ח
+</option>
+<option label="תשע&quot;ט
+" value="2019">תשע&quot;ט
+</option>
+<option label="תש&quot;ף
+" value="2020" selected="selected">תש&quot;ף
+</option>
+
+        </select>
+        <img src="images/search_title.gif" alt="חיפוש בשנתון האוניברסיטה לשנת" width="315" height="43" align="absmiddle"></td>
+          </tr>
+          <tr>
+            <td style="background:#0657B4;">
+			<table width="100%">
+              <tr>
+                <td style="padding-left:36px;"><input type="button" name="search" value="חפש" class="searchBut" onMouseOver="changeClass(this,'searchBut_over');" onMouseOut="changeClass(this,'searchBut');" onClick="Sending('Simple')" > <input type="text" name="course" class="input" onFocus="this.value=''" value="חיפוש לפי מס' קורס"></td>
+                <td align="right">
+				<table >
+                  <tr>
+                    <td class="tab_endL_off"></td>
+                    <td class="tab_4"><a href="help.php" class="tabTx2" title="עזרה">עזרה</a></td>
+                    <td class="tab_olap03_off"></td>
+                    <td class="tab_3"><a href="javascript:OpenSekerUrl('index.php/Survey')" class="tabTx2" title="סקר הערכת הוראה">סקר הערכת הוראה</a></td>
+                    <td class="tab_olap02_off"></td>
+                    <td class="tab_2"><a href="index.php/Word" class="tabTx1" title="חיפוש מילולי">חיפוש מילולי</a></td>
+                    <td class="tab_olap01r_on"></td>
+                    <td class="tab_on">חיפוש קורס בודד</td>
+                    <td class="tab_endR_on"></td>
+                  </tr>
+                </table></td>
+              </tr>
+            </table></td>
+          </tr>
+</table>
+<BR>
+
+<!--
+<div style="font-weight: bold;color: green;font-size: 16px" align="center" >שימו לב! במועדים מיוחדים לפעמים צריך לשים את סמן העכבר עליהם כדי לקבל את הטקסט המלא. </div><br>
+-->
+<table width="658" style="margin-top:15px;">
+	<tr>
+	<td width="10" valign="top">&nbsp; </td>
+		<td>
+			<div class="courseTitle">הפקולטה לרפואה  : רפואה </div>
+			<table width="100%" style="margin-top:1px;">
+  <tr>
+    <td class="courseTD textEng" style="text-align:left; padding-left:10px; padding-right:15px;" width="45%" ><b>The digestive system - from structure to function in the healthy human being</b></td>
+    <td class="courseTD text" width="45%"><b>מערכת העיכול - ממבנה לתפקוד האדם הבריא</b></td>
+	<td class="courseTD text" width="10%" style="direction:ltr; vertical-align:top; padding-right:7px;"><b>&nbsp; | &nbsp;96203</b></td>
+  </tr>
+</table>
+<table width="100%" style="margin-top:1px;">
+  <tr>
+    <td class="courseTD text" style="padding-left:10px; text-align:left;" width="20%">  משך הבחינה: 2.00 ש' </td>
+	<td class="courseTD text" width="20%">בחינה בכתב</td>
+	<td class="courseTD text" width="10%">ש' 1.8</td>
+	<td class="courseTD text" width="10%">נק' 3.5</td>
+	<td class="courseTD text" width="20%">סמסטר א'</td>
+	<td class="courseTD text" width="20%" style="padding-right:3px" ></td>
+  </tr>
+</table>
+<table id="detalles"  width="100%">
+  <tr>
+    <td class="text" style="background: #DAE6F4;">
+		<table  width="100%" >
+  <tr>
+	<td id="kedem96203" class="courseTab" width="12%" nowrap >&nbsp;</td>
+<td id="halifi96203" class="courseTab" width="18%" nowrap >&nbsp;</td>
+	<td id="examDates96203" class="courseTab" width="16%" nowrap ><a href="javascript:ShowDetails('examDates','96203',2020,'',04)">מועדי בחינות</a></td>
+	<td id="tochniot96203" class="courseTab" width="19%" nowrap ><a href="javascript:ShowDetails('tochniot','96203',2020,'',04)">תכניות לימודים</a></td>
+	<td id="teach96203" class="courseTab" width="20%" nowrap ></td>
+	<td id="syllabus96203" class="courseTab" "width=19%" nowrap dir="rtl" > <a href="javascript:newWin('/index.php/NewSyl/96203/1/2020/')"> סילבוס </a>/<a href="javascript:newWin('/index.php/NewSyl/96203/2/2020/')">Syllabus</a> </td>
+  </tr>
+</table>
+	</td>
+</tr>
+</table>
+<div id="CourseDetails96203" style="display: none;" align="center" >
+
+</div>
+		<table width="100%"  style="margin-top:1px;"  >
+<tr  width="100%" ><th>אולם/קמפוס </th><th>מועדים מיוחדים</th><th> שעה </th><th>יום בשבוע</th><th>סמסטר</th><th>קבוצה</th><th>סוג שיעור</th><th>שם המרצה</th></tr>
+          <tr>
+            <td class="courseDet text" style="padding-left:10px; text-align:right;" width="20%">
+<span class="heb-hint" onmouseover="Pointer(this)"><span><b>אוד' מגיד (עין כרם)</b></span>אוד' מגיד...  <img src="images/moreinfoicon.png" height="10" width="10"> <br></span><span class="heb-hint" onmouseover="Pointer(this)"><span><b>אוד' מגיד (עין כרם)</b></span>אוד' מגיד...  <img src="images/moreinfoicon.png" height="10" width="10"> <br></span><span class="heb-hint" onmouseover="Pointer(this)"><span><b>אוד בוטנר (עין כרם)</b></span>אוד בוטנר...  <img src="images/moreinfoicon.png" height="10" width="10"> <br></span><span class="heb-hint" onmouseover="Pointer(this)"><span><b>אוד' מגיד (עין כרם)</b></span>אוד' מגיד...  <img src="images/moreinfoicon.png" height="10" width="10"> <br></span><span class="heb-hint" onmouseover="Pointer(this)"><span><b>אוד' מגיד (עין כרם)</b></span>אוד' מגיד...  <img src="images/moreinfoicon.png" height="10" width="10"> <br></span><span class="heb-hint" onmouseover="Pointer(this)"><span><b>אוד' מגיד (עין כרם)</b></span>אוד' מגיד...  <img src="images/moreinfoicon.png" height="10" width="10"> <br></span><span class="heb-hint" onmouseover="Pointer(this)"><span><b>אוד' מגיד (עין כרם)</b></span>אוד' מגיד...  <img src="images/moreinfoicon.png" height="10" width="10"> <br></span><span class="heb-hint" onmouseover="Pointer(this)"><span><b>אוד' מגיד (עין כרם)</b></span>אוד' מגיד...  <img src="images/moreinfoicon.png" height="10" width="10"> <br></span><span class="heb-hint" onmouseover="Pointer(this)"><span><b>אוד' מגיד (עין כרם)</b></span>אוד' מגיד...  <img src="images/moreinfoicon.png" height="10" width="10"> <br></span><span class="heb-hint" onmouseover="Pointer(this)"><span><b>אוד' מגיד (עין כרם)</b></span>אוד' מגיד...  <img src="images/moreinfoicon.png" height="10" width="10"> <br></span><span class="heb-hint" onmouseover="Pointer(this)"><span><b>אוד' מגיד (עין כרם)</b></span>אוד' מגיד...  <img src="images/moreinfoicon.png" height="10" width="10"> <br></span><span class="heb-hint" onmouseover="Pointer(this)"><span><b>אוד' מגיד (עין כרם)</b></span>אוד' מגיד...  <img src="images/moreinfoicon.png" height="10" width="10"> <br></span><span class="heb-hint" onmouseover="Pointer(this)"><span><b>אוד' מגיד (עין כרם)</b></span>אוד' מגיד...  <img src="images/moreinfoicon.png" height="10" width="10"> <br></span><span class="heb-hint" onmouseover="Pointer(this)"><span><b>אוד' מגיד (עין כרם)</b></span>אוד' מגיד...  <img src="images/moreinfoicon.png" height="10" width="10"> <br></span>	</td>
+<td class="courseDet text" width="15%"> 26/11/19  26/11/19  27/11/19  28/11/19  28/11/19  01/12/19  02/12/19  03/12/19  04/12/19  05/12/19  05/12/19  08/12/19  08/12/19  09/12/19   </th>
+<td class="courseDet text" width="14%">12:00-08:15<br>15:00-13:15<br>16:00-13:15<br>12:00-10:15<br>16:00-13:15<br>16:00-13:15<br>16:00-13:15<br>16:00-13:15<br>16:00-13:15<br>12:00-10:15<br>15:00-13:15<br>12:00-10:15<br>14:00-13:15<br>15:00-13:15<br></td>
+<td class="courseDet text" width="5%">יום ג'<br>יום ג'<br>יום ד'<br>יום ה'<br>יום ה'<br>יום א'<br>יום ב'<br>יום ג'<br>יום ד'<br>יום ה'<br>יום ה'<br>יום א'<br>יום א'<br>יום ב'<br></td>
+<td class="courseDet text" width="10%">סמסטר א<br>סמסטר א<br>סמסטר א<br>סמסטר א<br>סמסטר א<br>סמסטר א<br>סמסטר א<br>סמסטר א<br>סמסטר א<br>סמסטר א<br>סמסטר א<br>סמסטר א<br>סמסטר א<br>סמסטר א<br></td>
+<td class="courseDet text" width="5%"><b>(א)</b></td>
+<td class="courseDet text" width="8%">שעור</td>
+
+<td class="courseDet text" width="23%" style="text-align:right;">ד"ר עינב גרוס<br>ד"ר אייל שטייר<br>ד"ר מיכל שושקס-כרמל<br>ד"ר דן בן-צבי<br>ד"ר מורן יסעור<br>ד"ר יהודה מלול<br></td>
+          </tr>
+		  <tr>
+            <td colspan="8" class="courseDet text" style="padding-right:10px; text-align:right;" >
+<b> הערות:</b> <BR>
+</td>
+            </tr>
+<tr>
+ <td class="courseDet textEng" style="padding-left:10px; text-align:left;" colspan="8" >
+<b> Comments: </b> <BR>
+</td></tr>
+
+        </table></td>
+             <td width="10" valign="top">&nbsp; </td>
+	</tr>
+</table>
+			  <br>
+<input type="button" name="button2" value="הדפס" class="button" style="width:auto;" onMouseOver="changeClass(this,'button_over');" onclick="window.print();" onMouseOut="changeClass(this,'button');">
+<br>
+<br>
+</td>
+          </tr>
+        </table>
+</form></td>
+      </tr>
+      <tr>
+       <td height="20">
+		<table width="90%">
+          <tr>
+            <td class="text" style="text-align:left;">
+ &nbsp;
+ </td>
+ <td class="text"><a href="http://www.huji.ac.il/huji/copy.htm" target="_blank" title="זכויות יוצרים" class="footer">© כל הזכויות שמורות לאוניברסיטה העברית בירושלים</a></td>
+
+          </tr>
+		</table>
+		</td>
+	</tr>
+    </table>
+	</td>
+  </tr>
+</table>
+
+<map name="Map">
+ <area shape="poly" coords="2,6,339,4,340,56,317,54,295,55,291,30,3,31" href="http://www.huji.ac.il" tabindex="1" target="_blank" alt="קישור לאתר של האוניברסיטה העברית בירושלים">
+ <area shape="rect" coords="3,31,289,50" href="http://www.huji.ac.il/huji/eng/index_e.htm" target="_blank" tabindex="1" alt="Link to the website of The Hebrew University of Jerusalem">
+ </map>
+
+
+</body>
+</html>

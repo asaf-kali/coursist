@@ -10,4 +10,5 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         course_number = options["course_number"]
         print(f"fetching course_number = {course_number}")
-        ShnatonParser.fetch_course(course_number)
+        parser = ShnatonParser()
+        parser.fetch_course(course_number)

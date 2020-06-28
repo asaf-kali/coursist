@@ -23,7 +23,7 @@ from academic_helper.models.course_occurrence import (
 )
 from academic_helper.utils.logger import log
 
-SERVER_URL = "https://shnaton.huji.ac.il/index.php"
+SHNATON_URL = "https://shnaton.huji.ac.il/index.php"
 CHARSET = "windows-1255"
 
 
@@ -153,12 +153,81 @@ def parse_teacher(teacher: str) -> Teacher:
     return Teacher.objects.get_or_create(name=teacher)[0]
 
 
-class ShnatonParser:
-    LESSON_TABLE_CELL_NUM = 8  # number of <td>s in the lesson table rows
+def parse_hours(hours):
+    ret = list()
 
-    @staticmethod
+    for hour in hours.contents:
+        if hour.string is not None:
+            # not <br>, append it
+            ret.append(hour.string)
+
+    return ret
+
+
+def parse_days(days):
+    ret = list()
+
+    for day in days.contents:
+        if day.string is not None:
+            # not <br>, append it
+            ret.append(day.string)
+
+    return ret
+
+
+def parse_semester(semesters):
+    ret = list()
+
+    for semester in semesters.contents:
+        if semester.string is not None:
+            # not <br>, append it
+            ret.append(semester.string)
+
+    return ret
+
+
+def parse_halls(halls):
+    ret = list()
+    hall_children = halls.find_all("b")
+    if not hall_children:
+        # This is patch for 1921 and likewise
+        hall_children = halls.contents
+    for hall in hall_children:
+        if hall.string is not None:
+            ret.append(hall.string.replace("\n", ""))
+
+    return ret
+
+
+def parse_lecturers(lecturers):
+    ret = list()
+
+    for lecturer in lecturers.contents:
+        # TODO: This order is not right for course 1921!
+        if lecturer.string is not None:
+            ret.append(lecturer.string)
+        elif lecturer.name == "br" and lecturer.previous_sibling not in ret:
+            ret.append(ret[-1])
+
+    return ret
+
+
+LESSON_TABLE_CELL_NUM = 8  # number of <td>s in the lesson table rows
+
+
+class ShnatonParser:
+
+    def __init__(self, shnaton_url: str = SHNATON_URL, cache_dir: str = None, use_cache: bool = True):
+        self.shnaton_url = shnaton_url
+        if not cache_dir:
+            cache_dir = path.join("academic_helper", "shnaton_cache")
+        self.cache_dir = cache_dir
+        if not path.exists(self.cache_dir):
+            os.makedirs(self.cache_dir)
+        self.use_cache = use_cache
+
     @atomic
-    def fetch_course(course_number: int, year: int = 2020) -> Optional[Course]:
+    def fetch_course(self, course_number: int, year: int = 2020) -> Optional[Course]:
         """
         Fetch course from Shnaton, add it to the database and return it.
         :param course_number: The course number to search.
@@ -169,7 +238,7 @@ class ShnatonParser:
         if not isinstance(course_number, int):
             course_number = int(course_number)
 
-        raw_data = ShnatonParser.extract_data_from_shnaton(year, course_number)
+        raw_data = self.extract_data_from_shnaton(year, course_number)
         if raw_data is None:
             return None
 
@@ -188,12 +257,11 @@ class ShnatonParser:
         occurrence_credits = parse_course_credits(year, raw_data)
 
         for raw_group in raw_data["lessons"]:
-            ShnatonParser.create_course_groups(course, year, course_semesters, occurrence_credits, raw_group)
+            self.create_course_groups(course, year, course_semesters, occurrence_credits, raw_group)
         return course
 
-    @staticmethod
     def occurrence_for_semester(
-        course: Course, year: int, occurrence_credits: int, semester: int, course_semesters: List[Semester]
+        self, course: Course, year: int, occurrence_credits: int, semester: int, course_semesters: List[Semester]
     ) -> Optional["CourseOccurrence"]:
         if not semester:
             semester = course_semesters[0].value
@@ -201,9 +269,8 @@ class ShnatonParser:
             course=course, year=year, credits=occurrence_credits, semester=semester
         )[0]
 
-    @staticmethod
     def create_course_groups(
-        course: Course, year: int, course_semesters: List[Semester], occurrence_credits: int, raw_group: dict
+        self, course: Course, year: int, course_semesters: List[Semester], occurrence_credits: int, raw_group: dict
     ):
         group_mark = raw_group["group"].replace(" ", "")
         group_class_type = parse_group_type(raw_group["type"]).value
@@ -214,7 +281,7 @@ class ShnatonParser:
         except Exception as e:
             log.info(f"No group semester for {course.course_number}: {e}")
             group_semester = None
-        occurrence = ShnatonParser.occurrence_for_semester(
+        occurrence = self.occurrence_for_semester(
             course, year, occurrence_credits, group_semester, course_semesters
         )
         group, created = ClassGroup.objects.get_or_create(
@@ -224,10 +291,9 @@ class ShnatonParser:
             log.info(f"Group {group.id} created")
         # Add classes to group
         for i, raw_semester in enumerate(raw_group["semester"]):
-            ShnatonParser.create_course_class(group, i, raw_group, raw_semester, teachers)
+            self.create_course_class(group, i, raw_group, raw_semester, teachers)
 
-    @staticmethod
-    def create_course_class(group: ClassGroup, i, raw_group, raw_semester, teachers):
+    def create_course_class(self, group: ClassGroup, i, raw_group, raw_semester, teachers):
         # TODO: This does not handle 2 teachers for 1 group case (course 1920)
         teacher = parse_teacher(teachers[i])
         try:
@@ -261,32 +327,25 @@ class ShnatonParser:
         if created:
             log.info(f"Class {course_class.id} created")
 
-    @staticmethod
-    def get_course_html(year, course_id, use_mock=True):
-        mock_dir = path.join("academic_helper", "shnaton_mock")
-        if not path.exists(mock_dir):
-            os.makedirs(mock_dir)
-        mock_path = path.join(mock_dir, f"{course_id}-{year}.html")
-        if use_mock and path.exists(mock_path):
-            with open(mock_path, encoding="utf-8") as file:
-                log.info(f"Reading mock for {course_id} year {year}")
+    def get_course_html(self, year, course_id):
+        cache_path = path.join(self.cache_dir, f"{course_id}-{year}.html")
+        if self.use_cache and path.exists(cache_path):
+            with open(cache_path, encoding=CHARSET) as file:
+                log.info(f"Reading cache for {course_id} year {year}")
                 return file.read()
         data = urllib.parse.urlencode(
             {"peula": "Simple", "maslul": "0", "shana": "0", "year": year, "course": course_id}
-        ).encode(
-            "utf-8"
-        )  # TODO maybe windows-1255
+        ).encode("utf-8")
 
-        req = urllib.request.urlopen(url=SERVER_URL, data=data)
+        req = urllib.request.urlopen(url=self.shnaton_url, data=data)
         html = req.read().decode(req.headers.get_content_charset())
-        with open(mock_path, "w", encoding="utf-8") as file:
-            log.info(f"Writing mock for {course_id} year {year}")
+        with open(cache_path, "w", encoding=CHARSET) as file:
+            log.info(f"Writing cache for {course_id} year {year}")
             file.write(html)
         return html
 
-    @staticmethod
-    def extract_data_from_shnaton(year: int, course_id: int) -> Optional[dict]:
-        html = ShnatonParser.get_course_html(year, course_id)
+    def extract_data_from_shnaton(self, year: int, course_id: int) -> Optional[dict]:
+        html = self.get_course_html(year, course_id)
         source = BeautifulSoup(html, "html.parser")
 
         if len(source.find_all(class_="courseTD")) == 0:
@@ -296,22 +355,21 @@ class ShnatonParser:
 
         course = dict()
         # parse faculty and school
-        ShnatonParser.parse_faculty(source, course)
+        self.parse_faculty(source, course)
         if "faculty" not in course or "school" not in course:
             log.warning(f"Skipping course {course_id} because of bad html")
             # course faculty / school not found
             return None
 
         # parse general course info
-        ShnatonParser.parse_general_course_info(source, year, course)
+        self.parse_general_course_info(source, year, course)
 
         # parse lessons info
-        ShnatonParser.parse_lessons(source, course)
+        self.parse_lessons(source, course)
 
         return course
 
-    @staticmethod
-    def parse_faculty(source, course):
+    def parse_faculty(self, source, course):
         faculty_container = source.find(class_="courseTitle")
         if len(faculty_container) == 0:
             return
@@ -322,8 +380,7 @@ class ShnatonParser:
             course["faculty"] = data[0]
             course["school"] = data[1]
 
-    @staticmethod
-    def parse_general_course_info(source, year, course):
+    def parse_general_course_info(self, source, year, course):
         # get general course info elements
         general_course_info = source.find_all(class_="courseTD")
 
@@ -337,85 +394,25 @@ class ShnatonParser:
         course["semester"] = general_course_info[7].string
         course["nz"] = re.sub("[^0-9]", "", general_course_info[6].string)
 
-    @staticmethod
-    def parse_lessons(source, course):
+    def parse_lessons(self, source, course):
         # get course lessons elements
         course_lessons = source.find_all(class_="courseDet")
 
         lessons = list()
 
         # the actual number of cells, without comment cells etc.
-        actual_cell_num = len(course_lessons) - (len(course_lessons) % ShnatonParser.LESSON_TABLE_CELL_NUM)
+        actual_cell_num = len(course_lessons) - (len(course_lessons) % LESSON_TABLE_CELL_NUM)
 
-        for i in range(0, actual_cell_num, ShnatonParser.LESSON_TABLE_CELL_NUM):
+        for i in range(0, actual_cell_num, LESSON_TABLE_CELL_NUM):
             lesson = dict()
-            lesson["hall"] = ShnatonParser.parse_halls(course_lessons[i])
-            lesson["hour"] = ShnatonParser.parse_hours(course_lessons[i + 2])
-            lesson["day"] = ShnatonParser.parse_days(course_lessons[i + 3])
-            lesson["semester"] = ShnatonParser.parse_semester(course_lessons[i + 4])
+            lesson["hall"] = parse_halls(course_lessons[i])
+            lesson["hour"] = parse_hours(course_lessons[i + 2])
+            lesson["day"] = parse_days(course_lessons[i + 3])
+            lesson["semester"] = parse_semester(course_lessons[i + 4])
             lesson["group"] = course_lessons[i + 5].string
             lesson["type"] = course_lessons[i + 6].string
-            lesson["lecturer"] = ShnatonParser.parse_lecturers(course_lessons[i + 7])
+            lesson["lecturer"] = parse_lecturers(course_lessons[i + 7])
 
             lessons.append(lesson)
 
         course["lessons"] = lessons
-
-    @staticmethod
-    def parse_halls(halls):
-        ret = list()
-        hall_children = halls.find_all("b")
-        if not hall_children:
-            # This is patch for 1921 and likewise
-            hall_children = halls.contents
-        for hall in hall_children:
-            if hall.string is not None:
-                ret.append(hall.string.replace("\n", ""))
-
-        return ret
-
-    @staticmethod
-    def parse_hours(hours):
-        ret = list()
-
-        for hour in hours.contents:
-            if hour.string is not None:
-                # not <br>, append it
-                ret.append(hour.string)
-
-        return ret
-
-    @staticmethod
-    def parse_days(days):
-        ret = list()
-
-        for day in days.contents:
-            if day.string is not None:
-                # not <br>, append it
-                ret.append(day.string)
-
-        return ret
-
-    @staticmethod
-    def parse_semester(semesters):
-        ret = list()
-
-        for semester in semesters.contents:
-            if semester.string is not None:
-                # not <br>, append it
-                ret.append(semester.string)
-
-        return ret
-
-    @staticmethod
-    def parse_lecturers(lecturers):
-        ret = list()
-
-        for lecturer in lecturers.contents:
-            # TODO: This order is not right for course 1921!
-            if lecturer.string is not None:
-                ret.append(lecturer.string)
-            elif lecturer.name == "br" and lecturer.previous_sibling not in ret:
-                ret.append(ret[-1])
-
-        return ret

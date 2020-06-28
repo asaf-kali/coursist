@@ -41,6 +41,7 @@ class Command(BaseCommand):
             random.shuffle(courses)
         fail_count = 0
         log.info(f"Total {wrap(len(courses))} courses found")
+        parser = ShnatonParser()
         for i, course in enumerate(courses):
             if i > options["limit"]:
                 break
@@ -51,7 +52,7 @@ class Command(BaseCommand):
                     continue
                 existing.delete()
             try:
-                ShnatonParser.fetch_course(course_number)
+                parser.fetch_course(course_number)
             except Exception as e:
                 log.error(f"Could'nt fetch course {course_number}: {e}")
                 fail_count += 1
