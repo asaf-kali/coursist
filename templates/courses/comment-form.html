@@ -1,10 +1,7 @@
 <style>
 
     .comment-form {
-        border: 3px solid var(--gray);
-        border-radius: 20px;
-        width: 70%;
-        background-color: #fafafa
+        background-color: #fafafa;
     }
 
     table.form {
@@ -56,7 +53,7 @@
 {% get_comment_form for course as form %}
 <form action="{% comment_form_target %}" method="POST">
     {% csrf_token %}
-    <div class="card comment-form">
+    <div class="card comment comment-form card-gray-border">
         <table class="form">
             <tr>
                 <td style="width: 40%; direction: rtl; text-align: center;">
@@ -75,11 +72,8 @@
                     {{ form.object_pk }}
                     {{ form.timestamp }}
                     {{ form.security_hash }}
-                    מתי לקחתם את הקורס?
-                    <br>
-                    שנה {{ form.year }}
-                    סמסטר {{ form.semester }}
-                    <br>
+                     מתייחס למועד {{ form.year }} סמסטר {{ form.semester }}
+                    <br><br>
                     {{ form.is_anonymous }}&nbsp;תגובה אנונימית
                     <br><br>
                     <input type="submit" class="btn btn-primary" value="הוספת תגובה" id="id_submit"/>

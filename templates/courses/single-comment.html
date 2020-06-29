@@ -2,11 +2,6 @@
 {% load custom_tags %}
 
 <style>
-    .cool-border {
-        border: 3px solid var(--gray);
-        border-radius: 20px;
-    }
-
     table.comment {
         margin: 10px;
     }
@@ -22,17 +17,17 @@
         bottom: 20px;
     }
 </style>
-<div class="card cool-border" style="width: 70%;">
+<div class="card card-gray-border comment">
     <table class="comment">
         <tr>
             <td style="width: 40%; direction: rtl; text-align: center;">
                 <h5 class="card-title"> {{ course_comment.get_user_name_to_show }}</h5>
-                <h6 class="card-subtitle mb-2 text-muted">נכתבה בתאריך
+                <h6 class="card-subtitle mb-2 text-muted"> בתאריך
                     {{ course_comment.submit_date.date }}</h6>
-                <h8 class="card-subtitle mb-2 text-muted">סמסטר
-                    {{ course_comment.get_semester_name_to_show }}</h8>
             </td>
             <td rowspan="2" style="border-right: 2px solid var(--yellow); vertical-align: top;">
+                <p class="card-subtitle mb-2 text-muted">מועד הקורס:
+                    {{ course_comment.get_semester_name_to_show }}</p>
                 <p class="card-text">
                     {{ course_comment.comment }}
                 </p>

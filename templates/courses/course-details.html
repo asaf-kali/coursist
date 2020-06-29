@@ -24,35 +24,27 @@
             src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v7.0&appId=1129461710764059&autoLogAppEvents=1"></script>
     <br>
     <div class="container align-content-center">
-        <div class="row">
+        <div class="row" style="text-align: center;">
             {% include 'courses/course-rating.html' with rating_title=semester_rating_title rating_description=semester_rating_description rating_object=course.semester_rating %}
             {% include 'courses/course-rating.html' with rating_title=exams_rating_title rating_description=exams_rating_description rating_object=course.finals_rating %}
             {% include 'courses/course-rating.html' with rating_title=interest_rating_title rating_description=interest_rating_description rating_object=course.interesting_rating %}
         </div>
+    </div>
+    <hr>
+    <br><br>
+    <div style="width: 95%; margin: 0 auto;">
+        {% if not user.is_anonymous %}
+            {% include 'courses/comment-form.html' with couse=course %}
+        {% else %}
+            על מנת להוסיף תגובה או לדרג, אנא התחברו.
+        {% endif %}
+        <br><br>
+        {% get_comment_list for course as comments %}
+        {% include 'courses/comments-list.html' with comments=comments %}
     </div>
     <script>
         $(document).ready(function () {
             $('[data-toggle="tooltip"]').tooltip();
         });
     </script>
-    <hr>
-    <table style="width: 100%;">
-        <tr>
-            <td style="width: 20%; padding: 30px; text-align: center;">
-            </td>
-            <td>
-                <br><br>
-                <div>
-                    {% if not user.is_anonymous %}
-                        {% include 'courses/comment-form.html' with couse=course %}
-                    {% else %}
-                        על מנת להוסיף תגובה או לדרג, אנא התחברו.
-                    {% endif %}
-                </div>
-                <br><br>
-                {% get_comment_list for course as comments %}
-                {% include 'courses/comments-list.html' with comments=comments %}
-            </td>
-        </tr>
-    </table>
 {% endblock %}

@@ -1,4 +1,4 @@
-from django.db.models import Q, F
+from django.db.models import Q
 
 from academic_helper.models import Course, Teacher, CourseClass
 from academic_helper.utils.logger import log, wrap
