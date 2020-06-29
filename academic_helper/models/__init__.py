@@ -4,4 +4,4 @@ from academic_helper.models.course import *
 from academic_helper.models.course_occurrence import *
 from academic_helper.models.coursist_user import *
 from academic_helper.models.extended_rating import *
-from academic_helper.models.study_plan import *
+from academic_helper.models.degree_program import *
