@@ -139,3 +139,14 @@ body {
         min-height: 200px;
     }
 }
+
+div.comment {
+    margin: 0 auto;
+    min-width: 70%;
+    max-width: 1200px;
+}
+
+.card-gray-border {
+    border: 3px solid var(--gray);
+    border-radius: 20px;
+}

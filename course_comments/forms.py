@@ -19,7 +19,6 @@ SEMESTER_CHOICES = [
 class CourseCommentForm(CommentForm):
     is_anonymous = forms.BooleanField(required=False)
     comment = forms.CharField(label="Comment", widget=forms.Textarea())
-
     year = forms.CharField(label="year", widget=forms.Select(choices=YEAR_CHOICES))
     semester = forms.CharField(label="semester", widget=forms.Select(choices=SEMESTER_CHOICES))
 
