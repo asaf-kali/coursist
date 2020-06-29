@@ -13,8 +13,10 @@ from academic_helper.utils.logger import log, wrap
 
 class CourseComment(CommentAbstractModel):
     is_anonymous = models.BooleanField(
-        "is anonymous", default=False, help_text="Check this box if we should hide the  user name."
+        "is anonymous", default=False, help_text="Check this box if we should hide the user name."
     )
+    year = models.CharField("year", max_length=10, blank=True)
+    semester = models.CharField("semester", max_length=10, blank=True)
 
     @property
     def get_user_name_to_show(self):
@@ -22,6 +24,13 @@ class CourseComment(CommentAbstractModel):
         :return: The user name to be shown in the comments list - either user name or 'Anonymous'
         """
         return self.user_name if not self.is_anonymous else "Anonymous"
+
+    @property
+    def get_semester_name_to_show(self):
+        """
+        :return: The user name to be shown in the comments list - either user name or 'Anonymous'
+        """
+        return f"{self.year} {self.semester}"
 
     @property
     def course(self) -> Course:

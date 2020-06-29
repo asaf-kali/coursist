@@ -27,8 +27,10 @@
         <tr>
             <td style="width: 40%; direction: rtl; text-align: center;">
                 <h5 class="card-title"> {{ course_comment.get_user_name_to_show }}</h5>
-                <h6 class="card-subtitle mb-2 text-muted">בתאריך
+                <h6 class="card-subtitle mb-2 text-muted">נכתבה בתאריך
                     {{ course_comment.submit_date.date }}</h6>
+                <h8 class="card-subtitle mb-2 text-muted">סמסטר
+                    {{ course_comment.get_semester_name_to_show }}</h8>
             </td>
             <td rowspan="2" style="border-right: 2px solid var(--yellow); vertical-align: top;">
                 <p class="card-text">
