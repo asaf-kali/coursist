@@ -7,16 +7,34 @@ from django.shortcuts import get_object_or_404
 from django_comments.abstracts import CommentAbstractModel
 from star_ratings.models import UserRating
 
-from academic_helper.models import Course
+from academic_helper.models import Course, Semester
 from academic_helper.utils.logger import log, wrap
+
+SEMESTER_NAMES = {
+    Semester.A.value: "א'",
+    Semester.B.value: "ב'",
+    Semester.C.value: "ג'",
+    Semester.SUMMER.value: "קיץ",
+    Semester.YEARLY.value: "שנתי",
+}
+
+
+def semester_name(semester: Union[Semester, int]):
+    if isinstance(semester, Semester):
+        semester = semester.value
+    try:
+        return SEMESTER_NAMES[semester]
+    except KeyError:
+        log.error(f"Semester name for {wrap(semester)} is undefined")
+        return semester
 
 
 class CourseComment(CommentAbstractModel):
     is_anonymous = models.BooleanField(
         "is anonymous", default=False, help_text="Check this box if we should hide the user name."
     )
-    year = models.CharField("year", max_length=10, blank=True)
-    semester = models.CharField("semester", max_length=10, blank=True)
+    year = models.IntegerField(blank=True, null=True)
+    semester = models.IntegerField(blank=True, null=True, choices=Semester.list())
 
     @property
     def get_user_name_to_show(self):
@@ -30,7 +48,9 @@ class CourseComment(CommentAbstractModel):
         """
         :return: The user name to be shown in the comments list - either user name or 'Anonymous'
         """
-        return f"{self.year} {self.semester}"
+        if self.year is None or self.semester is None:
+            return "לא ידוע"
+        return f"{self.year} סמסטר {semester_name(self.semester)}"
 
     @property
     def course(self) -> Course:

@@ -37,6 +37,10 @@ class ChoicesEnum(Enum):
         """
         return [ReadableEnum(*t) for t in cls.list()]
 
+    @classmethod
+    def values(cls) -> List[int]:
+        return list(map(lambda i: i.value, cls))
+
     @property
     def readable_name(self):
         return " ".join(c.capitalize() or "" for c in self.name.split("_"))
