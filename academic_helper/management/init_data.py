@@ -1,4 +1,3 @@
-
 from academic_helper.logic.shnaton_parser import ShnatonParser
 from academic_helper.models import Course, StudyBlock, DegreeProgram, CoursistUser
 from academic_helper.utils.logger import log
