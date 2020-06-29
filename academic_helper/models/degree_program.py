@@ -2,7 +2,7 @@ from typing import Iterable
 
 from django.db import models
 
-from academic_helper.models import Base, Course, CoursistUser
+from academic_helper.models import Base, Course, CoursistUser, CourseOccurrence
 
 
 class StudyBlock(Base):
@@ -14,11 +14,12 @@ class StudyBlock(Base):
         return f"{self.name}"
 
 
-class CompletedCourse(Base):
+class UserCourseChoice(Base):
     user: CoursistUser = models.ForeignKey(CoursistUser, on_delete=models.CASCADE)
-    course: Course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    course: CourseOccurrence = models.ForeignKey(CourseOccurrence, on_delete=models.CASCADE)
     block: StudyBlock = models.ForeignKey(StudyBlock, on_delete=models.CASCADE)
     grade: int = models.IntegerField(null=True, blank=True)
+    is_completed: bool = models.BooleanField(default=False)
 
     class Meta:
         unique_together = ["user", "course"]
@@ -27,8 +28,9 @@ class CompletedCourse(Base):
         return f"{self.user} - {self.course}"
 
 
-class StudyPlan(Base):
+class DegreeProgram(Base):
     name: str = models.CharField(max_length=50)
+    code: int = models.IntegerField()
     blocks = models.ManyToManyField(StudyBlock)
     credits: int = models.IntegerField()
     is_public: bool = models.BooleanField(default=True)
