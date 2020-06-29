@@ -24,10 +24,11 @@
             bindButton("search_btn",
                 () => {
                     hide("courses-list");
-                    let free_text = $("#course_id").val();
-                    let school = $("#faculty").val();
-                    let faculty = $("#hug").val();
-                    return {"free_text": free_text, "school": school, "faculty": faculty};
+                    const free_text = $("#free_text").val();
+                    const faculty = $("#faculty").val();
+                    const department = $("#department").val();
+                    const semester = $("#semester").val();
+                    return {"free_text": free_text, "department": department, "faculty": faculty, "semester": semester};
                 },
                 (response) => {
                     const courses = response["courses"];
@@ -64,7 +65,7 @@
                             פקולטה
                         </div>
                         <div class="mt-3">
-                            <input type="text" name="faculty" id="faculty" class="search-input"
+                            <input type="text" id="faculty" class="search-input"
                                    placeholder="הקלידו שם פקולטה" value="מדעי המחשב"/>
                         </div>
                     </div>
@@ -75,7 +76,8 @@
                             חוג
                         </div>
                         <div class="mt-3">
-                            <input type="text" name="hug" id="hug" class="search-input" placeholder="הקלידו שם חוג"/>
+                            <input type="text" id="department" class="search-input"
+                                   placeholder="הקלידו שם חוג"/>
                         </div>
                     </div>
                 </div>
@@ -86,7 +88,6 @@
                         </div>
                         <div class="mt-3">
                             <input type="text"
-                                   name="semester"
                                    id="semester"
                                    class="search-input"
                                    placeholder="סמסטר א' או ב'"/>
@@ -97,8 +98,7 @@
             <div class="row mt-5">
                 <div class="col-sm-12">
                     <input type="text"
-                           name="course_name"
-                           id="course_id"
+                           id="free_text"
                            class="course-name-input"
                            placeholder=" חיפוש חופשי"/>
                     <button type="button" class="search-btn" id="search_btn">

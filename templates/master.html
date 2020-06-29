@@ -69,6 +69,9 @@
             </li>
             {% if user.is_staff %}
                 <li class="nav-item">
+                    <a class="nav-link" href="{% url 'degree-program' %}">תכנון מסלול</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="{% url 'admin:index' %}">ניהול</a>
                 </li>
             {% endif %}
