@@ -6,6 +6,7 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
+    atomic = False
 
     dependencies = [
         ("academic_helper", "0009_auto_20200628_0038"),
