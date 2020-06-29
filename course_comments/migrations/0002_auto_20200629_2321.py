@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("course_comments", "0001_initial"),
     ]
@@ -13,11 +12,9 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="coursecomment",
             name="semester",
-            field=models.IntegerField(
-                blank=True, choices=[(1, "A"), (2, "B"), (3, "C"), (4, "Summer"), (5, "Yearly")], null=True
-            ),
+            field=models.IntegerField(choices=[(1, "A"), (2, "B"), (3, "C"), (4, "Summer"), (5, "Yearly")], null=True),
         ),
-        migrations.AddField(model_name="coursecomment", name="year", field=models.IntegerField(blank=True, null=True),),
+        migrations.AddField(model_name="coursecomment", name="year", field=models.IntegerField(null=True),),
         migrations.AlterField(
             model_name="coursecomment",
             name="is_anonymous",

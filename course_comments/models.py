@@ -33,8 +33,8 @@ class CourseComment(CommentAbstractModel):
     is_anonymous = models.BooleanField(
         "is anonymous", default=False, help_text="Check this box if we should hide the user name."
     )
-    year = models.IntegerField(blank=True, null=True)
-    semester = models.IntegerField(blank=True, null=True, choices=Semester.list())
+    year = models.IntegerField(null=True)
+    semester = models.IntegerField(null=True, choices=Semester.list())
 
     @property
     def get_user_name_to_show(self):
@@ -49,7 +49,7 @@ class CourseComment(CommentAbstractModel):
         :return: The user name to be shown in the comments list - either user name or 'Anonymous'
         """
         if self.year is None or self.semester is None:
-            return "לא ידוע"
+            return "לא צויין"
         return f"{self.year} סמסטר {semester_name(self.semester)}"
 
     @property

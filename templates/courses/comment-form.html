@@ -56,10 +56,16 @@
     <div class="card comment comment-form card-gray-border">
         <table class="form">
             <tr>
-                <td style="width: 40%; direction: rtl; text-align: center;">
-                    תעזרו לחברים לדעת על הקורס!<br><br>מה כולל הקורס?<br>האם החומר עניין אותך?<br>איך היה המרצה?<br>כמה
-                    עבודות/תרגילים?<br>כמה זמן מעבר לשעות בכיתה נדרש?
-                </td>
+                <td style="width: 30%; direction: rtl; text-align: center;">
+                    תעזרו לחברים לדעת על הקורס!<br><br>
+                    <ul style="text-align: right;">
+                        <li> מה כולל הקורס?</li>
+                        <li>האם החומר עניין אותך?</li>
+                        <li>איך היה המרצה?</li>
+                        <li>כמה עבודות/תרגילים?</li>
+                        <li> כמה זמן נדרש מעבר לשעות בכיתה?</li>
+                    </ul>
+                 </td>
                 <td rowspan="2" class="main-content">
                     <p class="card-text">
                     <div class="comment-wrapper">
@@ -72,7 +78,7 @@
                     {{ form.object_pk }}
                     {{ form.timestamp }}
                     {{ form.security_hash }}
-                     מתייחס למועד {{ form.year }} סמסטר {{ form.semester }}
+                    בשנת הלימודים {{ form.year }} סמסטר {{ form.semester }}
                     <br><br>
                     {{ form.is_anonymous }}&nbsp;תגובה אנונימית
                     <br><br>
