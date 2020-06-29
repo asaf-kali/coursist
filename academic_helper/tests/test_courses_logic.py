@@ -5,11 +5,10 @@ from academic_helper.models import Course, Faculty, School
 
 
 class TestCoursesLogic(TestCase):
-
     @classmethod
     def setUpTestData(cls):
         faculty = Faculty.objects.create(name="הפקולטה למדעי החרטוט")
-        school = School.objects.create(name="ביה\"ס להנדסת חרטוטים", faculty=faculty)
+        school = School.objects.create(name='ביה"ס להנדסת חרטוטים', faculty=faculty)
         Course.objects.create(name="Testing 101", course_number=1000, school=school)
         Course.objects.create(name="מבוא לחארטה", course_number=67101, school=school)
         Course.objects.create(name="Infinitesimal Bullshit", course_number=99999, school=school)
