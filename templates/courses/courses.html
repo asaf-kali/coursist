@@ -11,6 +11,9 @@
     <script>
         function renderSearchResults(courses) {
             let newContent = "";
+            if (courses.length === 0) {
+                newContent = "לא נמצאו קורסים התואמים לחיפוש זה.";
+            }
             courses.forEach((course) => {
                 newContent += hb_templates["course-single"]({
                     "course": course,
