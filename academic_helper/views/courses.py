@@ -6,7 +6,7 @@ from django.urls import reverse
 from django.views.generic import DetailView, ListView
 
 from academic_helper.logic import courses
-from academic_helper.models import Course
+from academic_helper.models import Course, Faculty, Department
 from academic_helper.views.basic import ExtendedViewMixin
 
 
@@ -45,6 +45,14 @@ class CoursesView(ExtendedViewMixin, ListView):
     @property
     def object_list(self):
         return Course.objects.all()[:20]
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        faculties = Faculty.objects.values_list("name", flat=True)
+        departments = Department.objects.values_list("name", flat=True)
+        context["all_faculties"] = list(faculties)
+        context["all_departments"] = list(departments)
+        return context
 
     def post(self, request: WSGIRequest, *args, **kwargs):
         if not request.is_ajax():

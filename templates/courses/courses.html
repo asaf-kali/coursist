@@ -8,7 +8,10 @@
     <script name="course-single" type="text/x-handlebars-template">
         {% raw_include 'courses/course-item.html' %}
     </script>
+    <script src="{% static 'scripts/auto-complete.js' %}"></script>
     <script>
+        CSRF_TOKEN = '{{ csrf_token }}';
+
         function renderSearchResults(courses) {
             let newContent = "";
             if (courses.length === 0) {
@@ -39,10 +42,7 @@
                     show("courses-list", () => {
                         renderSearchResults(courses);
                     });
-                },
-                (response) => {
-                },
-                '{{ csrf_token }}');
+                });
         });
     </script>
     <style>
@@ -69,8 +69,9 @@
                             פקולטה
                         </div>
                         <div class="mt-3">
-                            <input type="text" id="faculty" class="search-input"
-                                   placeholder="הקלידו שם פקולטה" value="מדעי המחשב"/>
+                            <div class="autocomplete" style="width:300px;">
+                                <input type="text" id="faculty" class="search-input"
+                                       placeholder="הקלידו שם פקולטה" value="מדעי המחשב"/></div>
                         </div>
                     </div>
                 </div>
@@ -80,8 +81,10 @@
                             חוג
                         </div>
                         <div class="mt-3">
-                            <input type="text" id="department" class="search-input"
-                                   placeholder="הקלידו שם חוג"/>
+                            <div class="autocomplete" style="width:300px;">
+                                <input type="text" id="department" class="search-input"
+                                       placeholder="הקלידו שם חוג"/>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -131,6 +134,11 @@
                 // Trigger the button element with a click
                 document.getElementById("search_btn").click();
             }
+        });
+
+        $(document).ready(() => {
+            autocomplete(document.getElementById("faculty"), {{ all_faculties|safe }});
+            autocomplete(document.getElementById("department"), {{ all_departments|safe }});
         });
     </script>
 {% endblock %}
