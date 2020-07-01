@@ -69,8 +69,11 @@
                             פקולטה
                         </div>
                         <div class="mt-3">
-                            <input type="text" id="faculty" class="search-input"
-                                   placeholder="הקלידו שם פקולטה" value="מדעי המחשב"/>
+                            <form autocomplete="off" action="/action_page.php">
+                              <div class="autocomplete" style="width:300px;">
+                                <input type="text" id="faculty" class="search-input"
+                                       placeholder="הקלידו שם פקולטה" value="מדעי המחשב"/>                              </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -80,8 +83,13 @@
                             חוג
                         </div>
                         <div class="mt-3">
-                            <input type="text" id="department" class="search-input"
+                            <form autocomplete="off" action="/action_page.php">
+                              <div class="autocomplete" style="width:300px;">
+                               <input type="text" id="department" class="search-input"
                                    placeholder="הקלידו שם חוג"/>
+                              </div>
+                            </form>
+
                         </div>
                     </div>
                 </div>
@@ -132,6 +140,16 @@
                 document.getElementById("search_btn").click();
             }
         });
+    </script>
+
+
+
+    <script>
+        $( document ).ready(function() {
+            autocomplete(document.getElementById("faculty"), {{ allFaculties | safe }});
+            autocomplete(document.getElementById("department"),{{ alldepartements | safe }})
+            console.log( "auto-complete ready !" );
+    });
     </script>
 {% endblock %}
 
