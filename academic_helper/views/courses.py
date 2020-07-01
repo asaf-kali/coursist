@@ -1,14 +1,12 @@
 from django.core.handlers.wsgi import WSGIRequest
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404
 from django.template.defaultfilters import floatformat
 from django.urls import reverse
 from django.views.generic import DetailView, ListView
-from django.core import serializers
-import json
 
 from academic_helper.logic import courses
-from academic_helper.models import Course,Faculty,Department
+from academic_helper.models import Course, Faculty, Department
 from academic_helper.views.basic import ExtendedViewMixin
 
 
@@ -50,17 +48,11 @@ class CoursesView(ExtendedViewMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
-        faculties = Faculty.objects.values_list('name', flat=False)
-        faculties = list(faculties)
-        departements = Department.objects.values_list('name', flat=False)
-
-        context["allFaculties"] = [''.join([i for i in str(f) if i.isalpha() or i==' ']) for f in faculties]
-        context["alldepartements"] = [''.join([i for i in str(d) if i.isalpha() or i==' ']) for d in departements]
-
+        faculties = Faculty.objects.values_list("name", flat=True)
+        departments = Department.objects.values_list("name", flat=True)
+        context["all_faculties"] = list(faculties)
+        context["all_departments"] = list(departments)
         return context
-
-
 
     def post(self, request: WSGIRequest, *args, **kwargs):
         if not request.is_ajax():
