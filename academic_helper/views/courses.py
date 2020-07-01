@@ -50,8 +50,8 @@ class CoursesView(ExtendedViewMixin, ListView):
         context = super().get_context_data(**kwargs)
         faculties = Faculty.objects.values_list("name", flat=True)
         departments = Department.objects.values_list("name", flat=True)
-        context["all_faculties"] = list(faculties)
-        context["all_departments"] = list(departments)
+        context["all_faculties"] = sorted(set(faculties))
+        context["all_departments"] = sorted(set(d.replace(":", "").strip() for d in departments))
         return context
 
     def post(self, request: WSGIRequest, *args, **kwargs):
