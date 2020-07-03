@@ -3,7 +3,8 @@ from __future__ import annotations
 from typing import Union, Collection
 
 from django.db import models
-from django.db.models import QuerySet
+from django.db.models import QuerySet, Q
+from star_ratings.models import UserRating, Rating
 
 from academic_helper.models.base import Base
 from academic_helper.models.extended_rating import RatingDummy
@@ -76,4 +77,8 @@ class Course(Base):
 
     @property
     def score(self) -> float:
-        return (self.semester_rating.score + self.finals_rating.score + self.interesting_rating.score) / 3
+        dummies = RatingDummy.dummies_for(self, ("Semester", "Finals", "Interesting")).values_list("id", flat=True)
+        ratings = Rating.objects.filter(Q(object_id__in=dummies) & Q(content_type__model="ratingdummy") & ~Q(count=0))
+        if not ratings.exists():
+            return 0
+        return sum(ratings.values_list("average", flat=True)) / len(ratings)
