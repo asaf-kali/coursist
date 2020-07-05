@@ -18,6 +18,19 @@ The main features that this project supplies are:
 use the [source](https://docs.python.org/3/tutorial/venv.html) command).
 1. Run `make install` (if you dont have `make` installed, just run the commands under `install` inside the `Makefile`).
 
+
+### Docker images
+1. To build the docker image inside the project root directory:
+```shell
+docker build -t coursist:latest .
+```
+
+2. To run the server locally on port `8000`:
+```shell
+docker run -it -p 8000:8000 coursist:latest 0.0.0.0:8000
+```
+Login as usual to: http://localhost:8000/
+
 ## Usage
 #### Basics
 First, you need to run the local server:
