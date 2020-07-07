@@ -206,6 +206,10 @@ class ScheduleLogic {
         return teachers;
     }
 
+    getTotalCourseNumber() {
+        return Object.keys(this.courses).length;
+    }
+
     removeCourse(course_number) {
         let course_groups = this.courses[course_number]['groups'];
         let group_ids = {"group_ids": []};
