@@ -6,7 +6,17 @@
     --cd-color-event-5: lightpink;
     --cd-color-event-6: cyan;
     --cd-color-event-7: lightcoral;
-    --cd-color-event-default: tan;
+    --cd-color-event-8: tan;
+    --cd-color-event-9: plum;
+    --cd-color-event-10: khaki;
+    --cd-color-event-11: darkkhaki;
+    --cd-color-event-12: linen;
+    --cd-color-event-13: lightgray;
+    --cd-color-event-14: deepskyblue;
+    --cd-color-event-15: lime;
+    --cd-color-event-16: lightsalmon;
+    --cd-color-event-17: moccasin;
+
     --cd-color-text: #000000;
     --cd-color-border: hsl(0, 0%, 92%);
     --cd-color-border-h: 0;
@@ -311,22 +321,48 @@
     background: var(--cd-color-event-7);
 }
 .cd-schedule__event [data-event="event-8"],
-.cd-schedule-modal[data-event="event-8"] .cd-schedule-modal__header-bg,
+.cd-schedule-modal[data-event="event-8"] .cd-schedule-modal__header-bg {
+    background: var(--cd-color-event-8);
+}
 .cd-schedule__event [data-event="event-9"],
-.cd-schedule-modal[data-event="event-9"] .cd-schedule-modal__header-bg,
+.cd-schedule-modal[data-event="event-9"] .cd-schedule-modal__header-bg {
+    background: var(--cd-color-event-9);
+}
 .cd-schedule__event [data-event="event-10"],
-.cd-schedule-modal[data-event="event-10"] .cd-schedule-modal__header-bg,
+.cd-schedule-modal[data-event="event-10"] .cd-schedule-modal__header-bg {
+    background: var(--cd-color-event-10);
+}
 .cd-schedule__event [data-event="event-11"],
-.cd-schedule-modal[data-event="event-11"] .cd-schedule-modal__header-bg,
+.cd-schedule-modal[data-event="event-11"] .cd-schedule-modal__header-bg {
+    background: var(--cd-color-event-11);
+}
 .cd-schedule__event [data-event="event-12"],
-.cd-schedule-modal[data-event="event-12"] .cd-schedule-modal__header-bg,
+.cd-schedule-modal[data-event="event-12"] .cd-schedule-modal__header-bg {
+    background: var(--cd-color-event-12);
+}
 .cd-schedule__event [data-event="event-13"],
-.cd-schedule-modal[data-event="event-13"] .cd-schedule-modal__header-bg,
+.cd-schedule-modal[data-event="event-13"] .cd-schedule-modal__header-bg {
+    background: var(--cd-color-event-13);
+}
 .cd-schedule__event [data-event="event-14"],
-.cd-schedule-modal[data-event="event-14"] .cd-schedule-modal__header-bg,
+.cd-schedule-modal[data-event="event-14"] .cd-schedule-modal__header-bg {
+    background: var(--cd-color-event-14);
+}
 .cd-schedule__event [data-event="event-15"],
 .cd-schedule-modal[data-event="event-15"] .cd-schedule-modal__header-bg {
-    background: var(--cd-color-event-default);
+    background: var(--cd-color-event-15);
+}
+.cd-schedule__event [data-event="event-16"],
+.cd-schedule-modal[data-event="event-16"] .cd-schedule-modal__header-bg {
+    background: var(--cd-color-event-16);
+}
+.cd-schedule__event [data-event="event-16"],
+.cd-schedule-modal[data-event="event-16"] .cd-schedule-modal__header-bg {
+    background: var(--cd-color-event-16);
+}
+.cd-schedule__event [data-event="event-17"],
+.cd-schedule-modal[data-event="event-17"] .cd-schedule-modal__header-bg {
+    background: var(--cd-color-event-17);
 }
 
 .cd-schedule-modal {
@@ -780,6 +816,42 @@
     color: var(--cd-color-event-7);
 }
 
-.legend li.legend-event-default:before {
-    color: var(--cd-color-event-default);
+.legend li.legend-event-8:before {
+    color: var(--cd-color-event-8);
+}
+
+.legend li.legend-event-9:before {
+    color: var(--cd-color-event-9);
+}
+
+.legend li.legend-event-10:before {
+    color: var(--cd-color-event-10);
+}
+
+.legend li.legend-event-11:before {
+    color: var(--cd-color-event-11);
+}
+
+.legend li.legend-event-12:before {
+    color: var(--cd-color-event-12);
+}
+
+.legend li.legend-event-13:before {
+    color: var(--cd-color-event-13);
+}
+
+.legend li.legend-event-14:before {
+    color: var(--cd-color-event-14);
+}
+
+.legend li.legend-event-15:before {
+    color: var(--cd-color-event-15);
+}
+
+.legend li.legend-event-16:before {
+    color: var(--cd-color-event-16);
+}
+
+.legend li.legend-event-17:before {
+    color: var(--cd-color-event-17);
 }
