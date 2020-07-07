@@ -855,3 +855,7 @@
 .legend li.legend-event-17:before {
     color: var(--cd-color-event-17);
 }
+
+#stat-course-num {
+    font-weight: bold;
+}
