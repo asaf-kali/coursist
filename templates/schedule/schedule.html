@@ -97,6 +97,8 @@
     <script>
         CSRF_TOKEN = '{{ csrf_token }}';
         LOGGED_IN = {{ logged_in|lower|default:"false" }};
-        schedule.loadSavedCourses(document.getElementById('choices-data').innerText);
+        $(document).ready(function () {
+            schedule.loadSavedCourses(document.getElementById('choices-data').innerText);
+        });
     </script>
 {% endblock content_body %}
