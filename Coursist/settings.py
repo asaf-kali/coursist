@@ -145,7 +145,21 @@ WSGI_APPLICATION = "Coursist.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": os.path.join(BASE_DIR, "db.sqlite3"),}}
+DATABASES = {
+    "default": {
+        "ENGINE": os.getenv("DB_ENGINE", "django.db.backends.sqlite3"),
+        "NAME": os.getenv("DB_NAME", os.path.join(BASE_DIR, "db.sqlite3")),
+    }
+}
+
+if ENV != Environment.local:
+    DATABASES["default"]["USER"] = os.getenv("DB_USER", "admin")
+    DATABASES["default"]["PASSWORD"] = os.getenv("DB_PASSWORD", "")
+    DATABASES["default"]["HOST"] = os.getenv("DB_HOST", "")
+    DATABASES["default"]["PORT"] = os.getenv("DB_PORT", "3306")
+    DATABASES["default"]["OPTIONS"] = {
+        "sql_mode": "traditional",
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -241,6 +255,8 @@ LOGGING = {
         "django.utils.autoreload": {"level": "INFO", "propagate": True},
         "qinspect": {"handlers": ["debug_file", "console_out"], "level": "DEBUG", "propagate": False},
         "django.template": {"handler": ["django_template_file"], "level": "DEBUG", "propagate": False},
+        "dbbackup": {"handlers": ["debug_file", "console_out"], "propagate": False},
+        "py.warnings": {"handlers": ["debug_file"], "propagate": True},
     },
 }
 
@@ -333,6 +349,7 @@ SOCIALACCOUNT_EMAIL_REQUIRED = True
 SOCIALACCOUNT_ADAPTER = "academic_helper.login_adapter.MySocialAccountAdapter"
 
 # DB Backup
+DBBACKUP_FILENAME_TEMPLATE = str(ENV.name) + "-{databasename}-{servername}-{datetime}.dump"
 DBBACKUP_STORAGE = "django.core.files.storage.FileSystemStorage"
 DBBACKUP_STORAGE_OPTIONS = {"location": "./backups"}
 
