@@ -51,7 +51,15 @@ The server allows to run these custom commands:
 Run `python manage.py help fetch_courses` to learn about the `limit` and `fetch_existing` arguments.
 
 ## Contribution
-Before committing any change, please run `make black` in the terminal. 
+1. Inside github, fork the [upstream repository](https://github.com/asaf-kali/coursist).
+1. Clone your own fork of the project.
+1. Before starting to implement a new feature or a bug fix, make sure to pull `master` (or `develop`) branch
+from the [upstream repository](https://github.com/asaf-kali/coursist), and only then create your branch.
+1. While developing, please add and fix any relevant tests.
+1. Before opening a PR, make sure to use both `python manage.py test` to test that everything still works,
+and use `make black` to achieve well-formatted code.
+1. Push your code and open a PR against the [upstream repository](https://github.com/asaf-kali/coursist)
+`develop` branch. 
 
 ## Related Docs
 1. Styles template: https://bootswatch.com/litera/
