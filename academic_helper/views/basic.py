@@ -29,6 +29,7 @@ class ExtendedViewMixin(PermissionRequiredMixin, TemplateView):
         log.info(f"Rendering {wrap(self.title)} for {wrap(self.user)}")
         context = super().get_context_data(**kwargs)
         context["title"] = self.title
+        context["messages"]=["I <3 Snacks"]
         return context
 
     def post(self, request: WSGIRequest, *args, **kwargs):
