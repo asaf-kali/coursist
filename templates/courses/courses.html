@@ -100,6 +100,7 @@
                 </div>
             </div>
             <div class="row mt-5">
+
                 <div class="col-sm-12">
                     <input type="text"
                            id="free_text"
@@ -108,7 +109,7 @@
                     <button type="button" class="search-btn" id="search_btn">
                         <img alt="search" src="{% static 'images/search.svg' %}">
                     </button>
-                </div>
+                <div>
             </div>
         </div>
     </div>
@@ -136,6 +137,8 @@
         $(document).ready(() => {
             autocomplete(document.getElementById("faculty"), {{ all_faculties|safe }});
             autocomplete(document.getElementById("department"), {{ all_departments|safe }});
+            autocomplete(document.getElementById("free_text"), {{ all_faculties_and_departments|safe }});
+            
         });
     </script>
 {% endblock %}
