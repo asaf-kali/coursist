@@ -200,7 +200,7 @@ def parse_lecturers(lecturers):
 
     for lecturer in lecturers.contents:
         # TODO: This order is not right for course 1921!
-        if lecturer.string is not None and lecturer.string.strip() != '':
+        if lecturer.string is not None and lecturer.string.strip() != "":
             ret.append(lecturer.string)
         elif lecturer.name == "br" and lecturer.previous_sibling not in ret:
             ret.append(ret[-1])
@@ -304,7 +304,7 @@ def create_course_groups(
 ):
     group_mark = raw_group["group"]
     if group_mark is not None:
-        group_mark = group_mark.replace(' ', '')
+        group_mark = group_mark.replace(" ", "")
     group_class_type = parse_group_type(raw_group["type"]).value
     teachers = parse_teachers(raw_group["lecturer"])
     try:
