@@ -259,7 +259,7 @@ def parse_faculty(source, course):
     course["department"] = data[1]
 
 
-def create_course_class(group: ClassGroup, i: int, raw_group: dict, raw_semester: str):
+def create_course_class(group: ClassGroup, i: int, raw_group: dict, raw_semester: str, teacher: Teacher):
     try:
         semester = parse_lesson_semester(raw_semester).value
     except Exception as e:
@@ -280,7 +280,7 @@ def create_course_class(group: ClassGroup, i: int, raw_group: dict, raw_semester
         log.warning(f"Skipping hall: {e}")
         hall = None
     course_class, created = CourseClass.objects.get_or_create(
-        group=group, semester=semester, day=day, start_time=start_time, end_time=end_time, hall=hall,
+        group=group, semester=semester, day=day, start_time=start_time, end_time=end_time, hall=hall, teacher=teacher
     )
     if created:
         log.info(f"Class {course_class.id} created")
@@ -318,8 +318,9 @@ def create_course_groups(
     if created:
         log.info(f"Group {group.id} created")
     # Add classes to group
+    first_teacher = None if not teachers else teachers[0]
     for i, raw_semester in enumerate(raw_group["semester"]):
-        create_course_class(group, i, raw_group, raw_semester)
+        create_course_class(group, i, raw_group, raw_semester, first_teacher)
 
 
 class ShnatonParser:
