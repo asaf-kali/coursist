@@ -97,6 +97,9 @@ class ClassGroup(Base):
     def __str__(self):
         return f"{self.occurrence} - {ClassType(self.class_type).readable_name} ({self.mark})"
 
+    class Meta:
+        unique_together = ["occurrence", "class_type", "mark"]
+
     @property
     def as_dict(self) -> dict:
         result = super().as_dict

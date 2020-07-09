@@ -284,6 +284,7 @@ def create_course_class(group: ClassGroup, i: int, raw_group: dict, raw_semester
     )
     if created:
         log.info(f"Class {course_class.id} created")
+    return course_class
 
 
 def occurrence_for_semester(
@@ -313,14 +314,24 @@ def create_course_groups(
     group, created = ClassGroup.objects.get_or_create(
         occurrence=occurrence, class_type=group_class_type, mark=group_mark
     )
-    if teachers:
+    if teachers and created:
         group.teachers.add(*teachers)
+    if not created and teachers and set(teachers) != set(group.teachers.all()):
+        group.teachers.set(teachers)
+        log.info(f"Group {group.id} was updated")
+
     if created:
         log.info(f"Group {group.id} created")
     # Add classes to group
     first_teacher = None if not teachers else teachers[0]
+    old_classes = set(CourseClass.objects.filter(group=group))
+    new_classes = set()
     for i, raw_semester in enumerate(raw_group["semester"]):
-        create_course_class(group, i, raw_group, raw_semester, first_teacher)
+        new_classes.add(create_course_class(group, i, raw_group, raw_semester, first_teacher))
+    irrelevant_classes = old_classes - new_classes
+    for c in irrelevant_classes:
+        log.info(f"Class {c.id} is deleted")
+        c.delete()
 
 
 class ShnatonParser:
