@@ -309,7 +309,9 @@ def occurrence_for_semester(
 def create_course_groups(
     course: Course, year: int, course_semesters: List[Semester], occurrence_credits: int, raw_group: dict
 ):
-    group_mark = raw_group["group"].replace(" ", "")
+    group_mark = raw_group["group"]
+    if group_mark is not None:
+        group_mark = group_mark.replace(' ', '')
     group_class_type = parse_group_type(raw_group["type"]).value
     class_num = len(raw_group["semester"])
     teachers = expand_teacher_list(raw_group["lecturer"], class_num)
