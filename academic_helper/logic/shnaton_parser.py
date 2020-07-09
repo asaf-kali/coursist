@@ -202,6 +202,8 @@ def parse_lecturers(lecturers):
         # TODO: This order is not right for course 1921!
         if lecturer.string is not None and lecturer.string.strip() != '':
             ret.append(lecturer.string)
+        elif lecturer.name == "br" and lecturer.previous_sibling not in ret:
+            ret.append(ret[-1])
     return ret
 
 
@@ -303,7 +305,7 @@ def create_course_groups(
     if group_mark is not None:
         group_mark = group_mark.replace(' ', '')
     group_class_type = parse_group_type(raw_group["type"]).value
-    teachers = parse_teachers(raw_group["lecturer"])
+    teachers = list(dict.fromkeys(parse_teachers(raw_group["lecturer"])))
     try:
         group_semester = parse_group_semester(raw_group["semester"]).value
     except Exception as e:
