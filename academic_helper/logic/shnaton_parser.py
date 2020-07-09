@@ -134,15 +134,6 @@ def parse_hall(raw_hall: str) -> Hall:
     return hall
 
 
-def expand_teacher_list(teachers: List[str], length: int) -> List[str]:
-    if len(teachers) == length or len(teachers) > length:
-        return teachers
-    while len(teachers) < length:
-        # TODO: Make sure this is reached only when needed
-        teachers.append(teachers[-1])
-    return teachers
-
-
 def parse_course_credits(year: int, raw_data: dict) -> int:
     occurrence_year = int(raw_data["year"])
     if occurrence_year != year:
@@ -151,8 +142,11 @@ def parse_course_credits(year: int, raw_data: dict) -> int:
     return occurrence_credits
 
 
-def parse_teacher(teacher: str) -> Teacher:
-    return Teacher.objects.get_or_create(name=teacher)[0]
+def parse_teachers(teachers_str: List[str]) -> List[Teacher]:
+    teachers = list()
+    for teacher in teachers_str:
+        teachers.append(Teacher.objects.get_or_create(name=teacher)[0])
+    return teachers
 
 
 def parse_hours(hours):
@@ -206,11 +200,10 @@ def parse_lecturers(lecturers):
 
     for lecturer in lecturers.contents:
         # TODO: This order is not right for course 1921!
-        if lecturer.string is not None:
+        if lecturer.string is not None and lecturer.string.strip() != "":
             ret.append(lecturer.string)
         elif lecturer.name == "br" and lecturer.previous_sibling not in ret:
             ret.append(ret[-1])
-
     return ret
 
 
@@ -268,8 +261,7 @@ def parse_faculty(source, course):
     course["department"] = data[1]
 
 
-def create_course_class(group: ClassGroup, i: int, raw_group: dict, raw_semester: str, teachers: List[str]):
-    teacher = parse_teacher(teachers[i])
+def create_course_class(group: ClassGroup, i: int, raw_group: dict, raw_semester: str, teacher: Teacher):
     try:
         semester = parse_lesson_semester(raw_semester).value
     except Exception as e:
@@ -290,10 +282,11 @@ def create_course_class(group: ClassGroup, i: int, raw_group: dict, raw_semester
         log.warning(f"Skipping hall: {e}")
         hall = None
     course_class, created = CourseClass.objects.get_or_create(
-        group=group, teacher=teacher, semester=semester, day=day, start_time=start_time, end_time=end_time, hall=hall,
+        group=group, semester=semester, day=day, start_time=start_time, end_time=end_time, hall=hall, teacher=teacher
     )
     if created:
         log.info(f"Class {course_class.id} created")
+    return course_class
 
 
 def occurrence_for_semester(
@@ -311,10 +304,9 @@ def create_course_groups(
 ):
     group_mark = raw_group["group"]
     if group_mark is not None:
-        group_mark = group_mark.replace(' ', '')
+        group_mark = group_mark.replace(" ", "")
     group_class_type = parse_group_type(raw_group["type"]).value
-    class_num = len(raw_group["semester"])
-    teachers = expand_teacher_list(raw_group["lecturer"], class_num)
+    teachers = parse_teachers(raw_group["lecturer"])
     try:
         group_semester = parse_group_semester(raw_group["semester"]).value
     except Exception as e:
@@ -324,11 +316,24 @@ def create_course_groups(
     group, created = ClassGroup.objects.get_or_create(
         occurrence=occurrence, class_type=group_class_type, mark=group_mark
     )
+    if teachers and created:
+        group.teachers.add(*teachers)
+    if not created and teachers and set(teachers) != set(group.teachers.all()):
+        group.teachers.set(teachers)
+        log.info(f"Group {group.id} was updated")
+
     if created:
         log.info(f"Group {group.id} created")
     # Add classes to group
+    first_teacher = None if not teachers else teachers[0]
+    old_classes = set(CourseClass.objects.filter(group=group))
+    new_classes = set()
     for i, raw_semester in enumerate(raw_group["semester"]):
-        create_course_class(group, i, raw_group, raw_semester, teachers)
+        new_classes.add(create_course_class(group, i, raw_group, raw_semester, first_teacher))
+    irrelevant_classes = old_classes - new_classes
+    for c in irrelevant_classes:
+        log.info(f"Class {c.id} is deleted")
+        c.delete()
 
 
 class ShnatonParser:
