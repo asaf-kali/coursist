@@ -30,30 +30,36 @@ class ScheduleView(ExtendedViewMixin):
         return "Schedule Planner"
 
     def get(self, request, *args, **kwargs):
-        response = super().get(request, *args, **kwargs)
-        if self.user.is_authenticated and SCHEDULE_COOKIE in self.request.COOKIES:
-            # safe to delete the cookie here, because super has already called
-            # get_context_data, which already used this cookie
-            response.delete_cookie(SCHEDULE_COOKIE)
-
         if request.GET.get("download") == "ical":
             ical = ScheduleExport(user=self.user).as_ical()
             buffer = BytesIO()
             buffer.writelines([line.encode() for line in ical])
             buffer.seek(0)
             return FileResponse(
-                buffer, as_attachment=True, filename=f"coursist_export_{self.user}_{arrow.utcnow()}.ics",
+                buffer,
+                as_attachment=True,
+                filename=f"coursist_export_{self.user}_{arrow.utcnow()}.ics",
             )
         elif request.GET.get("download") == "json":
             event_json = ScheduleExport(user=self.user).as_dict()
             buffer = BytesIO()
-            buffer.write(json.dumps(event_json, indent=4, sort_keys=True, cls=DjangoJSONEncoder).encode())
+            buffer.write(
+                json.dumps(
+                    event_json, indent=4, sort_keys=True, cls=DjangoJSONEncoder
+                ).encode()
+            )
             buffer.seek(0)
             return FileResponse(
-                buffer, as_attachment=True, filename=f"coursist_export_{self.user}_{arrow.utcnow()}.json",
+                buffer,
+                as_attachment=True,
+                filename=f"coursist_export_{self.user}_{arrow.utcnow()}.json",
             )
-
         else:
+            response = super().get(request, *args, **kwargs)
+            if self.user.is_authenticated and SCHEDULE_COOKIE in self.request.COOKIES:
+                # safe to delete the cookie here, because super has already called
+                # get_context_data, which already used this cookie
+                response.delete_cookie(SCHEDULE_COOKIE)
             return response
 
     def get_context_data(self, **kwargs):
@@ -74,7 +80,10 @@ class ScheduleView(ExtendedViewMixin):
             Q(name__icontains=search_val) | Q(course_number__icontains=search_val)
         ).order_by("course_number")[:10]
         serialized = [c.as_dict for c in courses]
-        return JsonResponse({"status": "success", "courses": serialized}, json_dumps_params={"ensure_ascii": False},)
+        return JsonResponse(
+            {"status": "success", "courses": serialized},
+            json_dumps_params={"ensure_ascii": False},
+        )
 
     def get_classes(self, course_number):
         if not course_number.isdigit():
