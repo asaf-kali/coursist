@@ -202,6 +202,8 @@ def parse_lecturers(lecturers):
         # TODO: This order is not right for course 1921!
         if lecturer.string is not None and lecturer.string.strip() != '':
             ret.append(lecturer.string)
+        elif lecturer.name == "br" and lecturer.previous_sibling not in ret:
+            ret.append(ret[-1])
     return ret
 
 
