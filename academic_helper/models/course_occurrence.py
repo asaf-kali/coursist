@@ -92,10 +92,16 @@ class ClassGroup(Base):
     occurrence = models.ForeignKey(CourseOccurrence, on_delete=models.CASCADE)
     class_type = models.IntegerField(choices=ClassType.list())
     mark = models.CharField(max_length=30, null=True, blank=True)
-    teachers = models.ManyToManyField(Teacher, null=True, blank=True)
+    teachers = models.ManyToManyField(Teacher, blank=True)
 
     def __str__(self):
         return f"{self.occurrence} - {ClassType(self.class_type).readable_name} ({self.mark})"
+
+    @property
+    def as_dict(self) -> dict:
+        result = super().as_dict
+        result["teachers"] = [str(teacher) for teacher in self.teachers.all()]
+        return result
 
 
 class CourseClass(Base):

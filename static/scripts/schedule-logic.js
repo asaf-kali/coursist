@@ -195,14 +195,16 @@ class ScheduleLogic {
 
     getGroupTeachers(group) {
         let teachers = "";
-        if (group['classes'].length > 0) {
+        /* if (group['classes'].length > 0) {
             for (let i = 0; i < group['classes'].length; i++) {
                 teachers += group['classes'][i]['teacher'] + ', ';
             }
 
             teachers = teachers.substring(0, teachers.length - 2);
+        } */
+        if (group['teachers'].length > 0) {
+            teachers = group['teachers'].join(", ")
         }
-
         return teachers;
     }
 
