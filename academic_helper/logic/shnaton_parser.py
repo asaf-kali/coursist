@@ -1,6 +1,7 @@
 import os
 import re
 import urllib
+from datetime import date, datetime
 from os import path
 from typing import Optional, List, Tuple
 from urllib import request
@@ -28,6 +29,13 @@ SHNATON_URL = "https://shnaton.huji.ac.il/index.php"
 CHARSET = "windows-1255"
 
 
+# Edge cases:
+# 34209 - Has comments
+# 96203 - Has date מועדים מיוחדים
+# 71080 - Has verbose מועדים מיוחדים
+# 34209 - Has two teachers for the same group, one for a lesson.
+
+
 def parse_course_semester(semester: str) -> List[Semester]:
     if semester == "סמסטר א' או/ו ב'":
         return [Semester.A, Semester.B]
@@ -40,6 +48,9 @@ def parse_course_semester(semester: str) -> List[Semester]:
     elif semester == "שנתי":
         return [Semester.YEARLY]
     raise NotImplementedError(f"Unrecognized course semester: {semester}")
+
+
+7
 
 
 def parse_lesson_semester(semester: str) -> Semester:
@@ -134,15 +145,6 @@ def parse_hall(raw_hall: str) -> Hall:
     return hall
 
 
-def expand_teacher_list(teachers: List[str], length: int) -> List[str]:
-    if len(teachers) == length or len(teachers) > length:
-        return teachers
-    while len(teachers) < length:
-        # TODO: Make sure this is reached only when needed
-        teachers.append(teachers[-1])
-    return teachers
-
-
 def parse_course_credits(year: int, raw_data: dict) -> int:
     occurrence_year = int(raw_data["year"])
     if occurrence_year != year:
@@ -151,8 +153,11 @@ def parse_course_credits(year: int, raw_data: dict) -> int:
     return occurrence_credits
 
 
-def parse_teacher(teacher: str) -> Teacher:
-    return Teacher.objects.get_or_create(name=teacher)[0]
+def parse_teachers(teachers_str: List[str]) -> List[Teacher]:
+    teachers = list()
+    for teacher in teachers_str:
+        teachers.append(Teacher.objects.get_or_create(name=teacher)[0])
+    return teachers
 
 
 def parse_hours(hours):
@@ -206,12 +211,17 @@ def parse_lecturers(lecturers):
 
     for lecturer in lecturers.contents:
         # TODO: This order is not right for course 1921!
-        if lecturer.string is not None:
+        if lecturer.string is not None and lecturer.string.strip() != "":
             ret.append(lecturer.string)
         elif lecturer.name == "br" and lecturer.previous_sibling not in ret:
             ret.append(ret[-1])
-
     return ret
+
+
+def parse_special_occurrences(occurrences):
+    if not occurrences:
+        return []
+    return occurrences.text.strip().split()
 
 
 LESSON_TABLE_CELL_NUM = 8  # number of <td>s in the lesson table rows
@@ -229,6 +239,7 @@ def parse_lessons(source, course):
     for i in range(0, actual_cell_num, LESSON_TABLE_CELL_NUM):
         lesson = dict()
         lesson["hall"] = parse_halls(course_lessons[i])
+        lesson["special_occurrences"] = parse_special_occurrences(course_lessons[i + 1])
         lesson["hour"] = parse_hours(course_lessons[i + 2])
         lesson["day"] = parse_days(course_lessons[i + 3])
         lesson["semester"] = parse_semester(course_lessons[i + 4])
@@ -254,6 +265,12 @@ def parse_general_course_info(source, year, course):
     course["year"] = year
     course["semester"] = general_course_info[7].string
     course["nz"] = re.sub("[^0-9]", "", general_course_info[6].string)
+    notes_candidates = source.find_all(class_="courseDet", colspan="8")
+    if notes_candidates:
+        notes = " ".join(notes_candidates[0].text.strip().split())
+        if len(notes.replace("הערות:", "")) < 3:
+            notes = None
+        course["notes"] = notes
 
 
 def parse_faculty(source, course):
@@ -268,11 +285,10 @@ def parse_faculty(source, course):
     course["department"] = data[1]
 
 
-def create_course_class(group: ClassGroup, i: int, raw_group: dict, raw_semester: str, teachers: List[str]):
-    teacher = parse_teacher(teachers[i])
+def create_course_class(group: ClassGroup, i: int, raw_group: dict, raw_semester: str, teacher: Teacher):
     try:
         semester = parse_lesson_semester(raw_semester).value
-    except Exception as e:
+    except Exception:
         semester = group.occurrence.semester
     try:
         day = parse_day_of_week(raw_group["day"][i]).value
@@ -289,44 +305,89 @@ def create_course_class(group: ClassGroup, i: int, raw_group: dict, raw_semester
     except Exception as e:
         log.warning(f"Skipping hall: {e}")
         hall = None
+    special_occurrence = None
+    notes = None
+    if len(raw_group["special_occurrences"]) > i:
+        raw = raw_group["special_occurrences"][i]
+        try:
+            special_occurrence = datetime.strptime(raw, "%d/%m/%y").date()
+        except Exception as e:
+            log.warning(f"Skipping special occurrence: {e}")
+            notes = raw
     course_class, created = CourseClass.objects.get_or_create(
-        group=group, teacher=teacher, semester=semester, day=day, start_time=start_time, end_time=end_time, hall=hall,
+        group=group,
+        semester=semester,
+        day=day,
+        start_time=start_time,
+        end_time=end_time,
+        hall=hall,
+        teacher=teacher,
+        special_occurrence=special_occurrence,
     )
     if created:
         log.info(f"Class {course_class.id} created")
+    course_class.notes = notes
+    course_class.save()
+    return course_class
 
 
 def occurrence_for_semester(
-    course: Course, year: int, occurrence_credits: int, semester: int, course_semesters: List[Semester]
+    course: Course, year: int, occurrence_credits: int, semester: int, course_semesters: List[Semester], notes: str
 ) -> Optional["CourseOccurrence"]:
     if not semester:
         semester = course_semesters[0].value
-    return CourseOccurrence.objects.get_or_create(
+    occurrence, _ = CourseOccurrence.objects.get_or_create(
         course=course, year=year, credits=occurrence_credits, semester=semester
-    )[0]
+    )
+    if notes:
+        occurrence.notes = notes
+        occurrence.save()
+    return occurrence
 
 
 def create_course_groups(
-    course: Course, year: int, course_semesters: List[Semester], occurrence_credits: int, raw_group: dict
+    course: Course,
+    year: int,
+    course_semesters: List[Semester],
+    occurrence_credits: int,
+    occurrence_notes: str,
+    raw_group: dict,
 ):
-    group_mark = raw_group["group"].replace(" ", "")
+    group_mark = raw_group["group"]
+    if group_mark is not None:
+        group_mark = group_mark.replace(" ", "")
     group_class_type = parse_group_type(raw_group["type"]).value
-    class_num = len(raw_group["semester"])
-    teachers = expand_teacher_list(raw_group["lecturer"], class_num)
+    teachers = parse_teachers(raw_group["lecturer"])
     try:
         group_semester = parse_group_semester(raw_group["semester"]).value
     except Exception as e:
         log.info(f"No group semester: {e}")
         group_semester = None
-    occurrence = occurrence_for_semester(course, year, occurrence_credits, group_semester, course_semesters)
+    occurrence = occurrence_for_semester(
+        course, year, occurrence_credits, group_semester, course_semesters, occurrence_notes
+    )
     group, created = ClassGroup.objects.get_or_create(
         occurrence=occurrence, class_type=group_class_type, mark=group_mark
     )
+    if teachers and created:
+        group.teachers.add(*teachers)
+    if not created and teachers and set(teachers) != set(group.teachers.all()):
+        group.teachers.set(teachers)
+        log.info(f"Group {group.id} was updated")
+
     if created:
         log.info(f"Group {group.id} created")
     # Add classes to group
+    first_teacher = None if not teachers else teachers[0]
+    old_classes = set(CourseClass.objects.filter(group=group))
+    new_classes = set()
     for i, raw_semester in enumerate(raw_group["semester"]):
-        create_course_class(group, i, raw_group, raw_semester, teachers)
+        course_class = create_course_class(group, i, raw_group, raw_semester, first_teacher)
+        new_classes.add(course_class)
+    irrelevant_classes = old_classes - new_classes
+    for c in irrelevant_classes:
+        log.info(f"Class {c.id} is deleted")
+        c.delete()
 
 
 class ShnatonParser:
@@ -405,7 +466,7 @@ class ShnatonParser:
         occurrence_credits = parse_course_credits(year, raw_data)
 
         for raw_group in raw_data["lessons"]:
-            create_course_groups(course, year, course_semesters, occurrence_credits, raw_group)
+            create_course_groups(course, year, course_semesters, occurrence_credits, raw_data["notes"], raw_group)
         return course
 
     def fetch_course(self, course_number: int, year: int = 2020) -> Optional[Course]:
