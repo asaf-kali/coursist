@@ -1,9 +1,9 @@
-from datetime import time
+from datetime import time, date
 
 from django.db import models
 
-from academic_helper.models.course import Course
 from academic_helper.models.base import Base, ChoicesEnum
+from academic_helper.models.course import Course
 
 
 class Semester(ChoicesEnum):
@@ -50,6 +50,7 @@ class CourseOccurrence(Base):
     year: int = models.IntegerField()
     semester: int = models.IntegerField(choices=Semester.list())
     credits: int = models.IntegerField()
+    notes: str = models.TextField(null=True, blank=True)
 
     class Meta:
         unique_together = ["course", "year", "semester"]
@@ -87,6 +88,10 @@ class Teacher(Base):
     def __str__(self):
         return self.name
 
+    def save(self, *args, **kwargs):
+        self.name = " ".join(self.name.strip().split())
+        super().save(*args, **kwargs)
+
 
 class ClassGroup(Base):
     occurrence = models.ForeignKey(CourseOccurrence, on_delete=models.CASCADE)
@@ -115,6 +120,8 @@ class CourseClass(Base):
     start_time: time = models.TimeField(null=True, blank=True)
     end_time: time = models.TimeField(null=True, blank=True)
     hall: Hall = models.ForeignKey(Hall, on_delete=models.SET_NULL, null=True, blank=True)
+    special_occurrence: date = models.DateField(null=True, blank=True)
+    notes: str = models.CharField(max_length=50, null=True, blank=True)
 
     class Meta:
         verbose_name_plural = "course classes"

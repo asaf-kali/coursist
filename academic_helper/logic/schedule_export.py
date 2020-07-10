@@ -5,14 +5,8 @@ from ics import Calendar, Event
 
 # TODO: needs to be modeled in the DB
 _HUJI_SEMESTER_DATES = {
-    1: {
-        "begin": arrow.get(year=2019, month=10, day=27),
-        "end": arrow.get(year=2020, month=1, day=28),
-    },
-    2: {
-        "begin": arrow.get(year=2020, month=3, day=12),
-        "end": arrow.get(year=2020, month=6, day=30),
-    },
+    1: {"begin": arrow.get(year=2019, month=10, day=27), "end": arrow.get(year=2020, month=1, day=28),},
+    2: {"begin": arrow.get(year=2020, month=3, day=12), "end": arrow.get(year=2020, month=6, day=30),},
 }
 
 
@@ -77,29 +71,20 @@ class ScheduleExport:
 
     def _get_all_events_for_course(self, course):
         if course["semester"] not in _HUJI_SEMESTER_DATES:
-            raise ScheduleExportError(
-                f'Unknown Semester encoding: {course["semester"]}'
-            )
+            raise ScheduleExportError(f'Unknown Semester encoding: {course["semester"]}')
 
         semester_begin = _HUJI_SEMESTER_DATES[course["semester"]]["begin"]
         semester_end = _HUJI_SEMESTER_DATES[course["semester"]]["end"]
 
         course_begin = self._calculate_course_first_day(
-            semester_begin,
-            course["day"],
-            course["start_time"].hour,
-            course["start_time"].minute,
+            semester_begin, course["day"], course["start_time"].hour, course["start_time"].minute,
         )
         events = self._calculate_weekly_events(course_begin, semester_end)
 
         return events
 
-    def _calculate_course_first_day(
-        self, begin_date, event_day, event_hour, event_minute
-    ):
-        return begin_date.shift(weekday=(event_day - 2) % 7).replace(
-            hour=event_hour, minute=event_minute, second=0
-        )
+    def _calculate_course_first_day(self, begin_date, event_day, event_hour, event_minute):
+        return begin_date.shift(weekday=(event_day - 2) % 7).replace(hour=event_hour, minute=event_minute, second=0)
 
     def _calculate_weekly_events(self, begin_date, end_date):
         if end_date <= begin_date:
