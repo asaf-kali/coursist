@@ -1,4 +1,4 @@
-name: Coursist unit tests and linting
+name: Tests
 on:
   push:
     branches:

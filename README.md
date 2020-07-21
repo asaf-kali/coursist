@@ -1,6 +1,8 @@
 # Coursist
 Course + Assist, get it?
 
+![](https://github.com/asaf-kali/Coursist/workflows/Tests/badge.svg)
+
 ## Description
 This project is intended for university students all around the world.<br>
 The main features that this project supplies are:
