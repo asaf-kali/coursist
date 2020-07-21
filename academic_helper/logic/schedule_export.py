@@ -2,7 +2,6 @@ from academic_helper.models import ClassSchedule
 import arrow
 from ics import Calendar, Event
 
-
 # TODO: needs to be modeled in the DB
 _HUJI_SEMESTER_DATES = {
     1: {"begin": arrow.get(year=2019, month=10, day=27), "end": arrow.get(year=2020, month=1, day=28),},

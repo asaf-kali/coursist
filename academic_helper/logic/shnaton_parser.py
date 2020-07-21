@@ -9,6 +9,7 @@ from urllib.parse import urlencode
 
 from bs4 import BeautifulSoup
 from django.db.transaction import atomic
+from django.utils import timezone
 
 from academic_helper.logic.errors import ShnatonParserError, FetchRawDataError, HtmlFormatError
 from academic_helper.models import Course, Faculty, Department
@@ -48,9 +49,6 @@ def parse_course_semester(semester: str) -> List[Semester]:
     elif semester == "שנתי":
         return [Semester.YEARLY]
     raise NotImplementedError(f"Unrecognized course semester: {semester}")
-
-
-7
 
 
 def parse_lesson_semester(semester: str) -> Semester:
@@ -469,7 +467,7 @@ class ShnatonParser:
             create_course_groups(course, year, course_semesters, occurrence_credits, raw_data["notes"], raw_group)
         return course
 
-    def fetch_course(self, course_number: int, year: int = 2020) -> Optional[Course]:
+    def fetch_course(self, course_number: int, year: int = None) -> Optional[Course]:
         """
         Fetch course from Shnaton, add it to the database and return it.
         :param course_number: The course number to search.
@@ -477,6 +475,11 @@ class ShnatonParser:
         :return: The course model object of the fetched course and its classes,
          or None if the course wasn't found.
         """
+        if not year:
+            now = timezone.now()
+            year = now.year
+            if now.month >= 8:
+                year += 1
         try:
             return self._fetch_course(course_number, year)
         except ShnatonParserError:
