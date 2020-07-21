@@ -34,7 +34,20 @@
                     const faculty = $("#faculty").val();
                     const department = $("#department").val();
                     const semester = $("#semester").val();
-                    return {"free_text": free_text, "department": department, "faculty": faculty, "semester": semester};
+
+                    if (free_text.length === 0) {
+                        show("courses-list", () => {
+                            $("#courses-list").html("ברוכים הבאים ל-Coursist. כדי לראות מה אנשים חשבו על קורס מסויים, כתבו את שמו או מספרו בתיבת החיפוש.");
+                        });
+                    }
+                    else {
+                        return {
+                            "free_text": free_text,
+                            "department": department,
+                            "faculty": faculty,
+                            "semester": semester
+                        };
+                    }
                 },
                 (response) => {
                     const courses = response["courses"];
