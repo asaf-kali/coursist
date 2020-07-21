@@ -12,7 +12,7 @@ urls_to_get = [
     "",
     "/ajax/",
     "/courses/",
-    "/courses/" + str(init_data.courses_to_fetch[0]),
+    "/courses/" + str(init_data.COURSES_TO_FETCH[0]),
     "/about/",
     "/schedule/",
     "/user/admin/",
