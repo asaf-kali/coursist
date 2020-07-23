@@ -2,10 +2,10 @@ from academic_helper.logic.shnaton_parser import ShnatonParser
 from academic_helper.models import Course, StudyBlock, DegreeProgram, CoursistUser
 from academic_helper.utils.logger import log
 
-courses_to_fetch = [94640, 94625, 67504, 67101, 67392, 67829]
+COURSES_TO_FETCH = [94640, 94625, 67504, 67101, 67392, 67829]
 
 # blocks info - name, min_credits, [course_num1, ...]
-unparsed_blocks = [
+UNPARSED_BLOCKS = [
     ("Compulsory CS", 15, [67101, 67109, 67125]),
     ("Compulsory Math", 20, [80131, 80133, 80134]),
     ("Elective", 4, [67392, 67829]),
@@ -36,9 +36,9 @@ def create_james():
 def fetch_courses():
     log.info("Fetching courses")
     parser = ShnatonParser()
-    for course_number in courses_to_fetch:
+    for course_number in COURSES_TO_FETCH:
         parser.fetch_course(course_number)
-    for block in unparsed_blocks:
+    for block in UNPARSED_BLOCKS:
         for course in block[2]:
             parser.fetch_course(course)
 
@@ -46,7 +46,7 @@ def fetch_courses():
 def create_blocks():
     log.info("Creating blocks")
     study_blocks = []
-    for unparsed_block in unparsed_blocks:
+    for unparsed_block in UNPARSED_BLOCKS:
         # extract info
         name, min_credits, course_nums = unparsed_block
         # create block

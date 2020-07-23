@@ -1,0 +1,34 @@
+name: Tests
+on:
+  push:
+    branches:
+      - master
+      - develop
+  pull_request:
+    branches:
+      - master
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Install dependencies
+        run: |
+          pip install -r requirements-dev.txt
+          pip install -r requirements.txt
+      - name: Check black formatting
+        uses: lgeiger/black-action@v1.0.1
+        with:
+          args: ". --check -l 120"
+      - name: Run mirgations
+        run: |
+          python manage.py migrate
+      - name: Run tests
+        run: |
+          python manage.py test

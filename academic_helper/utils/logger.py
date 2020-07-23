@@ -27,6 +27,7 @@ def wrap(obj) -> str:
 def reconfigure_logging():
     log_configurator = logging.config.DictConfigurator(settings.LOGGING)
     log_configurator.configure()
+    logging.captureWarnings(True)
 
 
 log = logging.getLogger("coursist")
