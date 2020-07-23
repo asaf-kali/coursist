@@ -34,20 +34,12 @@
                     const faculty = $("#faculty").val();
                     const department = $("#department").val();
                     const semester = $("#semester").val();
-
-                    if (free_text.length === 0) {
-                        show("courses-list", () => {
-                            $("#courses-list").html("ברוכים הבאים ל-Coursist. כדי לראות מה אנשים חשבו על קורס מסויים, כתבו את שמו או מספרו בתיבת החיפוש.");
-                        });
-                    }
-                    else {
-                        return {
-                            "free_text": free_text,
-                            "department": department,
-                            "faculty": faculty,
-                            "semester": semester
-                        };
-                    }
+                    return {
+                        "free_text": free_text,
+                        "department": department,
+                        "faculty": faculty,
+                        "semester": semester
+                    };
                 },
                 (response) => {
                     const courses = response["courses"];
@@ -126,15 +118,6 @@
         </div>
     </div>
     <script>
-        $(document).ready(function () {
-                //document.getElementById("search_btn").click();
-                //...get the button
-                // Cancel the default action, if needed
-                jQuery(function () {
-                    jQuery('#search_btn').click();
-                });
-            }
-        );
         // Execute a function when the user releases a key on the keyboard
         document.addEventListener("keydown", function (event) {
             // Number 13 is the "Enter" key on the keyboard
@@ -156,6 +139,8 @@
 {% block content_body %}
     <div class="container" style="width: 95%; height: 100%; justify-content: center; align-items: center;"
          id="courses-list">
+        ברוכים הבאים ל-Coursist!<br>
+        כדי לראות נתונים וביקורות על קורסים, השתמשו בתיבת החיפוש (ניתן לחפש שם קורס, מספר קורס, ושם מרצה).<br>
     </div>
 {% endblock %}
 
