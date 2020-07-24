@@ -1,7 +1,7 @@
 <html dir="rtl">
 {% load i18n %}
 {% load static %}
-{% include 'message/message.html' %}
+{% load custom_tags %}
 
 <head>
     <meta charset="utf-8">
@@ -18,6 +18,11 @@
     <script src="{% static 'scripts/ajax.js' %}"></script>
     <script src="{% static 'scripts/utils.js' %}"></script>
     <script src="{% static 'star-ratings/js/dist/star-ratings.min.js' %}"></script>
+    <script src="{% static 'scripts/handlebars.js' %}"></script>
+    {# Message tempalte #}
+    <script name="toast-message" type="text/x-handlebars-template">
+        {% raw_include 'other/toast.html' %}
+    </script>
     {# Curent page #}
     {% block head %}{% endblock %}
 </head>
@@ -121,14 +126,16 @@
 <div id="content-body-container" style="margin: 25px;">
     {% block content_body %} {% endblock %}
 </div>
-{% if messages %}
-  <script>
-      {% for message in messages %}
-          $(document).ready(function () {
-              $('.toast').toast('show');
-          });
-      {% endfor %}
-  </script>
-{% endif %}
+<div id="toasts-container" class="toasts-container" aria-live="polite" aria-atomic="true">
+    {% if toasts %}
+        <script>
+            $(document).ready(function () {
+                {% for toast in toasts %}
+                    showToast(JSON.parse('{{ toast|safe }}'));
+                {% endfor %}
+            });
+        </script>
+    {% endif %}
+</div>
 </body>
 </html>

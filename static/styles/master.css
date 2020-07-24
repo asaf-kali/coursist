@@ -189,3 +189,13 @@ div.comment {
     background-color: DodgerBlue !important;
     color: #ffffff;
 }
+
+.toasts-container {
+    position: fixed;
+    top: 150px;
+    right: 50px;
+}
+
+.toasts-container .toast {
+    min-width: 200px;
+}
