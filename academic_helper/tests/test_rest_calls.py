@@ -2,6 +2,7 @@ import io
 import json
 from unittest import skip
 
+from django.conf import settings
 from django.test import Client
 from django.test import TestCase, RequestFactory
 from ics import Calendar
@@ -35,6 +36,7 @@ class TestRestCalls(TestCase):
         )
 
     def test_get_urls(self):
+        settings.SOCIAL_AUTH_ACTIVATION = False
         parser = ShnatonParser()
         parser.fetch_course(COURSE)
         client = Client()
