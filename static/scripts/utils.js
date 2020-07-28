@@ -51,6 +51,32 @@ function show(id, before = undefined, after = undefined) {
     });
 }
 
+let TOAST_COUNT = 0;
+
+
+function showToast(toast) {
+    toast.id = TOAST_COUNT++;
+    // message.bg = message.tag === "error" ? "danger" : message.tag;
+    // switch (message.tag) {
+    //     case "error":
+    //         message.fa_class = "times";
+    //         break;
+    //     case "warning":
+    //         message.fa_class = "exclamation";
+    //         break;
+    //     case "success":
+    //         message.fa_class = "check";
+    //         break;
+    //     default:
+    //         message.fa_class = "info";
+    //         break;
+    // }
+    if (!toast.delay) toast.delay = 5000;
+    const html = hb_templates["toast-message"]({"message": toast});
+    $("#toasts-container").prepend(html);
+    $(`#toast-${toast.id}`).toast("show");
+}
+
 /*** Init ***/
 
 $(document).ready(function () {

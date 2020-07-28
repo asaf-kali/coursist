@@ -1,6 +1,8 @@
 # Coursist
 Course + Assist, get it?
 
+![](https://github.com/asaf-kali/Coursist/workflows/Tests/badge.svg)
+
 ## Description
 This project is intended for university students all around the world.<br>
 The main features that this project supplies are:
@@ -17,6 +19,19 @@ The main features that this project supplies are:
 (If you use `Pycharm` that will happen by default in the integrated terminal, otherwise you will need to
 use the [source](https://docs.python.org/3/tutorial/venv.html) command).
 1. Run `make install` (if you dont have `make` installed, just run the commands under `install` inside the `Makefile`).
+
+
+### Docker images
+1. To build the docker image inside the project root directory:
+```shell
+docker build -t coursist:latest .
+```
+
+2. To run the server locally on port `8000`:
+```shell
+docker run -it -p 8000:8000 coursist:latest 0.0.0.0:8000
+```
+Login as usual to: http://localhost:8000/
 
 ## Usage
 #### Basics
@@ -38,7 +53,15 @@ The server allows to run these custom commands:
 Run `python manage.py help fetch_courses` to learn about the `limit` and `fetch_existing` arguments.
 
 ## Contribution
-Before committing any change, please run `make black` in the terminal. 
+1. Inside github, fork the [upstream repository](https://github.com/asaf-kali/coursist).
+1. Clone your own fork of the project.
+1. Before starting to implement a new feature or a bug fix, make sure to pull `master` (or `develop`) branch
+from the [upstream repository](https://github.com/asaf-kali/coursist), and only then create your branch.
+1. While developing, please add and fix any relevant tests.
+1. Before opening a PR, make sure to use both `python manage.py test` to test that everything still works,
+and use `make black` to achieve well-formatted code.
+1. Push your code and open a PR against the [upstream repository](https://github.com/asaf-kali/coursist)
+`develop` branch. 
 
 ## Related Docs
 1. Styles template: https://bootswatch.com/litera/

@@ -13,4 +13,6 @@ sentry-sdk==0.14.4
 django-contrib-comments==1.9.2
 django-s3-storage==0.13.2
 watchtower==0.7.3
+arrow==0.14.7
+ics==0.7
 tqdm
