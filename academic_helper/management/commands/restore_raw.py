@@ -30,7 +30,7 @@ def reconstruct_insert(query: str) -> str:
         return ""
     table = result.group(1)
     values = result.group(2)
-    return f'INSERT INTO {table} VALUES ({values});'
+    return f"INSERT INTO {table} VALUES ({values});"
 
 
 class Command(BaseCommand):
