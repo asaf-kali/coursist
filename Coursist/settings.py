@@ -160,9 +160,6 @@ if ENV != Environment.local:
     DATABASES["default"]["PASSWORD"] = os.getenv("DB_PASSWORD", "")
     DATABASES["default"]["HOST"] = os.getenv("DB_HOST", "")
     DATABASES["default"]["PORT"] = os.getenv("DB_PORT", "3306")
-    DATABASES["default"]["OPTIONS"] = {
-        "sql_mode": "traditional",
-    }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators

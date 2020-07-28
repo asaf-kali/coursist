@@ -1,4 +1,4 @@
 BASH_ENV=~/.bashrc
 
 @reboot $HOME/scripts/update.sh  >>$HOME/console.log 2>&1
-1 0/4 * * * $HOME/scripts/cron.sh  >>$HOME/console.log 2>&1
+1 */4 * * * $HOME/scripts/cron.sh  >>$HOME/console.log 2>&1
