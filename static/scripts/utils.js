@@ -51,8 +51,10 @@ function show(id, before = undefined, after = undefined) {
     });
 }
 
-let TOAST_COUNT = 0;
 
+/*** Toast ***/
+
+let TOAST_COUNT = 0;
 
 function showToast(toast) {
     toast.id = TOAST_COUNT++;
@@ -77,8 +79,35 @@ function showToast(toast) {
     $(`#toast-${toast.id}`).toast("show");
 }
 
+/*** Other ***/
+
+const bindings = [];
+let called = false;
+
+function onReady(bind) {
+    console.log("Add bind");
+    if (called)
+        bind();
+    else
+        bindings.push(bind);
+}
+
+function clickOnEnter(id) {
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            $(`#${id}`).click();
+        }
+    });
+}
+
 /*** Init ***/
 
-$(document).ready(function () {
+$(document).ready(() => {
     initHandlebars();
+    called = true;
+    console.log(`Total ${bindings.length} bindings`);
+    bindings.forEach((bind) => {
+        $(document).ready((e) => bind(e));
+    });
 });

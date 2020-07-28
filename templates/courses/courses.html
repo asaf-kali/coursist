@@ -22,34 +22,54 @@
                     "arrow_url": "{% static 'images/arrow.svg' %}"
                 });
             });
-            $("#courses-list").html(newContent);
+            $("#courses_list").html(newContent);
+        }
+
+        function search() {
+            hide("courses_list");
+            const free_text = $("#free_text").val();
+            const faculty = $("#faculty").val();
+            const department = $("#department").val();
+            const semester = $("#semester").val();
+            const data = {
+                "free_text": free_text,
+                "department": department,
+                "faculty": faculty,
+                "semester": semester
+            };
+            ajax(data, (response) => {
+                const courses = response["courses"];
+                console.log(`Got ${courses.length} courses`);
+                show("courses_list", () => {
+                    renderSearchResults(courses);
+                });
+            });
         }
 
         onReady(() => {
-            bindButton("search_btn",
-                () => {
-                    hide("courses-list");
-                    const free_text = $("#free_text").val();
-                    const faculty = $("#faculty").val();
-                    const department = $("#department").val();
-                    const semester = $("#semester").val();
-                    return {
-                        "free_text": free_text,
-                        "department": department,
-                        "faculty": faculty,
-                        "semester": semester
-                    };
-                },
-                (response) => {
-                    const courses = response["courses"];
-                    console.log(`Got ${courses.length} courses`);
-                    show("courses-list", () => {
-                        renderSearchResults(courses);
-                    });
-                });
+            clickOnEnter("search_btn");
+            autocomplete(document.getElementById("faculty"), {{ all_faculties|safe }});
+            autocomplete(document.getElementById("department"), {{ all_departments|safe }});
+        });
+
+        onReady(() => {
+            if ($("#free_text").val()) {
+                console.log("Free text not empty, searching");
+                search();
+            } else {
+                $("#courses_list").css("display", "block");
+            }
         });
     </script>
     <style>
+        div.course-list {
+            width: 95%;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+            display: none; /* When returning to this page, the default for the list is to be hidden */
+        }
+
         div.course-item {
             width: 23%;
             height: 9.5rem;
@@ -64,84 +84,65 @@
 
 {% block content_header %}
     <div class="text-white text-center d-flex align-items-center">
-    <div class="container">
-    <br><br>
-    <div class="row">
-        <div class="col-md-4">
-            <div class="search-param-wrapper">
-                <div class="title">
-                    פקולטה
+        <div class="container">
+            <br><br>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="search-param-wrapper">
+                        <div class="title">
+                            פקולטה
+                        </div>
+                        <div class="mt-3 autocomplete-container">
+                            <input type="text" id="faculty" class="search-input"
+                                   placeholder="הקלידו שם פקולטה" value="מדעי המחשב"/>
+                        </div>
+                    </div>
                 </div>
-                <div class="mt-3 autocomplete-container">
-                    <input type="text" id="faculty" class="search-input"
-                           placeholder="הקלידו שם פקולטה" value="מדעי המחשב"/>
+                <div class="col-md-4">
+                    <div class="search-param-wrapper">
+                        <div class="title">
+                            חוג
+                        </div>
+                        <div class="mt-3 autocomplete-container">
+                            <input type="text" id="department" class="search-input"
+                                   placeholder="הקלידו שם חוג"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="search-param-wrapper">
+                        <div class="title">
+                            סמסטר
+                        </div>
+                        <div class="mt-3 autocomplete-container">
+                            <input type="text"
+                                   id="semester"
+                                   class="search-input"
+                                   placeholder="סמסטר א' או ב'"/>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-4">
-            <div class="search-param-wrapper">
-                <div class="title">
-                    חוג
-                </div>
-                <div class="mt-3 autocomplete-container">
-                    <input type="text" id="department" class="search-input"
-                           placeholder="הקלידו שם חוג"/>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="search-param-wrapper">
-                <div class="title">
-                    סמסטר
-                </div>
-                <div class="mt-3 autocomplete-container">
+            <div class="row mt-5">
+                <div class="col-sm-12">
                     <input type="text"
-                           id="semester"
-                           class="search-input"
-                           placeholder="סמסטר א' או ב'"/>
+                           id="free_text"
+                           class="course-name-input"
+                           placeholder=" חיפוש חופשי"/>
+                    <button type="button" class="search-btn" id="search_btn" onclick="search();">
+                        <img alt="search" src="{% static 'images/search.svg' %}">
+                    </button>
+                    <div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="row mt-5">
-
-        <div class="col-sm-12">
-            <input type="text"
-                   id="free_text"
-                   class="course-name-input"
-                   placeholder=" חיפוש חופשי"/>
-            <button type="button" class="search-btn" id="search_btn">
-                <img alt="search" src="{% static 'images/search.svg' %}">
-            </button>
-            <div>
-            </div>
-        </div>
-    </div>
-    <script>
-        // Execute a function when the user releases a key on the keyboard
-        document.addEventListener("keydown", function (event) {
-            // Number 13 is the "Enter" key on the keyboard
-            if (event.keyCode === 13) {
-                // Cancel the default action, if needed
-                event.preventDefault();
-                // Trigger the button element with a click
-                document.getElementById("search_btn").click();
-            }
-        });
-
-        $(document).ready(() => {
-            autocomplete(document.getElementById("faculty"), {{ all_faculties|safe }});
-            autocomplete(document.getElementById("department"), {{ all_departments|safe }});
-
-        });
-    </script>
 {% endblock %}
 
 {% block content_body %}
-    <div class="container" style="width: 95%; height: 100%; justify-content: center; align-items: center;"
-         id="courses-list">
+    <div class="container course-list" id="courses_list">
         ברוכים הבאים ל-Coursist!<br>
         כדי לראות נתונים וביקורות על קורסים, השתמשו בתיבת החיפוש (ניתן לחפש שם קורס, מספר קורס, ושם מרצה).<br>
     </div>
 {% endblock %}
-

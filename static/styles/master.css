@@ -199,3 +199,13 @@ div.comment {
 .toasts-container .toast {
     min-width: 200px;
 }
+
+.disclaimer {
+    opacity: 0.7;
+    background-color: #fff8f8;
+    margin: 0 auto;
+    border: 2px solid #f5bcbc;
+    border-radius: 20px;
+    padding: 15px;
+    width: 90%;
+}

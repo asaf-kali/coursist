@@ -43,7 +43,7 @@
         {% include 'courses/comments-list.html' with comments=comments %}
     </div>
     <script>
-        $(document).ready(function () {
+        onReady(() => {
             $('[data-toggle="tooltip"]').tooltip();
         });
     </script>

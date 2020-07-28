@@ -449,7 +449,7 @@ if (scheduleTemplate.length > 0) { // init ScheduleTemplate objects
 }
 
 // init general binds
-$(document).ready(function () {
+onReady(() => {
     $('#course_input').on("input", function () {
         courses_autocomplete(this.value);
     });
