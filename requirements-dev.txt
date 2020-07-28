@@ -1,2 +1,3 @@
 black
 django-queryinspect==1.1.0
+django-sslserver

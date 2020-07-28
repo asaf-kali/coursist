@@ -1,4 +1,5 @@
 from django.core.management import BaseCommand
+
 from academic_helper.management.init_data import create_all
 
 

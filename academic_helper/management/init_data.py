@@ -1,3 +1,5 @@
+from django.contrib.sites.models import Site
+
 from academic_helper.logic.shnaton_parser import ShnatonParser
 from academic_helper.models import Course, StudyBlock, DegreeProgram, CoursistUser
 from academic_helper.utils.logger import log
@@ -69,7 +71,16 @@ def create_degree_program(blocks):
     cs_plan.save()
 
 
+def create_sites():
+    try:
+        Site.objects.get(pk=1).delete()
+    except Exception as e:
+        pass
+    Site.objects.get_or_create(id=1, domain="local.coursist.xyz", name="local.coursist.xyz")
+
+
 def create_all():
+    create_sites()
     create_admin()
     create_james()
     fetch_courses()
