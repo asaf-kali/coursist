@@ -7,11 +7,14 @@ function logAndCall(response, callback, comment) {
         callback(response);
 }
 
-
 function ajax(data, success = undefined, error = undefined, csrfToken = undefined, url = undefined) {
     if (!url) {
         url = location.href.replace(location.search, '');
         console.log(`Posting to: ${url}`);
+    }
+    if (!data) {
+        console.log("Empty data, aborting ajax request");
+        return
     }
     if (!(CSRF_KEY in data)) {
         if (!csrfToken)
@@ -31,10 +34,6 @@ function ajax(data, success = undefined, error = undefined, csrfToken = undefine
     });
 }
 
-function onReady(bind) {
-    $(document).ready((e) => bind(e));
-}
-
 function bindInput(inputId, success = undefined, error = undefined, csrfToken = undefined, url = undefined) {
     onReady(() => {
         $("#" + inputId).on("input", (e) => {
@@ -51,10 +50,3 @@ function bindButton(btnId, dataGetter, success = undefined, error = undefined, c
         });
     });
 }
-
-// Not baked yet
-// function formAjax(e, form, url, success, error) {
-//     e.preventDefault();
-//     const data = $(form).serialize();
-//     ajax(data, url, success, error);
-// }

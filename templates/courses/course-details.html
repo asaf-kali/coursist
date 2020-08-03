@@ -36,14 +36,14 @@
         {% if not user.is_anonymous %}
             {% include 'courses/comment-form.html' with couse=course %}
         {% else %}
-            על מנת להוסיף תגובה או לדרג, אנא התחברו.
+            על מנת להוסיף תגובה או לדרג, אנא <a href="{% url 'account_login' %}">התחברו</a>.
         {% endif %}
         <br><br>
         {% get_comment_list for course as comments %}
         {% include 'courses/comments-list.html' with comments=comments %}
     </div>
     <script>
-        $(document).ready(function () {
+        onReady(() => {
             $('[data-toggle="tooltip"]').tooltip();
         });
     </script>

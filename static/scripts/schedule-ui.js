@@ -449,7 +449,7 @@ if (scheduleTemplate.length > 0) { // init ScheduleTemplate objects
 }
 
 // init general binds
-$(document).ready(function () {
+onReady(() => {
     $('#course_input').on("input", function () {
         courses_autocomplete(this.value);
     });
@@ -537,6 +537,9 @@ function addCourseSuccessCb(response) {
         return;
     }
 
+    // update total course number UI
+    $('#stat-course-num').html(schedule.getTotalCourseNumber());
+
     let course_number = course['course_number'];
     let course_list_container = $('#my_courses_list');
     let item_html = hb_templates['schedule-course-item']({'course': course});
@@ -551,6 +554,7 @@ function addCourseSuccessCb(response) {
     $('#del_btn_' + course_number).click(function () {
         schedule.removeCourse(course_number);
         $('#course_item_' + course_number).remove();
+        $('#stat-course-num').html(schedule.getTotalCourseNumber());
     });
 
     let groupsContainer = $('#course_groups_' + course_number);

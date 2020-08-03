@@ -1,9 +1,10 @@
-from typing import Optional
+from typing import Optional, List, Collection, Union
 
 from django.contrib.admin.options import get_content_type_for_model
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
+from django.db.models import QuerySet
 from star_ratings.models import AbstractBaseRating, UserRating, Rating
 
 from academic_helper.models import Base
@@ -29,6 +30,11 @@ class RatingDummy(Base):
     def dummy_for(obj, name: str) -> "RatingDummy":
         content_type = get_content_type_for_model(obj)
         return RatingDummy.objects.get_or_create(content_type=content_type, object_id=obj.id, name=name)[0]
+
+    @staticmethod
+    def dummies_for(obj, names: Collection[str]) -> Union[QuerySet, List["RatingDummy"]]:
+        content_type = get_content_type_for_model(obj)
+        return RatingDummy.objects.filter(content_type=content_type, object_id=obj.id, name__in=names)
 
     @property
     def score(self) -> float:

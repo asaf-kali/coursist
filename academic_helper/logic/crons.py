@@ -17,8 +17,7 @@ class ExtendedCronJob(CronJobBase):
 
 
 class BackupCron(ExtendedCronJob):
-    RUN_EVERY_MINS = 720  # 12 hours
-    schedule = Schedule(run_every_mins=RUN_EVERY_MINS)
+    schedule = Schedule(run_at_times=["04:00"])
     code = "academic_helper.BackupCron"
 
     def job(self):

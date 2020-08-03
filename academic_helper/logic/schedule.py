@@ -19,16 +19,16 @@ def get_user_choices(user, cookie_choices):
 
         groups = [choice.group for choice in ClassSchedule.objects.filter(user=user)]
 
-    response = {"courses": [], "group_ids": []}
+    choices = {"courses": [], "group_ids": []}
     added_courses = set()
     for group in groups:
         cur_course = group.occurrence.course
         if cur_course.course_number not in added_courses:
             added_courses.add(cur_course.course_number)
-            response["courses"].append(cur_course.as_dict)
-        response["group_ids"].append(group.id)
+            choices["courses"].append(cur_course.as_dict)
+        choices["group_ids"].append(group.id)
 
-    return response
+    return choices
 
 
 def set_user_schedule_group(user, group_id):

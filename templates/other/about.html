@@ -2,17 +2,22 @@
 {% load static %}
 
 {% block head %}
-    <style>
-        div.disclaimer {
-            opacity: 0.7;
-            background-color: #fff8f8;
-            margin: 0 auto;
-            border: 2px solid #f5bcbc;
-            border-radius: 20px;
-            padding: 15px;
-            width: 90%;
+    <script>
+        function showToasts() {
+            setTimeout(() => {
+                showToast({"text": "משהו רגיל קרה", "title": "הודעה", "delay": 2500, "tag": "info"});
+            }, 0);
+            setTimeout(() => {
+                showToast({"text": "יש פה בעיה!", "title": "אזהרה", "delay": 2500, "tag": "warning"});
+            }, 1000);
+            setTimeout(() => {
+                showToast({"text": "הר הבית בידינו", "title": "משהו הצליח", "delay": 2500, "tag": "success"});
+            }, 2000);
+            setTimeout(() => {
+                showToast({"text": "הכל קרס", "title": "תקלה", "delay": 2500, "tag": "error"});
+            }, 3000);
         }
-    </style>
+    </script>
 {% endblock %}
 
 {% block content_header %}
@@ -28,7 +33,7 @@
 {% block content_body %}
     <div class="card text-center card-form" style="width: 720px; max-width: 90%;">
         <div class="card-header">
-            <h1>Coursist</h1>
+            <h1 onclick="showToasts();">Coursist</h1>
         </div>
         <div class="card-body" style="margin: 0 auto;">
             <div class="card-text" style="text-align: right;">

@@ -1,9 +1,9 @@
-from datetime import time
+from datetime import time, date
 
 from django.db import models
 
-from academic_helper.models.course import Course
 from academic_helper.models.base import Base, ChoicesEnum
+from academic_helper.models.course import Course
 
 
 class Semester(ChoicesEnum):
@@ -50,6 +50,7 @@ class CourseOccurrence(Base):
     year: int = models.IntegerField()
     semester: int = models.IntegerField(choices=Semester.list())
     credits: int = models.IntegerField()
+    notes: str = models.TextField(null=True, blank=True)
 
     class Meta:
         unique_together = ["course", "year", "semester"]
@@ -87,14 +88,28 @@ class Teacher(Base):
     def __str__(self):
         return self.name
 
+    def save(self, *args, **kwargs):
+        self.name = " ".join(self.name.strip().split())
+        super().save(*args, **kwargs)
+
 
 class ClassGroup(Base):
     occurrence = models.ForeignKey(CourseOccurrence, on_delete=models.CASCADE)
     class_type = models.IntegerField(choices=ClassType.list())
     mark = models.CharField(max_length=30, null=True, blank=True)
+    teachers = models.ManyToManyField(Teacher)
 
     def __str__(self):
         return f"{self.occurrence} - {ClassType(self.class_type).readable_name} ({self.mark})"
+
+    class Meta:
+        unique_together = ["occurrence", "class_type", "mark"]
+
+    @property
+    def as_dict(self) -> dict:
+        result = super().as_dict
+        result["teachers"] = [str(teacher) for teacher in self.teachers.all()]
+        return result
 
 
 class CourseClass(Base):
@@ -105,6 +120,8 @@ class CourseClass(Base):
     start_time: time = models.TimeField(null=True, blank=True)
     end_time: time = models.TimeField(null=True, blank=True)
     hall: Hall = models.ForeignKey(Hall, on_delete=models.SET_NULL, null=True, blank=True)
+    special_occurrence: date = models.DateField(null=True, blank=True)
+    notes: str = models.CharField(max_length=50, null=True, blank=True)
 
     class Meta:
         verbose_name_plural = "course classes"
