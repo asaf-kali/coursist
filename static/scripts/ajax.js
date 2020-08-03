@@ -34,10 +34,6 @@ function ajax(data, success = undefined, error = undefined, csrfToken = undefine
     });
 }
 
-function onReady(bind) {
-    $(document).ready((e) => bind(e));
-}
-
 function bindInput(inputId, success = undefined, error = undefined, csrfToken = undefined, url = undefined) {
     onReady(() => {
         $("#" + inputId).on("input", (e) => {

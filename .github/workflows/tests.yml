@@ -22,13 +22,13 @@ jobs:
         run: |
           pip install -r requirements-dev.txt
           pip install -r requirements.txt
-      - name: Check black formatting
-        uses: lgeiger/black-action@v1.0.1
-        with:
-          args: ". --check -l 120"
       - name: Run mirgations
         run: |
           python manage.py migrate
       - name: Run tests
         run: |
           python manage.py test
+      - name: Check black formatting
+        uses: lgeiger/black-action@v1.0.1
+        with:
+          args: ". --check -l 120"

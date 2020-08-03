@@ -129,7 +129,7 @@
 <div id="toasts-container" class="toasts-container" aria-live="polite" aria-atomic="true">
     {% if toasts %}
         <script>
-            $(document).ready(function () {
+            onReady(() => {
                 {% for toast in toasts %}
                     showToast(JSON.parse('{{ toast|safe }}'));
                 {% endfor %}
