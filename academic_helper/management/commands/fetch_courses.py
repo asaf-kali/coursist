@@ -10,7 +10,6 @@ from academic_helper.utils.logger import wrap, log
 
 DEFAULT_SRC_FILE = "courses_2021.json"
 DEFAULT_LIMIT = 50
-SHUFFLE = True
 
 
 class Command(BaseCommand):
@@ -28,17 +27,21 @@ class Command(BaseCommand):
             help=f"Max number of courses to fetch (Default is {DEFAULT_LIMIT}).",
         )
         parser.add_argument(
-            "--delete_existing",
+            "--replace_existing",
             default=False,
             action="store_true",
-            help="Delete existing courses (default is False). If set to True, existing courses will be replaced",
+            help="(Deprecated)"
+            "Replaces existing courses (default is False). If set to True, existing courses will be deleted!",
+        )
+        parser.add_argument(
+            "--shuffle", default=False, action="store_true", help="Run in shuffled order.",
         )
 
     def handle(self, *args, **options):
         log.info(f"Fetching courses with: {options}")
         with open(options["src_file"], encoding="utf8") as file:
             courses = json.load(file)
-        if SHUFFLE:
+        if options["shuffle"]:
             random.shuffle(courses)
         fail_count = 0
         log.info(f"Total {wrap(len(courses))} courses found")
@@ -47,13 +50,8 @@ class Command(BaseCommand):
         for i, course in enumerate(courses):
             if i >= options["limit"]:
                 break
-            log.info(f"Course {wrap(i + 1)} out of {wrap(limit)}")
             course_number = course["id"]
-            existing = Course.objects.filter(course_number=course_number)
-            if existing.exists():
-                if not options["delete_existing"]:
-                    continue
-                existing.delete()
+            log.info(f"Course {wrap(i + 1)} out of {wrap(limit)} is {wrap(course_number)}")
             try:
                 parser.fetch_course(course_number)
             except Exception as e:
