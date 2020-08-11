@@ -5,7 +5,6 @@ import sentry_sdk
 from django.core.management import BaseCommand
 
 from academic_helper.logic.shnaton_parser import ShnatonParser
-from academic_helper.models import Course
 from academic_helper.utils.logger import wrap, log
 
 DEFAULT_SRC_FILE = "courses_2021.json"
@@ -31,7 +30,7 @@ class Command(BaseCommand):
             default=False,
             action="store_true",
             help="(Deprecated)"
-            "Replaces existing courses (default is False). If set to True, existing courses will be deleted!",
+                 "Replaces existing courses (default is False). If set to True, existing courses will be deleted!",
         )
         parser.add_argument(
             "--shuffle", default=False, action="store_true", help="Run in shuffled order.",
@@ -43,6 +42,8 @@ class Command(BaseCommand):
             courses = json.load(file)
         if options["shuffle"]:
             random.shuffle(courses)
+        else:
+            courses.sort(key=lambda c: c["id"])
         fail_count = 0
         log.info(f"Total {wrap(len(courses))} courses found")
         parser = ShnatonParser()
