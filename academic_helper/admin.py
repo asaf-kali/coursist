@@ -21,6 +21,7 @@ from academic_helper.models import (
 
 class CoursistUserAdmin(admin.ModelAdmin):
     search_fields = ["pk", "username", "email", "first_name", "last_name"]
+    list_display = ["username", "email", "date_joined"]
 
 
 admin.site.register(CoursistUser, CoursistUserAdmin)
