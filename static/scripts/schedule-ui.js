@@ -670,7 +670,9 @@ function addClassToDisplay(courseNumber, courseName, group, courseClass) {
 
     $('#schedule_semester_' + semester).find('#day_' + day + '_a').append(schedule_event);
 
-    scheduleTemplateArray[semester - 1].refreshSchedule();
+    scheduleTemplateArray.forEach(template => {
+        template.refreshSchedule()
+    });
 }
 
 /**
