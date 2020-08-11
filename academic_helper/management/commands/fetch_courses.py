@@ -8,7 +8,7 @@ from academic_helper.logic.shnaton_parser import ShnatonParser
 from academic_helper.models import Course
 from academic_helper.utils.logger import wrap, log
 
-DEFAULT_SRC_FILE = "courses_2020.json"
+DEFAULT_SRC_FILE = "courses_2021.json"
 DEFAULT_LIMIT = 50
 SHUFFLE = True
 
@@ -43,9 +43,11 @@ class Command(BaseCommand):
         fail_count = 0
         log.info(f"Total {wrap(len(courses))} courses found")
         parser = ShnatonParser()
+        limit = min(options["limit"], len(courses))
         for i, course in enumerate(courses):
-            if i > options["limit"]:
+            if i >= options["limit"]:
                 break
+            log.info(f"Course {wrap(i + 1)} out of {wrap(limit)}")
             course_number = course["id"]
             existing = Course.objects.filter(course_number=course_number)
             if existing.exists():
@@ -58,4 +60,4 @@ class Command(BaseCommand):
                 log.error(f"Could'nt fetch course {course_number}: {e}")
                 sentry_sdk.capture_exception(e)
                 fail_count += 1
-        log.info(f"Fail count: {wrap(fail_count)}")
+        log.info(f"Fail count: {wrap(fail_count)} out of {wrap(limit)}")
