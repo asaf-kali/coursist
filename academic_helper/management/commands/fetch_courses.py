@@ -30,7 +30,7 @@ class Command(BaseCommand):
             default=False,
             action="store_true",
             help="(Deprecated)"
-                 "Replaces existing courses (default is False). If set to True, existing courses will be deleted!",
+            "Replaces existing courses (default is False). If set to True, existing courses will be deleted!",
         )
         parser.add_argument(
             "--shuffle", default=False, action="store_true", help="Run in shuffled order.",
