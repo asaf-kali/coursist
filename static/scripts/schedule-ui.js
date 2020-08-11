@@ -632,6 +632,7 @@ function displayGroup(group, cur_class_type, passed_first, courseNumber, group_l
 }
 
 function getNiceTime(time) {
+    if (!time) return "";
     const lastIndex = time.lastIndexOf(":");
     return time.substring(0, lastIndex);
 }
@@ -647,12 +648,12 @@ function addClassToDisplay(courseNumber, courseName, group, courseClass) {
     const class_id = courseClass['id'];
     const group_id = group['id'];
     const class_type = group['class_type'];
-    const teacher = courseClass['teacher'];
+    // const teacher = courseClass['teacher'];
     const semester = courseClass['semester'];
     const day = courseClass['day'];
     const startTime = getNiceTime(courseClass['start_time']);
     const endTime = getNiceTime(courseClass['end_time']);
-    const hall = courseClass['hall'];
+    // const hall = courseClass['hall'];
 
     const li_id = 'class_item_' + courseNumber + '_' + class_id;
     const li_data_group = 'class_item_' + group_id;

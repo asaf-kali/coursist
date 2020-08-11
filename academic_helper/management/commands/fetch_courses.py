@@ -28,10 +28,10 @@ class Command(BaseCommand):
             help=f"Max number of courses to fetch (Default is {DEFAULT_LIMIT}).",
         )
         parser.add_argument(
-            "--fetch_existing",
+            "--delete_existing",
             default=False,
             action="store_true",
-            help="Fetch existing courses (default is False). If set to True, existing courses will be deleted!",
+            help="Delete existing courses (default is False). If set to True, existing courses will be replaced",
         )
 
     def handle(self, *args, **options):
@@ -51,7 +51,7 @@ class Command(BaseCommand):
             course_number = course["id"]
             existing = Course.objects.filter(course_number=course_number)
             if existing.exists():
-                if not options["fetch_existing"]:
+                if not options["delete_existing"]:
                     continue
                 existing.delete()
             try:
