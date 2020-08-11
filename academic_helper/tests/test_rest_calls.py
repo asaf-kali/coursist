@@ -1,16 +1,9 @@
-import io
-import json
-from unittest import skip
-
 from django.conf import settings
 from django.test import Client
-from django.test import TestCase, RequestFactory
-from ics import Calendar
+from django.test import TestCase
 
 from academic_helper.logic.shnaton_parser import ShnatonParser
 from academic_helper.management.init_data import COURSES_TO_FETCH
-from academic_helper.models import CoursistUser
-from academic_helper.views.schedule import ScheduleView
 
 COURSE = COURSES_TO_FETCH[0]
 
