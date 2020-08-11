@@ -111,6 +111,14 @@ class ClassGroup(Base):
         result["teachers"] = [str(teacher) for teacher in self.teachers.all()]
         return result
 
+    @property
+    def year(self) -> int:
+        return self.occurrence.year
+
+    @property
+    def semester(self) -> int:
+        return self.occurrence.semester
+
 
 class CourseClass(Base):
     group: ClassGroup = models.ForeignKey(ClassGroup, on_delete=models.CASCADE)
@@ -132,6 +140,10 @@ class CourseClass(Base):
         result["teacher"] = str(self.teacher)
         result["hall"] = str(self.hall)
         return result
+
+    @property
+    def year(self) -> int:
+        return self.group.year
 
     def __str__(self):
         return f"{self.group} - {DayOfWeek(self.day).readable_name} {self.hall}"
