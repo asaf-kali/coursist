@@ -45,6 +45,15 @@ class DayOfWeek(ChoicesEnum):
     SATURDAY = 7
 
 
+SEMESTER_NAMES = {
+    Semester.A.value: "א'",
+    Semester.B.value: "ב'",
+    Semester.C.value: "ג'",
+    Semester.SUMMER.value: "קיץ",
+    Semester.YEARLY.value: "שנתי",
+}
+
+
 class CourseOccurrence(Base):
     course: Course = models.ForeignKey(Course, on_delete=models.CASCADE)
     year: int = models.IntegerField()
@@ -56,7 +65,7 @@ class CourseOccurrence(Base):
         unique_together = ["course", "year", "semester"]
 
     def __str__(self):
-        return f"{self.course} - {self.year} {Semester(self.semester).readable_name}"
+        return f"{self.course} | {self.year} {SEMESTER_NAMES[self.semester]}"
 
 
 class Campus(Base):
@@ -79,7 +88,7 @@ class Hall(Base):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.name}{f' ({self.campus})' if self.campus else ''}"
+        return f"{f'{self.campus} | ' if self.campus else ''}{self.name}"
 
 
 class Teacher(Base):
@@ -100,7 +109,7 @@ class ClassGroup(Base):
     teachers = models.ManyToManyField(Teacher)
 
     def __str__(self):
-        return f"{self.occurrence} - {ClassType(self.class_type).readable_name} ({self.mark})"
+        return f"{self.occurrence} | {ClassType(self.class_type).readable_name} | {self.mark}"
 
     class Meta:
         unique_together = ["occurrence", "class_type", "mark"]

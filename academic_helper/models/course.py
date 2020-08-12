@@ -33,7 +33,7 @@ class Department(Base):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.name}, {self.faculty}"
+        return f"{self.name} | {self.faculty}"
 
 
 class Course(Base):
@@ -51,7 +51,7 @@ class Course(Base):
         super().save(*args, **kwargs)
 
     def __str__(self) -> str:
-        return f"{self.name} ({self.course_number})"
+        return f"{self.course_number} | {self.name}"
 
     @property
     def as_dict(self) -> dict:
