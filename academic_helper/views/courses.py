@@ -16,7 +16,7 @@ class CourseDetailsView(DetailView, ExtendedViewMixin):
 
     @property
     def title(self) -> str:
-        return f"Course {self.object.course_number}"
+        return f"{self.object.course_number} | {self.object.name}"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -29,7 +29,7 @@ class CourseDetailsView(DetailView, ExtendedViewMixin):
         return context
 
     @property
-    def object(self):
+    def object(self) -> Course:
         query = Course.objects.filter(course_number=self.kwargs["course_number"])
         return get_object_or_404(query)
 

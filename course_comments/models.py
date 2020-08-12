@@ -7,16 +7,8 @@ from django.shortcuts import get_object_or_404
 from django_comments.abstracts import CommentAbstractModel
 from star_ratings.models import UserRating
 
-from academic_helper.models import Course, Semester
+from academic_helper.models import Course, Semester, SEMESTER_NAMES
 from academic_helper.utils.logger import log, wrap
-
-SEMESTER_NAMES = {
-    Semester.A.value: "א'",
-    Semester.B.value: "ב'",
-    Semester.C.value: "ג'",
-    Semester.SUMMER.value: "קיץ",
-    Semester.YEARLY.value: "שנתי",
-}
 
 
 def semester_name(semester: Union[Semester, int]):
