@@ -1,4 +1,5 @@
 name: Tests
+
 on:
   push:
   pull_request:
@@ -24,6 +25,11 @@ jobs:
       - name: Run tests
         run: |
           python manage.py test
+
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
       - name: Check black formatting
         uses: lgeiger/black-action@v1.0.1
         with:

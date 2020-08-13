@@ -42,7 +42,6 @@ class Toast:
 
 
 class ExtendedViewMixin(PermissionRequiredMixin, TemplateView):
-
     @property
     def title(self) -> str:
         base_name = self.__class__.__name__

@@ -3,12 +3,77 @@
 {% load custom_tags %}
 
 {% block head %}
+    <style>
+        table.study-blocks {
+            margin: 0 auto;
+        }
+
+        table.study-blocks td {
+            vertical-align: top;
+            padding: 15px;
+        }
+
+        div.study-block {
+            margin: 0 auto;
+            width: 15vw;
+        }
+
+        span.course-row {
+            padding: 5px;
+            margin: 5px;
+            border: 1px solid #a1a1a1;
+            background-color: rgba(250, 219, 130, 0.2);
+            border-radius: 5px;
+            line-height: 100%;
+            user-select: none;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+        }
+    </style>
+    <script>
+        let draggingCourse;
+        let lastBlock;
+
+        function drag(rowId) {
+            console.log(`Dragging row [${rowId}]`);
+            draggingCourse = document.getElementById(rowId);
+        }
+
+        function blockEnter(blockId) {
+            console.log(`Enter block [${blockId}]`);
+            lastBlock = document.getElementById(blockId);
+        }
+
+        function allowDrop(e) {
+            e.preventDefault();
+        }
+
+        function drop() {
+            if (!lastBlock || !draggingCourse)
+                return;
+            console.log(`Dropping row [${draggingCourse.id}] at block [${lastBlock.id}]`);
+            lastBlock.append(draggingCourse);
+            if (lastBlock.getAttribute("meta-id") !== "{{ not_selected }}")
+                ajax({
+                    "action": "move_course",
+                    "block_id": lastBlock.getAttribute("meta-id"),
+                    "course_id": draggingCourse.getAttribute("meta-id")
+                });
+            lastBlock = draggingCourse = undefined;
+        }
+    </script>
 {% endblock %}
 
 {% block content_header %}
 {% endblock %}
 
 {% block content_body %}
+    <div class="card-text disclaimer">
+        פיצ'ר זה הוא כלי-עזר בלבד ונמצא עדיין בשלבי פיתוח!<br>
+        על-מנת לקבל מידע וודאי ונכון לגבי סגירת התואר, ממוצע וכו', אנא פנו למזכירות החוג שלכם.
+    </div><br>
     <div style="text-align: center;">
         <label>
             תוכנית הלימודים שלי:
@@ -29,6 +94,9 @@
         {% if not user_program %}
             על-מנת להשתמש בפיצ'ר זה, אנא בחר תוכנית לימודים.
         {% else %}
+            <div>
+                {% include "degree_programs/study_block.html" with block=queue_block %}
+            </div>
             {% include "degree_programs/study_blocks.html" %}
         {% endif %}
     </div>

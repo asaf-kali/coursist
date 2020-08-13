@@ -30,6 +30,7 @@ class UserDegreeProgram(ExtendedViewMixin):
         context = super().get_context_data(**kwargs)
         context["user_program"] = self.user.degree_program
         context["degree_programs"] = DegreeProgram.public_programs()
+        context["queue_block"] = {"name": "מאגר חופשי", "id": NOT_SELECTED}
         return context
 
     def on_program_choice(self, program_id):
@@ -39,6 +40,10 @@ class UserDegreeProgram(ExtendedViewMixin):
         self.user.set_degree_program(program_id)
         return JsonResponse(data={"user": self.user.id, "program_id": program_id}, status=200)
 
+    def on_move_course(self, course_id, block_id):
+        UserCourseChoice.move_course(self.user.id, course_id, block_id)
+        return HttpResponse(200)
+
     def post(self, request: WSGIRequest, *args, **kwargs):
         if not request.is_ajax():
             return HttpResponse(status=400)
@@ -47,3 +52,6 @@ class UserDegreeProgram(ExtendedViewMixin):
         action = request.POST["action"]
         if action == "change_program":
             return self.on_program_choice(request.POST["program_id"])
+        if action == "move_course":
+            return self.on_move_course(request.POST["course_id"], request.POST["block_id"])
+        return HttpResponse(status=400)

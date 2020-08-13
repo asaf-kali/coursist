@@ -1,3 +1,4 @@
-<span class="course-row" draggable="true">
+<span id="course-row-{{ course.id }}" meta-id="{{ course.id }}" class="course-row" draggable="true"
+      ondragstart="drag(this.id);" ondragend="drop();">
     {{ course }}
 </span>

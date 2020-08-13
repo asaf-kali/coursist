@@ -16,6 +16,7 @@ from academic_helper.models import (
     CoursistUser,
     RatingDummy,
     Department,
+    University,
 )
 
 
@@ -25,6 +26,14 @@ class CoursistUserAdmin(admin.ModelAdmin):
 
 
 admin.site.register(CoursistUser, CoursistUserAdmin)
+
+
+class UniversityAdmin(admin.ModelAdmin):
+    search_fields = ["pk", "name", "abbreviation", "english_name"]
+    list_display = ("id", "name", "abbreviation", "english_name")
+
+
+admin.site.register(University, UniversityAdmin)
 
 
 class FacultyAdmin(admin.ModelAdmin):
@@ -86,6 +95,7 @@ admin.site.register(Teacher, TeacherAdmin)
 class ClassGroupAdmin(admin.ModelAdmin):
     search_fields = ["pk", "mark", "occurrence__course__name", "class_type"]
     list_display = ("id", "mark", "course_name", "year", "semester", "class_type")
+    filter_horizontal = ("teachers",)
 
     def course_name(self, obj: ClassGroup):
         return obj.occurrence.course.name
@@ -119,6 +129,7 @@ admin.site.register(ClassSchedule, ClassScheduleAdmin)
 class StudyBlockAdmin(admin.ModelAdmin):
     search_fields = ["name"]
     list_display = ("id", "name")
+    filter_horizontal = ("courses",)
 
 
 admin.site.register(StudyBlock, StudyBlockAdmin)
@@ -135,6 +146,7 @@ admin.site.register(UserCourseChoice, CompletedCourseAdmin)
 class DegreeProgramAdmin(admin.ModelAdmin):
     search_fields = ["name"]
     list_display = ("id", "name")
+    filter_horizontal = ("blocks",)
 
 
 admin.site.register(DegreeProgram, DegreeProgramAdmin)

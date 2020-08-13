@@ -1,31 +1,3 @@
-<style>
-    table.study-blocks {
-        margin: 0 auto;
-
-    }
-
-    table.study-blocks td {
-        width: 15vw;
-        vertical-align: top;
-        padding: 15px;
-    }
-
-    span.course-row {
-        padding: 5px;
-        margin: 5px;
-        border: 1px solid #a1a1a1;
-        background-color: rgba(250, 219, 130, 0.2);
-        border-radius: 5px;
-        line-height: 100%;
-        user-select: none;
-        overflow: hidden;
-        display: -webkit-box;
-        -webkit-line-clamp: 1;
-        -webkit-box-orient: vertical;
-    }
-
-
-</style>
 <table class="study-blocks">
     <tr>
         {% for block in user_program.blocks.all %}

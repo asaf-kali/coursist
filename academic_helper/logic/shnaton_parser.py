@@ -12,7 +12,7 @@ from django.db.transaction import atomic
 from django.utils import timezone
 
 from academic_helper.logic.errors import ShnatonParserError, FetchRawDataError, HtmlFormatError
-from academic_helper.models import Course, Faculty, Department
+from academic_helper.models import Course, Faculty, Department, University
 from academic_helper.models.course_occurrence import (
     CourseOccurrence,
     Semester,
@@ -426,7 +426,7 @@ class ShnatonParser:
         html = self.get_course_html(year, course_number)
         source = BeautifulSoup(html, "html.parser")
         if len(source.find_all(class_="courseTD")) == 0:
-            raise HtmlFormatError("Course id not found")
+            raise HtmlFormatError(f"Course number {course_number} not found")
         raw_data = dict()
         parse_faculty(source, raw_data)
         parse_general_course_info(source, year, raw_data)
@@ -445,7 +445,8 @@ class ShnatonParser:
 
         raw_faculty = raw_data["faculty"].strip(" :\t")
         raw_department = raw_data["department"].strip(" :\t")
-        faculty = Faculty.objects.get_or_create(name=raw_faculty)[0]
+        huji = University.objects.get(abbreviation="HUJI")
+        faculty = Faculty.objects.get_or_create(name=raw_faculty, university=huji)[0]
         department = Department.objects.get_or_create(name=raw_department, faculty=faculty)[0]
 
         raw_course_number = int(raw_data["id"])
@@ -456,9 +457,9 @@ class ShnatonParser:
         raw_course_name = raw_data["name"].replace("_", "")
         # if "name_en" in raw_data and len(raw_data["name_en"].replace(" ", "")) > 5:
         #     course_name = raw_data["name_en"]
-        course = Course.objects.get_or_create(name=raw_course_name, course_number=course_number, department=department)[
-            0
-        ]
+        course = Course.objects.get_or_create(
+            name=raw_course_name, course_number=course_number, department=department, university=huji
+        )[0]
 
         course_semesters = parse_course_semester(raw_data["semester"])
         occurrence_credits = parse_course_credits(year, raw_data)

@@ -1,6 +1,7 @@
-<div class="card">
+<div class="card study-block">
     <span class="card-header" style="text-align: center;">{{ block.name }}</span>
-    <div style="padding: 10px;">
+    <div id="block-{{ block.id }}" meta-id="{{ block.id }}" style="padding: 10px;"
+         ondragenter="blockEnter(this.id);" ondragover="allowDrop(event)">
         {% for course in block.courses.all %}
             {% include "degree_programs/course_row.html" %}
         {% endfor %}

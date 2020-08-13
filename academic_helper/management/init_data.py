@@ -1,14 +1,17 @@
 from academic_helper.logic.shnaton_parser import ShnatonParser
-from academic_helper.models import Course, StudyBlock, DegreeProgram, CoursistUser
+from academic_helper.models import Course, StudyBlock, DegreeProgram, CoursistUser, University
 from academic_helper.utils.logger import log
 
 COURSES_TO_FETCH = [94640, 94625, 67504, 67101, 67392, 67829]
 
 # blocks info - name, min_credits, [course_num1, ...]
 UNPARSED_BLOCKS = [
-    ("Compulsory CS", 15, [67101, 67109, 67125]),
-    ("Compulsory Math", 20, [80131, 80133, 80134]),
-    ("Elective", 4, [67392, 67829]),
+    ("חובה - מדעי המחשב", 56, [67101, 67109, 67125, 67808]),
+    ("חובה - מתמטיקה", 32, [80131, 80133, 80134, 80430]),
+    ("חובת בחירה", 16, [67392, 67829, 67506, 67609, 67392]),
+    ("בחירה בחוג", 16, [67625, 67118, 67609, 67629]),
+    ("אבני פינה", 8, [72159, 23331]),
+    ("לימודים משלימים", 6, [55904,]),
 ]
 
 
@@ -34,13 +37,19 @@ def create_james():
 
 
 def fetch_courses():
+    University.objects.get_or_create(
+        abbreviation="HUJI", name="האוניברסיטה העברית", english_name="The Hebrew University of Jerusalem"
+    )
     log.info("Fetching courses")
     parser = ShnatonParser()
     for course_number in COURSES_TO_FETCH:
         parser.fetch_course(course_number)
     for block in UNPARSED_BLOCKS:
         for course in block[2]:
-            parser.fetch_course(course)
+            try:
+                parser.fetch_course(course)
+            except Exception as e:
+                log.error(e)
 
 
 def create_blocks():
@@ -63,7 +72,7 @@ def create_blocks():
 
 def create_degree_program(blocks):
     log.info("Creating program")
-    cs_plan = DegreeProgram.objects.get_or_create(name="Mock CS", code=1993, credits=39)[0]
+    cs_plan = DegreeProgram.objects.get_or_create(name="מדעי המחשב מורחב", code=3010, credits=134)[0]
     for block in blocks:
         cs_plan.blocks.add(block)
     cs_plan.save()

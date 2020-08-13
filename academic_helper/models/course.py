@@ -4,16 +4,24 @@ from typing import Union, Collection
 
 from django.db import models
 from django.db.models import QuerySet, Q
-from star_ratings.models import UserRating, Rating
+from star_ratings.models import Rating
 
 from academic_helper.models.base import Base
 from academic_helper.models.extended_rating import RatingDummy
 
 
+class University(Base):
+    abbreviation: str = models.CharField(max_length=10)
+    name: str = models.CharField(max_length=150)
+    english_name: str = models.CharField(max_length=150)
+
+    def __str__(self):
+        return self.abbreviation
+
+
 class Faculty(Base):
     name: str = models.CharField(max_length=50)
-
-    # university: University = models.ForeignKey(University, on_delete=models.CASCADE)
+    university: University = models.ForeignKey(University, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name_plural = "faculties"
@@ -39,9 +47,11 @@ class Department(Base):
 class Course(Base):
     course_number: int = models.IntegerField()
     name: str = models.CharField(max_length=100)
-    department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True, blank=True)
+    university: University = models.ForeignKey(University, on_delete=models.CASCADE)
+    department: Department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True, blank=True)
 
     class Meta:
+        unique_together = ["course_number", "university"]
         ordering = ["course_number"]
 
     def save(self, *args, **kwargs):
