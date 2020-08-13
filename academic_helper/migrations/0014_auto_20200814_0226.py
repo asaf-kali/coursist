@@ -7,7 +7,7 @@ from academic_helper.models import University, Course, Faculty
 from academic_helper.utils.logger import log, wrap
 
 
-def handle_uni_default():
+def handle_uni_default(apps, schema_editor):
     log.info(f"Creating default university")
     def_uni = University(name="Default university", english_name="Default university", abbreviation="DU")
     def_uni.save()
@@ -41,7 +41,7 @@ class Migration(migrations.Migration):
                 ("name", models.CharField(max_length=150)),
                 ("english_name", models.CharField(max_length=150)),
             ],
-            options={"abstract": False, },
+            options={"abstract": False,},
         ),
         migrations.AlterField(
             model_name="usercoursechoice",
@@ -64,6 +64,6 @@ class Migration(migrations.Migration):
                 null=True, on_delete=django.db.models.deletion.SET_NULL, to="academic_helper.University"
             ),
         ),
-        migrations.AlterUniqueTogether(name="course", unique_together={("course_number", "university")}, ),
+        migrations.AlterUniqueTogether(name="course", unique_together={("course_number", "university")},),
         migrations.RunPython(handle_uni_default),
     ]
