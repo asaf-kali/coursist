@@ -1,0 +1,58 @@
+{% extends "master.html" %}
+{% load static %}
+{% load custom_tags %}
+
+{% block head %}
+{% endblock %}
+
+{% block content_header %}
+{% endblock %}
+
+{% block content_body %}
+    <div style="text-align: center;">
+        <label>
+            תוכנית הלימודים שלי:
+            <select id="degree_program_select" onchange="checkProgramChange();">
+                <option value="-1">לא נבחר {% if not user.degree_program %} (נוכחי){% endif %}</option>
+                {% for program in degree_programs %}
+                    <option value="{{ program.id }}" {% if user.degree_program == program %}selected{% endif %}>
+                        {{ program.name }} {% if user.degree_program == program %} (נוכחי){% endif %}</option>
+                {% endfor %}
+            </select>
+            <input id="update_degree_btn" type="button" class="btn btn-secondary" onclick="updateDegreeProgram();"
+                   disabled value="עדכן">
+        </label>
+    </div>
+    <br><br>
+    {% if not user.degree_program %}
+        על-מנת להשתמש בפיצ'ר זה, אנא בחר תוכנית לימודים.
+    {% else %}
+    {% endif %}
+    <script>
+        CSRF_TOKEN = "{{ csrf_token }}";
+        const CURRENT_PROGRAM = "{% if user.degree_program %}{{ user.degree_program.id }} {% else %}-1{% endif %}";
+        console.log(`Current program is: [${CURRENT_PROGRAM}]`);
+
+        function getSelectedProgram() {
+            const selected = $("#degree_program_select").val();
+            console.log(`Selected program is: [${selected}]`)
+            return selected;
+        }
+
+        function checkProgramChange() {
+            const updateButton = $("#update_degree_btn");
+            if (getSelectedProgram() === CURRENT_PROGRAM)
+                updateButton.attr("disabled", "");
+            else updateButton.removeAttr("disabled");
+        }
+
+        function updateDegreeProgram() {
+            ajax({"action": "change_program", "program_id": getSelectedProgram()}, () => {
+                window.location.reload();
+            }, (e) => {
+                faultToast(`That's what we know: ${JSON.stringify(e)}`);
+            })
+        }
+
+    </script>
+{% endblock %}

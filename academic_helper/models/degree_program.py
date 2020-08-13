@@ -36,4 +36,8 @@ class DegreeProgram(Base):
     is_public: bool = models.BooleanField(default=True)
 
     def __str__(self):
-        return f"{self.id} - {self.name}"
+        return f"{self.id} | {self.name}"
+
+    @staticmethod
+    def public_programs():
+        return DegreeProgram.objects.filter(is_public=True)

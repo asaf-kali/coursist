@@ -56,6 +56,15 @@ function show(id, before = undefined, after = undefined) {
 
 let TOAST_COUNT = 0;
 
+class Toast {
+    constructor(text, title = undefined, delay = undefined) {
+        this.id = undefined;
+        this.delay = delay;
+        this.title = title;
+        this.text = text;
+    }
+}
+
 function showToast(toast) {
     toast.id = TOAST_COUNT++;
     // message.bg = message.tag === "error" ? "danger" : message.tag;
@@ -77,6 +86,10 @@ function showToast(toast) {
     const html = hb_templates["toast-message"]({"message": toast});
     $("#toasts-container").prepend(html);
     $(`#toast-${toast.id}`).toast("show");
+}
+
+function faultToast(message) {
+    showToast(new Toast(message, "משהו השתבש :(", 10000));
 }
 
 /*** Other ***/
