@@ -445,7 +445,9 @@ class ShnatonParser:
 
         raw_faculty = raw_data["faculty"].strip(" :\t")
         raw_department = raw_data["department"].strip(" :\t")
-        huji = University.objects.get(abbreviation="HUJI")
+        huji = University.objects.get_or_create(
+            abbreviation="HUJI", name="האוניברסיטה העברית", english_name="The Hebrew University of Jerusalem"
+        )[0]
         faculty = Faculty.objects.get_or_create(name=raw_faculty, university=huji)[0]
         department = Department.objects.get_or_create(name=raw_department, faculty=faculty)[0]
 

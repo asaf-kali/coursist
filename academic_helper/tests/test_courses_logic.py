@@ -1,17 +1,18 @@
 from django.test import TestCase
 
 from academic_helper.logic import courses as courses_logic
-from academic_helper.models import Course, Faculty, Department
+from academic_helper.models import Course, Faculty, Department, University
 
 
 class TestCoursesLogic(TestCase):
     @classmethod
     def setUpTestData(cls):
-        faculty = Faculty.objects.create(name="הפקולטה למדעי החרטוט")
+        uni = University.objects.create(name="האוניברסיטה השקרית", english_name="Bla bla", abbreviation="bbznot")
+        faculty = Faculty.objects.create(name="הפקולטה למדעי החרטוט", university=uni)
         department = Department.objects.create(name='ביה"ס להנדסת חרטוטים', faculty=faculty)
-        Course.objects.create(name="Testing 101", course_number=1000, department=department)
-        Course.objects.create(name="מבוא לחארטה", course_number=67101, department=department)
-        Course.objects.create(name="Infinitesimal Bullshit", course_number=99999, department=department)
+        Course.objects.create(name="Testing 101", course_number=1000, department=department, university=uni)
+        Course.objects.create(name="מבוא לחארטה", course_number=67101, department=department, university=uni)
+        Course.objects.create(name="Infinitesimal Bullshit", course_number=99999, department=department, university=uni)
 
     def test_search_by_course_name(self):
         result = courses_logic.search("Test")
