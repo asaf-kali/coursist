@@ -13,24 +13,28 @@
         <label>
             תוכנית הלימודים שלי:
             <select id="degree_program_select" onchange="checkProgramChange();">
-                <option value="-1">לא נבחר {% if not user.degree_program %} (נוכחי){% endif %}</option>
+                <option value="{{ not_selected }}">לא נבחר {% if not user_program %} (נוכחי){% endif %}</option>
                 {% for program in degree_programs %}
-                    <option value="{{ program.id }}" {% if user.degree_program == program %}selected{% endif %}>
-                        {{ program.name }} {% if user.degree_program == program %} (נוכחי){% endif %}</option>
+                    <option value="{{ program.id }}" {% if user_program == program %}selected{% endif %}>
+                        {{ program.name }} {% if user_program == program %} (נוכחי){% endif %}</option>
                 {% endfor %}
             </select>
             <input id="update_degree_btn" type="button" class="btn btn-secondary" onclick="updateDegreeProgram();"
                    disabled value="עדכן">
+
         </label>
     </div>
     <br><br>
-    {% if not user.degree_program %}
-        על-מנת להשתמש בפיצ'ר זה, אנא בחר תוכנית לימודים.
-    {% else %}
-    {% endif %}
+    <div style="display: block; text-align: center">
+        {% if not user_program %}
+            על-מנת להשתמש בפיצ'ר זה, אנא בחר תוכנית לימודים.
+        {% else %}
+            {% include "degree_programs/study_blocks.html" %}
+        {% endif %}
+    </div>
     <script>
         CSRF_TOKEN = "{{ csrf_token }}";
-        const CURRENT_PROGRAM = "{% if user.degree_program %}{{ user.degree_program.id }} {% else %}-1{% endif %}";
+        const CURRENT_PROGRAM = "{% if user_program %}{{ user_program.id }} {% else %}{{ not_selected }}{% endif %}";
         console.log(`Current program is: [${CURRENT_PROGRAM}]`);
 
         function getSelectedProgram() {

@@ -1,0 +1,8 @@
+<div class="card">
+    <span class="card-header" style="text-align: center;">{{ block.name }}</span>
+    <div style="padding: 10px;">
+        {% for course in block.courses.all %}
+            {% include "degree_programs/course_row.html" %}
+        {% endfor %}
+    </div>
+</div>

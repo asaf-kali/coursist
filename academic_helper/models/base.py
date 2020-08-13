@@ -13,6 +13,8 @@ from academic_helper.utils.logger import wrap, log
 
 ReadableEnum = namedtuple("ReadableEnum", ["value", "name"])
 
+NOT_SELECTED = -1
+
 
 class ChoicesEnum(Enum):
     @classmethod

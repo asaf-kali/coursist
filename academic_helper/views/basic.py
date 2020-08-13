@@ -8,7 +8,7 @@ from django.core.handlers.wsgi import WSGIRequest
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
-from academic_helper.models import CoursistUser
+from academic_helper.models import CoursistUser, NOT_SELECTED
 from academic_helper.utils.logger import log, wrap
 
 
@@ -42,6 +42,7 @@ class Toast:
 
 
 class ExtendedViewMixin(PermissionRequiredMixin, TemplateView):
+
     @property
     def title(self) -> str:
         base_name = self.__class__.__name__
@@ -52,6 +53,7 @@ class ExtendedViewMixin(PermissionRequiredMixin, TemplateView):
         log.info(f"Rendering {wrap(self.title)} for {wrap(self.user)}")
         context = super().get_context_data(**kwargs)
         context["title"] = self.title
+        context["not_selected"] = NOT_SELECTED
         # context["toasts"] = [
         #     Toast("משהו טוב קרה", delay=2500).as_json(),
         #     Toast("משהו לא טוב קרה", delay=3000, tag=ToastTag.WARNING).as_json(), ]

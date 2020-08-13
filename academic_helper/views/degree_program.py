@@ -3,6 +3,7 @@ from django.core.handlers.wsgi import WSGIRequest
 from django.http import HttpResponse, JsonResponse
 from django.utils.decorators import method_decorator
 
+from academic_helper.models import NOT_SELECTED
 from academic_helper.models.degree_program import *
 from academic_helper.views.basic import ExtendedViewMixin
 
@@ -27,12 +28,13 @@ class UserDegreeProgram(ExtendedViewMixin):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context["user_program"] = self.user.degree_program
         context["degree_programs"] = DegreeProgram.public_programs()
         return context
 
     def on_program_choice(self, program_id):
         program_id = int(program_id)
-        if program_id == -1:
+        if program_id == NOT_SELECTED:
             program_id = None
         self.user.set_degree_program(program_id)
         return JsonResponse(data={"user": self.user.id, "program_id": program_id}, status=200)
