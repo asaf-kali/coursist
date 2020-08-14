@@ -2,7 +2,7 @@ import json
 from collections import namedtuple
 from dataclasses import dataclass
 from enum import Enum
-from typing import KeysView, List, Dict, Tuple
+from typing import KeysView, List, Dict, Tuple, Iterable, Set
 
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
@@ -119,7 +119,7 @@ class Base(models.Model):
 
     @property
     def as_dict(self) -> dict:
-        fields = [field.name for field in self._meta.fields]
+        fields = {field.name for field in self._meta.fields}
         result = model_to_dict(self, fields=fields)
         result["id"] = self.id
         return result

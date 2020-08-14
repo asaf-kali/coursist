@@ -11,7 +11,7 @@ def handle_uni_default(apps, schema_editor):
     log.info(f"Creating default university")
     def_uni = University(name="Default university", english_name="Default university", abbreviation="DU")
     def_uni.save()
-    for course in Course.objects.all():
+    for course in Course.objects.all().values("id", "university_id"):
         if not course.university_id:
             log.info(f"Changing university for course {wrap(course.id)}")
             course.university = def_uni

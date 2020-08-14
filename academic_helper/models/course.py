@@ -49,7 +49,7 @@ class Department(Base):
 
 class Course(Base):
     course_number: int = models.IntegerField()
-    name: str = models.CharField(max_length=100)
+    _name: str = models.CharField(max_length=150, null=True, blank=True)
     university: University = models.ForeignKey(University, on_delete=models.CASCADE)
     department: Department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True, blank=True)
 
@@ -58,7 +58,8 @@ class Course(Base):
         ordering = ["course_number"]
 
     def save(self, *args, **kwargs):
-        self.name = self.name.title()
+        if self._name:
+            self.name = self.name.title()
         if isinstance(self.department, str):
             self.department = Department.objects.get_or_create(name=self.department)[0]
         super().save(*args, **kwargs)
@@ -67,9 +68,23 @@ class Course(Base):
         return f"{self.course_number} | {self.name}"
 
     @property
+    def name(self):
+        if self._name:
+            return self._name
+        from academic_helper.models import CourseOccurrence
+
+        return CourseOccurrence.get_latest_course_name(self.course_number)
+
+    @name.setter
+    def name(self, value):
+        self._name = value
+
+    @property
     def as_dict(self) -> dict:
         result = super().as_dict
+        del result["_name"]
         result["score"] = self.score
+        result["name"] = self.name
         return result
 
     @staticmethod

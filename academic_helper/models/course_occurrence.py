@@ -56,16 +56,29 @@ SEMESTER_NAMES = {
 
 class CourseOccurrence(Base):
     course: Course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    name: str = models.CharField(max_length=150, default="-")
     year: int = models.IntegerField()
     semester: int = models.IntegerField(choices=Semester.list())
     credits: int = models.IntegerField()
     notes: str = models.TextField(null=True, blank=True)
 
     class Meta:
+        ordering = ["course__course_number", "year", "semester"]
         unique_together = ["course", "year", "semester"]
 
     def __str__(self):
         return f"{self.course} | {self.year} {SEMESTER_NAMES[self.semester]}"
+
+    def save(self, *args, **kwargs):
+        self.name = self.name.title()
+        super().save(*args, **kwargs)
+
+    @staticmethod
+    def get_latest_course_name(course_number) -> str:
+        occurrences = CourseOccurrence.objects.filter(course__course_number=course_number)
+        if not occurrences.exists():
+            return "לא זמין"
+        return occurrences.last().name
 
 
 class Campus(Base):

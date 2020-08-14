@@ -61,8 +61,11 @@ admin.site.register(Course, CourseAdmin)
 
 
 class CourseOccurrenceAdmin(admin.ModelAdmin):
-    search_fields = ["pk", "course__name", "year", "semester"]
-    list_display = ("id", "course", "year", "semester")
+    search_fields = ["pk", "name", "course__course_number", "year", "semester"]
+    list_display = ("id", "course_number", "name", "year", "semester")
+
+    def course_number(self, obj: CourseOccurrence):
+        return obj.course.course_number
 
 
 admin.site.register(CourseOccurrence, CourseOccurrenceAdmin)

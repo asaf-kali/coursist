@@ -337,9 +337,11 @@ def occurrence_for_semester(
     occurrence, _ = CourseOccurrence.objects.get_or_create(
         course=course, year=year, credits=occurrence_credits, semester=semester
     )
+    # At this point, `course` contains the most recent name, so this is fine
+    occurrence.name = course.name
     if notes:
         occurrence.notes = notes
-        occurrence.save()
+    occurrence.save()
     return occurrence
 
 
@@ -459,9 +461,10 @@ class ShnatonParser:
         raw_course_name = raw_data["name"].replace("_", "")
         # if "name_en" in raw_data and len(raw_data["name_en"].replace(" ", "")) > 5:
         #     course_name = raw_data["name_en"]
-        course = Course.objects.get_or_create(
-            name=raw_course_name, course_number=course_number, department=department, university=huji
-        )[0]
+        course, created = Course.objects.get_or_create(course_number=course_number, university=huji)
+        course.department = department
+        course.name = raw_course_name
+        course.save()
 
         course_semesters = parse_course_semester(raw_data["semester"])
         occurrence_credits = parse_course_credits(year, raw_data)
