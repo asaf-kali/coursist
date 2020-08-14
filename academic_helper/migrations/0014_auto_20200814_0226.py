@@ -3,29 +3,6 @@
 import django.db.models.deletion
 from django.db import migrations, models
 
-from academic_helper.models import University, Course, Faculty
-from academic_helper.utils.logger import log, wrap
-
-
-def handle_uni_default(apps, schema_editor):
-    log.info(f"Creating default university")
-    def_uni = University(name="Default university", english_name="Default university", abbreviation="DU")
-    def_uni.save()
-    for course in Course.objects.all():
-        if not course.university:
-            log.info(f"Changing university for course {wrap(course.id)}")
-            course.university = def_uni
-            course.save()
-        else:
-            log.info(f"Course {wrap(course.id)} already had university: ${wrap(course.university)}")
-    for faculty in Faculty.objects.all():
-        if not faculty.university:
-            log.info(f"Changing university for faculty {wrap(faculty.id)}")
-            faculty.university = def_uni
-            faculty.save()
-        else:
-            log.info(f"Faculty {wrap(faculty.id)} already had university: ${wrap(faculty.university)}")
-
 
 class Migration(migrations.Migration):
     dependencies = [
@@ -65,5 +42,4 @@ class Migration(migrations.Migration):
             ),
         ),
         migrations.AlterUniqueTogether(name="course", unique_together={("course_number", "university")},),
-        migrations.RunPython(handle_uni_default),
     ]

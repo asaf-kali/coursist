@@ -15,6 +15,9 @@ class University(Base):
     name: str = models.CharField(max_length=150)
     english_name: str = models.CharField(max_length=150)
 
+    class Meta:
+        verbose_name_plural = "Universities"
+
     def __str__(self):
         return self.abbreviation
 
