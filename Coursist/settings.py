@@ -69,6 +69,8 @@ INSTALLED_APPS = [
     "allauth.socialaccount",
     # "allauth.socialaccount.providers.facebook",  # Facebook login
     "allauth.socialaccount.providers.google",
+    # Analytics
+    "analytical"
 ]
 
 AUTHENTICATION_BACKENDS = [
@@ -79,7 +81,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 SOCIALACCOUNT_PROVIDERS = {
-    "google": {"SCOPE": ["profile", "email",], "AUTH_PARAMS": {"access_type": "online",}},
+    "google": {"SCOPE": ["profile", "email", ], "AUTH_PARAMS": {"access_type": "online", }},
     "facebook": {
         "METHOD": "oauth2",
         # 'SDK_URL': '//connect.facebook.net/{locale}/sdk.js',
@@ -162,10 +164,10 @@ if ENV != Environment.local:
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",},
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",},
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",},
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",},
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator", },
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator", },
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator", },
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator", },
 ]
 
 # Logging
@@ -182,7 +184,7 @@ LOGGING = {
         "verbose": {"format": "[%(asctime)s] [%(levelname)-.4s]: %(message)s @@@ [%(filename)s:%(lineno)s]"},
         "debug": {
             "format": "[%(asctime)s] [%(name)s] [%(levelname)-.4s]: %(message)s @@@ "
-            "[%(threadName)s] [%(pathname)s:%(lineno)s]"
+                      "[%(threadName)s] [%(pathname)s:%(lineno)s]"
         },
     },
     "filters": {
@@ -248,7 +250,7 @@ LOGGING = {
     "root": {"handlers": ["console_out", "console_err", "root_file"], "level": "INFO"},
     "loggers": {
         "coursist": {"handlers": ["coursist_file", "console_out", "console_err"], "level": "DEBUG", "propagate": False},
-        "django": {"handlers": ["console_err", "django_file", "debug_file"], "level": "DEBUG", "propagate": False,},
+        "django": {"handlers": ["console_err", "django_file", "debug_file"], "level": "DEBUG", "propagate": False, },
         "django.utils.autoreload": {"level": "INFO", "propagate": True},
         "qinspect": {"handlers": ["debug_file", "console_out"], "level": "DEBUG", "propagate": False},
         "django.template": {"handler": ["django_template_file"], "level": "DEBUG", "propagate": False},
@@ -365,3 +367,6 @@ CRON_CLASSES = [
 
 # Query inspect
 QUERY_INSPECT_ENABLED = DEBUG
+
+# Analytics
+CLICKY_SITE_ID = "101272500"

@@ -1,8 +1,8 @@
 import json
 
-from django.db.models import Q
 from django.http import JsonResponse, HttpResponseBadRequest
 
+from academic_helper.logic import courses
 from academic_helper.logic.errors import UserNotLoggedInError, CourseNotFoundError
 from academic_helper.logic.schedule import (
     set_user_schedule_group,
@@ -10,7 +10,6 @@ from academic_helper.logic.schedule import (
     get_all_classes,
     del_user_schedule_groups,
 )
-from academic_helper.models.course import Course
 from academic_helper.views.basic import ExtendedViewMixin
 
 SCHEDULE_COOKIE = "schedule"
@@ -46,10 +45,8 @@ class ScheduleView(ExtendedViewMixin):
         return context
 
     def on_search_course(self, search_val: str):
-        courses = Course.objects.filter(
-            Q(name__icontains=search_val) | Q(course_number__icontains=search_val)
-        ).order_by("course_number")[:10]
-        serialized = [c.as_dict for c in courses]
+        results = courses.search(search_val)[:10]
+        serialized = [c.as_dict for c in results]
         return JsonResponse({"status": "success", "courses": serialized}, json_dumps_params={"ensure_ascii": False})
 
     def get_classes(self, course_number):

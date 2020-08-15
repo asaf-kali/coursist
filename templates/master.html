@@ -2,8 +2,11 @@
 {% load i18n %}
 {% load static %}
 {% load custom_tags %}
+{% load analytical %}
+{% load clicky %}
 
 <head>
+    {% analytical_head_top %}
     <meta charset="utf-8">
     <title>{% if title %}{{ title }}{% else %}Coursist{% endif %}</title>
     <link rel="icon" href="{% static 'images/icon-64.png' %}">
@@ -25,8 +28,11 @@
     </script>
     {# Curent page #}
     {% block head %}{% endblock %}
+    {# End current page #}
+    {% analytical_head_bottom %}
 </head>
 <body>
+{% analytical_body_top %}
 
 <script>
     window.fbAsyncInit = function () {
@@ -137,5 +143,7 @@
         </script>
     {% endif %}
 </div>
+{% clicky %}
+{% analytical_body_bottom %}
 </body>
 </html>
