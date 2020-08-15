@@ -49,7 +49,6 @@
 </style>
 {% load comments %}
 
-
 {% get_comment_form for course as form %}
 <form action="{% comment_form_target %}" method="POST">
     {% csrf_token %}

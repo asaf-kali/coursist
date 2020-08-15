@@ -9,10 +9,23 @@
             border-radius: 20px;
             text-align: center;
             border-collapse: initial;
+            width: 95vw;
         }
 
         table.comment-history td, th {
             padding: 25px;
+        }
+
+        tr.comment-row td {
+            border-radius: 20px;
+        }
+
+        tr.row1 {
+            background-color: aliceblue;
+        }
+
+        tr.row2 {
+            background-color: azure;
         }
     </style>
 {% endblock %}
@@ -33,13 +46,13 @@
     <br>
     <table class="comment-history">
         <tr>
-            <th>קורס</th>
-            <th>תאריך</th>
+            <th style="width: 20vw">קורס</th>
+            <th style="width: 10vw">תאריך</th>
             <th>תגובה</th>
-            <th>אנונימי?</th>
+            <th style="width: 5vw">אנונימי?</th>
         </tr>
         {% for comment in comments %}
-            <tr>
+            <tr class="comment-row {% cycle 'row1' 'row2' %}">
                 <td>
                     {{ comment.course }}
                 </td>
@@ -63,7 +76,10 @@
         CSRF_TOKEN = '{{ csrf_token }}';
 
         function setAnonymous(comment_id, checkbox) {
-            ajax({"comment_id": comment_id, "is_anonymous": checkbox.checked}, undefined, () => {
+            ajax({"comment_id": comment_id, "is_anonymous": checkbox.checked}, () => {
+                showToast(new Toast("השינויים נשמרו"))
+            }, () => {
+                faultToast("משהו השתבש :(");
                 checkbox.checked = !checkbox.checked;
             });
         }
