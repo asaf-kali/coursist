@@ -17,7 +17,7 @@ class UserView(ExtendedViewMixin, SingleObjectMixin):
 
     @property
     def title(self) -> str:
-        return f"Coursist - {self.object.username}"
+        return f"Coursist | {self.object.username}"
 
     def has_permission(self):
         return self.user.pk == self.object.pk or self.user.has_perm(CoursistUser.permissions.view)
@@ -30,8 +30,7 @@ class UserView(ExtendedViewMixin, SingleObjectMixin):
 
     @lru_cache(maxsize=1)  # TODO: Think good about this, can cause horrible bugs
     def get_object(self, queryset=None):
-        queryset = CoursistUser.objects.filter(username=self.kwargs["username"])
-        return get_object_or_404(queryset)
+        return CoursistUser.get_by_username(self.kwargs["username"])
 
     def on_anonymous_change(self):
         try:

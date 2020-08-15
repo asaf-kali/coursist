@@ -2,6 +2,7 @@ from typing import Union
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.shortcuts import get_object_or_404
 
 from academic_helper.models.base import Base
 from academic_helper.utils.logger import log, wrap
@@ -25,3 +26,8 @@ class CoursistUser(AbstractUser, Base):
         else:
             self.degree_program = program
         self.save()
+
+    @staticmethod
+    def get_by_username(username):
+        queryset = CoursistUser.objects.filter(username=username)
+        return get_object_or_404(queryset)
