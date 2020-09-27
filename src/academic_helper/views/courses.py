@@ -4,9 +4,11 @@ from django.shortcuts import get_object_or_404
 from django.template.defaultfilters import floatformat
 from django.urls import reverse
 from django.views.generic import DetailView, ListView
+from rest_framework import generics
 
 from academic_helper.logic import courses
 from academic_helper.models.course import Course, Department, Faculty
+from academic_helper.serializers.course_serializer import CourseSerializer
 from academic_helper.views.basic import ExtendedViewMixin
 
 
@@ -67,3 +69,8 @@ class CoursesView(ExtendedViewMixin, ListView):
             course["url"] = reverse("course-details", args=[course["course_number"]])
             course["score"] = floatformat(course["score"])
         return JsonResponse({"courses": result})
+
+
+class CourseListCreate(generics.ListCreateAPIView):
+    queryset = Course.objects.all()
+    serializer_class = CourseSerializer

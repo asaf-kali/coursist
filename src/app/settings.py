@@ -37,6 +37,7 @@ if is_prod():
     else:
         ALLOWED_HOSTS.append(internal_ip)
     del requests
+    REST_FRAMEWORK = {"DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",)}
 
 DEBUG = not is_prod()
 
@@ -52,6 +53,8 @@ INSTALLED_APPS = [
     "dbbackup",
     # Our app
     "academic_helper",
+    # REST
+    "rest_framework",
     # Health check
     "health_check",
     # Storage

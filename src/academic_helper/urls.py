@@ -2,7 +2,7 @@ from django.http import JsonResponse
 from django.urls import path, include
 
 from academic_helper.views.basic import redirect_to_courses_view
-from academic_helper.views.courses import CoursesView, CourseDetailsView
+from academic_helper.views.courses import CoursesView, CourseDetailsView, CourseListCreate
 from academic_helper.views.degree_program import UserDegreeProgram
 from academic_helper.views.other import AjaxView, AboutView
 from academic_helper.views.schedule import ScheduleView
@@ -14,6 +14,7 @@ def healthy(request):
 
 
 urlpatterns = [
+    # Old original views - to be deprecated
     path("", redirect_to_courses_view, name="index"),
     path("ajax/", AjaxView.as_view(), name="ajax"),
     path("courses/", CoursesView.as_view(), name="courses"),
@@ -23,4 +24,6 @@ urlpatterns = [
     path("schedule/", ScheduleView.as_view(), name="schedule"),
     path("user/<str:username>/", UserView.as_view(), name="user"),
     path("degree-program/", UserDegreeProgram.as_view(), name="degree-program"),
+    # New API views
+    path("api/course/", CourseListCreate.as_view()),
 ]
