@@ -9,5 +9,6 @@ module.exports = {
                 }
             }
         ]
-    }
+    },
+    watch: true
 };

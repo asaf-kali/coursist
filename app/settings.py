@@ -82,7 +82,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 SOCIALACCOUNT_PROVIDERS = {
-    "google": {"SCOPE": ["profile", "email", ], "AUTH_PARAMS": {"access_type": "online", }, },
+    "google": {"SCOPE": ["profile", "email",], "AUTH_PARAMS": {"access_type": "online",},},
     "facebook": {
         "METHOD": "oauth2",
         # 'SDK_URL': '//connect.facebook.net/{locale}/sdk.js',
@@ -127,9 +127,9 @@ TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [
-            os.path.join(BASE_DIR, "templates"),
-            os.path.join(BASE_DIR, "templates", "account"),
-            os.path.join(BASE_DIR, "templates", "socialaccount"),
+            os.path.join(BASE_DIR, "frontend", "templates"),
+            os.path.join(BASE_DIR, "frontend", "templates", "account"),
+            os.path.join(BASE_DIR, "frontend", "templates", "socialaccount"),
         ],
         "APP_DIRS": True,
         "OPTIONS": {
@@ -165,10 +165,10 @@ if ENV != Environment.local:
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator", },
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator", },
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator", },
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator", },
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",},
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",},
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",},
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",},
 ]
 
 # Logging
@@ -181,16 +181,16 @@ LOGGING = {
     "disable_existing_loggers": False,
     "formatters": {
         "aws": {"format": "[%(levelname)-.4s]: %(message)s @@@ [%(filename)s:%(lineno)s]"},
-        "simple": {"format": "[%(asctime)s] [%(levelname)-.4s]: %(message)s", "datefmt": "%Y-%m-%d %H:%M:%S", },
+        "simple": {"format": "[%(asctime)s] [%(levelname)-.4s]: %(message)s", "datefmt": "%Y-%m-%d %H:%M:%S",},
         "verbose": {"format": "[%(asctime)s] [%(levelname)-.4s]: %(message)s @@@ [%(filename)s:%(lineno)s]"},
         "debug": {
             "format": "[%(asctime)s] [%(name)s] [%(levelname)-.4s]: %(message)s @@@ "
-                      "[%(threadName)s] [%(pathname)s:%(lineno)s]"
+            "[%(threadName)s] [%(pathname)s:%(lineno)s]"
         },
     },
     "filters": {
-        "std_filter": {"()": "academic_helper.utils.logger.LevelFilter", "low": INFO, "high": WARNING, },
-        "err_filter": {"()": "academic_helper.utils.logger.LevelFilter", "low": WARNING, },
+        "std_filter": {"()": "academic_helper.utils.logger.LevelFilter", "low": INFO, "high": WARNING,},
+        "err_filter": {"()": "academic_helper.utils.logger.LevelFilter", "low": WARNING,},
     },
     "handlers": {
         "console_out": {
@@ -255,10 +255,10 @@ LOGGING = {
             "level": "DEBUG",
             "propagate": False,
         },
-        "django": {"handlers": ["console_err", "django_file", "debug_file"], "level": "DEBUG", "propagate": False, },
+        "django": {"handlers": ["console_err", "django_file", "debug_file"], "level": "DEBUG", "propagate": False,},
         "django.utils.autoreload": {"level": "INFO", "propagate": True},
-        "qinspect": {"handlers": ["debug_file", "console_out"], "level": "DEBUG", "propagate": False, },
-        "django.template": {"handler": ["django_template_file"], "level": "DEBUG", "propagate": False, },
+        "qinspect": {"handlers": ["debug_file", "console_out"], "level": "DEBUG", "propagate": False,},
+        "django.template": {"handler": ["django_template_file"], "level": "DEBUG", "propagate": False,},
         "dbbackup": {"handlers": ["debug_file", "console_out"], "propagate": False},
         "py.warnings": {"handlers": ["debug_file"], "propagate": True},
     },
@@ -315,7 +315,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, "frontend", "static"),
 ]
 
 if ENV == Environment.prod:
@@ -331,8 +331,8 @@ if ENV == Environment.prod:
 else:
     STATIC_URL = "/static/"
     MEDIA_URL = "/media/"
-    STATIC_ROOT = os.path.join(BASE_DIR, "files/static")
-    MEDIA_ROOT = os.path.join(BASE_DIR, "files/media")
+    STATIC_ROOT = os.path.join(BASE_DIR, "files", "static")
+    MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # Auth
 SITE_ID = 1

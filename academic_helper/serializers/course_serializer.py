@@ -9,3 +9,4 @@ class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         exclude = ["_name"]
+        include = ["id"]

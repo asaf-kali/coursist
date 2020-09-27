@@ -34,10 +34,10 @@ class App extends Component {
     render() {
         return (
             <ul>
-                {this.state.data.map(contact => {
+                {this.state.data.map(course => {
                     return (
-                        <li key={contact.id}>
-                            {contact.name} - {contact.email}
+                        <li key={course.id}>
+                            {course.course_number} | {course.name}
                         </li>
                     );
                 })}
