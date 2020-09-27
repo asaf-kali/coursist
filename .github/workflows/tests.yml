@@ -9,6 +9,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      DJANGO_SETTINGS_MODULE: src.app.settings
     steps:
       - uses: actions/checkout@v2
       - name: Set up python 3.8
@@ -24,13 +26,13 @@ jobs:
           python manage.py migrate
       - name: Run tests
         run: |
-          python manage.py test
+          python manage.py test academic_helper
 
   format:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Check black formatting
-        uses: lgeiger/black-action@v1.0.1
+        uses: lgeiger/black-action@master
         with:
-          args: ". --check -l 120"
+          args: '. -l 120 --exclude ".*/node_modules/.* --check'

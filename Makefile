@@ -9,7 +9,7 @@ run:
 	python manage.py runserver
 
 black:
-	black ./ -l 120
+	black . -l 120 --exclude ".*/node_modules/.*"
 
 migrate:
 	python manage.py makemigrations
