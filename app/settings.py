@@ -11,18 +11,12 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-import sys
 from logging import WARNING, INFO
 from sys import stdout, stderr
 
 import requests
 from boto3 import Session
 
-SECRET_KEY = os.getenv("SECRET_KEY", "6*cne7$@#zo,;gl7#$%^*HSfda,msp2-034u5jt'vf=jvhj")
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-ROOT_DIR = os.path.dirname(BASE_DIR)
-
-sys.path.insert(0, BASE_DIR)
 from academic_helper.utils.environment import is_prod, Environment, ENV
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", "coursist.xyz"]
@@ -40,6 +34,8 @@ if is_prod():
     REST_FRAMEWORK = {"DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",)}
 
 DEBUG = not is_prod()
+
+SECRET_KEY = os.getenv("SECRET_KEY", "6*cne7$@#zo,;gl7#$%^*HSfda,msp2-034u5jt'vf=jvhj")
 
 # Application definition
 INSTALLED_APPS = [
@@ -125,14 +121,14 @@ if ENV != Environment.prod:
     MIDDLEWARE += ["qinspect.middleware.QueryInspectMiddleware"]
 
 ROOT_URLCONF = "app.urls"
-
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [
-            os.path.join(ROOT_DIR, "templates"),
-            os.path.join(ROOT_DIR, "templates", "account"),
-            os.path.join(ROOT_DIR, "templates", "socialaccount"),
+            os.path.join(BASE_DIR, "templates"),
+            os.path.join(BASE_DIR, "templates", "account"),
+            os.path.join(BASE_DIR, "templates", "socialaccount"),
         ],
         "APP_DIRS": True,
         "OPTIONS": {
@@ -154,7 +150,7 @@ WSGI_APPLICATION = "app.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": os.getenv("DB_ENGINE", "django.db.backends.sqlite3"),
-        "NAME": os.getenv("DB_NAME", os.path.join(ROOT_DIR, "db.sqlite3")),
+        "NAME": os.getenv("DB_NAME", os.path.join(BASE_DIR, "db.sqlite3")),
     }
 }
 
@@ -176,7 +172,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Logging
 
-LOGGING_DIR = os.path.join(ROOT_DIR, "logs")
+LOGGING_DIR = os.path.join(BASE_DIR, "logs")
 os.makedirs(LOGGING_DIR, exist_ok=True)
 
 LOGGING = {
@@ -318,7 +314,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 STATICFILES_DIRS = [
-    os.path.join(ROOT_DIR, "static"),
+    os.path.join(BASE_DIR, "static"),
 ]
 
 if ENV == Environment.prod:
@@ -334,8 +330,8 @@ if ENV == Environment.prod:
 else:
     STATIC_URL = "/static/"
     MEDIA_URL = "/media/"
-    STATIC_ROOT = os.path.join(ROOT_DIR, "files/static")
-    MEDIA_ROOT = os.path.join(ROOT_DIR, "files/media")
+    STATIC_ROOT = os.path.join(BASE_DIR, "files/static")
+    MEDIA_ROOT = os.path.join(BASE_DIR, "files/media")
 
 # Auth
 SITE_ID = 1

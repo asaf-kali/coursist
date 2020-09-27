@@ -6,7 +6,7 @@ files/*
 **/shnaton_cache/
 logs/*
 temp.json
-.*
+#.*
 *.env
 
 # Byte-compiled / optimized / DLL files
@@ -70,7 +70,7 @@ coverage.xml
 *.log
 local_settings.py
 *.sqlite3
-db.sqlite3-journal
+*.sqlite3-journal
 
 # Flask stuff:
 instance/

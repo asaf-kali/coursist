@@ -400,7 +400,7 @@ class ShnatonParser:
     ):
         self.shnaton_url = shnaton_url
         if not cache_dir:
-            cache_dir = path.join("src", "academic_helper", "shnaton_cache")
+            cache_dir = path.join("academic_helper", "shnaton_cache")
         self.cache_dir = cache_dir
         if not path.exists(self.cache_dir):
             os.makedirs(self.cache_dir)

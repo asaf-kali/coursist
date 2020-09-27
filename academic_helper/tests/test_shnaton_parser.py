@@ -27,7 +27,7 @@ class TestShnatonParser(TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        mock_dir = os.path.join("src", "academic_helper", "tests", "mocks")
+        mock_dir = os.path.join("academic_helper", "tests", "mocks")
         cls.parser = ShnatonParser(MOCK_URL, mock_dir, cache_read=True, cache_write=False)
 
     def test_simple_base_models(self):
