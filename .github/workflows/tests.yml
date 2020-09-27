@@ -28,11 +28,11 @@ jobs:
         run: |
           python manage.py test academic_helper
 
-  format:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Check black formatting
-        uses: lgeiger/black-action@master
-        with:
-          args: '. -l 120 --exclude ".*/node_modules/.* --check'
+#  format:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v2
+#      - name: Check black formatting
+#        uses: lgeiger/black-action@master
+#        with:
+#          args: '. -l 120 --exclude ".*/node_modules/.* --check'
