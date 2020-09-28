@@ -25,62 +25,6 @@
 </head>
 <body class="rtl">
 {% analytical_body_top %}
-
-<nav class="navbar fixed-top navbar-expand-lg navbar-light bg-navbar">
-    <a class="navbar-brand" href="{% url 'index' %}">Coursist</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse"
-            data-target=".dual-collapse" aria-expanded="false"
-            aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse dual-collapse w-100 order-1">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'courses' %}">קורסים</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'schedule' %}">בניית מערכת</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'about' %}">אודות</a>
-            </li>
-            {% if user.is_staff %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'degree-program' %}">תכנון מסלול</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'admin:index' %}">ניהול</a>
-                </li>
-            {% endif %}
-        </ul>
-    </div>
-    <div class="collapse navbar-collapse dual-collapse w-100 order-2">
-        <ul class="navbar-nav ml-auto">
-            {% if user.is_anonymous %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'account_login' %}">התחברות</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'account_signup' %}">הרשמה</a>
-                </li>
-            {% else %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'user' user.username %}">שלום {{ user }}</a>
-                </li>
-                <li class="nav-item">
-                    <form method="post" action="{% url 'account_logout' %}" style="margin: 0 auto;">
-                        {% csrf_token %}
-                        {% if redirect_field_value %}
-                            <input type="hidden" name="{{ redirect_field_name }}"
-                                   value="{{ redirect_field_value }}"/>
-                        {% endif %}
-                        <button type="submit" class="sign-out-btn nav-link">התנתקות</button>
-                    </form>
-                </li>
-            {% endif %}
-        </ul>
-    </div>
-</nav>
 <div id="app">
     <!-- React will load here -->
 </div>

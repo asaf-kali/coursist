@@ -1,47 +1,24 @@
 import React, {Component} from "react";
 import {render} from "react-dom";
+import {BrowserRouter, Route} from "react-router-dom";
+import {About} from "./other/About.js"
+import {AllCourses} from "./courses/AllCourses";
+import {MainNavBar} from "./main/Menu";
 
 class App extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            data: [],
-            loaded: false,
-            placeholder: "Loading"
-        };
-    }
-
-    componentDidMount() {
-        fetch("api/course/")
-            .then(response => {
-                if (response.status > 400) {
-                    return this.setState(() => {
-                        return {placeholder: "Something went wrong!"};
-                    });
-                }
-                return response.json();
-            })
-            .then(data => {
-                this.setState(() => {
-                    return {
-                        data,
-                        loaded: true
-                    };
-                });
-            });
+        this.state = {...props};
     }
 
     render() {
         return (
-            <ul>
-                {this.state.data.map(course => {
-                    return (
-                        <li key={course.id}>
-                            {course.course_number} | {course.name}
-                        </li>
-                    );
-                })}
-            </ul>
+            <BrowserRouter>
+                <MainNavBar is_anonymous={this.state.is_anonymous} is_staff={this.state.is_staff}/>
+                <Route path='/alter/' component={AllCourses} exact/>
+                <Route path='/alter/courses' component={AllCourses}/>
+                <Route path='/alter/about' component={About}/>
+            </BrowserRouter>
         );
     }
 }

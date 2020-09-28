@@ -1,6 +1,7 @@
-from django.urls import path
-from . import views
+from django.urls import path, re_path
+
+from frontend import views
 
 urlpatterns = [
-    path("alternative", views.index),
+    re_path(r"^alter/.*", views.index, name="alter"),
 ]
