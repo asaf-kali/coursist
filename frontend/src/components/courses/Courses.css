@@ -1,0 +1,29 @@
+.course-block-link {
+    text-decoration: none !important;
+    color: black;
+}
+
+.course-block-score {
+    font-size: small;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+}
+
+.course-list {
+    width: 95%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    /*display: none; !* When returning to this page, the default for the list is to be hidden *!*/
+}
+
+.course-block {
+    width: 23%;
+    height: 9.5rem;
+    margin: 7px;
+    border: 1px solid var(--orange);
+    border-radius: 20px;
+    background-color: #fffff3;
+    overflow: hidden;
+}

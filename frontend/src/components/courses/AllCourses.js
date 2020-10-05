@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import {CoursistPage} from "../main/CoursistPage";
-
+import {CourseBlock} from "./CourseBlock";
+import "./Courses.css"
 
 export class AllCourses extends CoursistPage {
 
@@ -30,17 +31,13 @@ export class AllCourses extends CoursistPage {
 
     renderContent() {
         return this.state.loaded ? (
-            <ul>
+            <div className="container course-list">
                 {
                     this.state.data.map(course => {
-                        return (
-                            <li key={course.id}>
-                                {course.course_number} | {course.name}
-                            </li>
-                        );
+                        return <CourseBlock key={"course-block-" + course.id} {...course} />
                     })
                 }
-            </ul>
+            </div>
         ) : (
             <div>
                 סטטוס: {this.state.placeholder}
