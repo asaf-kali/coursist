@@ -2,6 +2,11 @@ import React, {Component} from "react";
 import {CoursistPage} from "../main/CoursistPage";
 import {CourseBlock} from "./CourseBlock";
 import "./Courses.css"
+import {Redirect} from 'react-router-dom'
+
+export const RedirectToAllCourses = () => {
+    return <Redirect to='/courses'/>
+}
 
 export class AllCourses extends CoursistPage {
 
@@ -15,17 +20,17 @@ export class AllCourses extends CoursistPage {
     }
 
     componentDidMount() {
-        fetch("/api/course/")
+        fetch("/api/courses/")
             .then(response => {
                 if (response.status > 400) {
-                    return this.setState(() => {
-                        return {placeholder: "Something went wrong!"};
-                    });
+                    this.setState({placeholder: "Something went wrong!"});
+                    return null;
                 }
                 return response.json();
             })
             .then(data => {
-                this.setState({data: data, loaded: true});
+                if (data)
+                    this.setState({data: data, loaded: true});
             });
     }
 

@@ -15,6 +15,11 @@ export class CoursistPage extends Component {
         return "IMPLEMENT";
     }
 
+    updateState(data) {
+        const newState = {...this.state, ...data}
+        this.setState(newState)
+    }
+
     render() {
         return (
             <div>

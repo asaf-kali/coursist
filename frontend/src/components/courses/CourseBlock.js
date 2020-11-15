@@ -12,10 +12,14 @@ export class CourseBlock extends Component {
         }
     }
 
+    getLink() {
+        return `/courses/${this.state.id}/`;
+    }
+
     render() {
         return (
             <div className="card float-left course-block course-block-link">
-                <NavLink to="temp" className="course-block-link">
+                <NavLink to={this.getLink()} className="course-block-link">
                 <span className="course-block-score">
                     {this.state.score} כוכבים
                 </span>

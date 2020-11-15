@@ -7,7 +7,7 @@ from typing import List, Dict, Tuple
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
 from django.forms import model_to_dict
-from django.utils.decorators import classproperty
+from django.utils.functional import classproperty
 
 ReadableEnum = namedtuple("ReadableEnum", ["value", "name"])
 

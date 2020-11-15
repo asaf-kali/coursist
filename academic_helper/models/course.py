@@ -16,7 +16,7 @@ class University(Base):
     english_name: str = models.CharField(max_length=150)
 
     class Meta:
-        verbose_name_plural = "Universities"
+        verbose_name_plural = "universities"
 
     def __str__(self):
         return self.abbreviation
@@ -35,7 +35,7 @@ class Faculty(Base):
 
 class Department(Base):
     name: str = models.CharField(max_length=50)
-    faculty = models.ForeignKey(Faculty, on_delete=models.CASCADE)
+    faculty: Faculty = models.ForeignKey(Faculty, on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):
         self.name = self.name.title()

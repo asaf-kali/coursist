@@ -44,7 +44,7 @@ class RatingDummy(Base):
         return rating.average
 
     def get_user_rating(self, user) -> Optional[UserRating]:
-        semester_rating = UserRating.objects.filter(user=user, rating__object_id=self.id)
-        if len(semester_rating) == 1:
-            return semester_rating[0]
+        ratings = UserRating.objects.filter(user=user, rating__object_id=self.id)
+        if len(ratings) == 1:
+            return ratings.first()
         return None

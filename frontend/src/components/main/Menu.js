@@ -13,7 +13,7 @@ export class MainNavBar extends Component {
     render() {
         return (
             <nav className="navbar fixed-top navbar-expand-lg navbar-light bg-navbar">
-                <NavLink className="navbar-brand" to="/alter/">Coursist</NavLink>
+                <NavLink className="navbar-brand" to="/">Coursist</NavLink>
                 <button className="navbar-toggler" type="button" data-toggle="collapse"
                         data-target=".dual-collapse" aria-expanded="false"
                         aria-label="Toggle navigation">
@@ -22,21 +22,21 @@ export class MainNavBar extends Component {
                 <div className="collapse navbar-collapse dual-collapse w-100 order-1">
                     <ul className="navbar-nav mr-auto">
                         <li className="nav-item">
-                            <NavLink className="nav-link" to="/alter/courses">קורסים</NavLink>
+                            <NavLink className="nav-link" to="/courses">קורסים</NavLink>
                         </li>
                         <li className="nav-item">
-                            <NavLink className="nav-link" to="/alter/schedule">בניית מערכת</NavLink>
+                            <NavLink className="nav-link" to="/schedule">בניית מערכת</NavLink>
                         </li>
                         <li className="nav-item">
-                            <NavLink className="nav-link" to="/alter/about/">אודות</NavLink>
+                            <NavLink className="nav-link" to="/about/">אודות</NavLink>
                         </li>
                         {this.state.is_staff &&
                         <>
                             <li className="nav-item">
-                                <NavLink className="nav-link" to="/alter/degree-program">תכנון מסלול</NavLink>
+                                <NavLink className="nav-link" to="/degree-program">תכנון מסלול</NavLink>
                             </li>
                             <li className="nav-item">
-                                <NavLink className="nav-link" to="/alter/admin:index">ניהול</NavLink>
+                                <NavLink className="nav-link" to="/admin:index">ניהול</NavLink>
                             </li>
                         </>
                         }
@@ -47,10 +47,10 @@ export class MainNavBar extends Component {
                         {this.state.is_anonymous ?
                             (<>
                                 <li className="nav-item">
-                                    <NavLink className="nav-link" to="/alter/account_login">התחברות</NavLink>
+                                    <NavLink className="nav-link" to="/account_login">התחברות</NavLink>
                                 </li>
                                 <li className="nav-item">
-                                    <NavLink className="nav-link" to="/alter/account_signup">הרשמה</NavLink>
+                                    <NavLink className="nav-link" to="/account_signup">הרשמה</NavLink>
                                 </li>
                             </>) : (<>
                                 {/*<li className="nav-item">*/}

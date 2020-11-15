@@ -17,9 +17,9 @@ class IndexView(TemplateView):
     template_name = "other/index.html"
 
 
-def redirect_to_courses_view(request):
-    response = redirect("courses")
-    return response
+# def redirect_to_courses_view(request):
+#     response = redirect("courses")
+#     return response
 
 
 class ToastTag(Enum):

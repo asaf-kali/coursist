@@ -2,7 +2,8 @@ import React, {Component} from "react";
 import {render} from "react-dom";
 import {BrowserRouter, Route} from "react-router-dom";
 import {About} from "./other/About.js"
-import {AllCourses} from "./courses/AllCourses";
+import {AllCourses, RedirectToAllCourses} from "./courses/AllCourses";
+import {CourseDetails} from "./courses/CourseDetails";
 import {MainNavBar} from "./main/Menu";
 
 class App extends Component {
@@ -15,9 +16,10 @@ class App extends Component {
         return (
             <BrowserRouter>
                 <MainNavBar is_anonymous={this.state.is_anonymous} is_staff={this.state.is_staff}/>
-                <Route path='/alter/' component={AllCourses} exact/>
-                <Route path='/alter/courses' component={AllCourses}/>
-                <Route path='/alter/about' component={About}/>
+                <Route path='/' component={RedirectToAllCourses} exact/>
+                <Route path='/courses/' component={AllCourses} exact />
+                <Route path='/courses/:id/' component={CourseDetails} exact/>
+                <Route path='/about/' component={About}/>
             </BrowserRouter>
         );
     }

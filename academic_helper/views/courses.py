@@ -4,6 +4,7 @@ from django.shortcuts import get_object_or_404
 from django.template.defaultfilters import floatformat
 from django.urls import reverse
 from django.views.generic import DetailView, ListView
+from requests import Response
 from rest_framework import generics
 
 from academic_helper.logic import courses
@@ -34,6 +35,11 @@ class CourseDetailsView(DetailView, ExtendedViewMixin):
     def object(self) -> Course:
         query = Course.objects.filter(course_number=self.kwargs["course_number"])
         return get_object_or_404(query)
+
+
+class CourseGet(generics.RetrieveAPIView):
+    queryset = Course.objects.all()
+    serializer_class = CourseSerializer
 
 
 class CoursesView(ExtendedViewMixin, ListView):
