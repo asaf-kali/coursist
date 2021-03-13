@@ -23,6 +23,9 @@ def init_sentry():
     if ENV != Environment.prod:
         integrations += [LoggingIntegration(event_level=None)]
     sentry_sdk.init(
-        dsn=DSN, integrations=integrations, environment=ENV.value, send_default_pii=True,
+        dsn=DSN,
+        integrations=integrations,
+        environment=ENV.value,
+        send_default_pii=True,
     )
     sentry_sdk.integrations.logging.ignore_logger("django.security.DisallowedHost")

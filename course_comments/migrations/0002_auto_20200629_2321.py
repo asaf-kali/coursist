@@ -14,7 +14,11 @@ class Migration(migrations.Migration):
             name="semester",
             field=models.IntegerField(choices=[(1, "A"), (2, "B"), (3, "C"), (4, "Summer"), (5, "Yearly")], null=True),
         ),
-        migrations.AddField(model_name="coursecomment", name="year", field=models.IntegerField(null=True),),
+        migrations.AddField(
+            model_name="coursecomment",
+            name="year",
+            field=models.IntegerField(null=True),
+        ),
         migrations.AlterField(
             model_name="coursecomment",
             name="is_anonymous",

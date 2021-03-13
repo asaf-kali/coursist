@@ -19,7 +19,9 @@ class Migration(migrations.Migration):
                 ("semester", models.IntegerField(choices=[(1, "A"), (2, "B"), (3, "C"), (4, "Summer"), (5, "Yearly")])),
                 ("course", models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to="academic_helper.Course")),
             ],
-            options={"unique_together": {("course", "year", "semester")},},
+            options={
+                "unique_together": {("course", "year", "semester")},
+            },
         ),
         migrations.CreateModel(
             name="CourseClass",

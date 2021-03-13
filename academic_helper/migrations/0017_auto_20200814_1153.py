@@ -19,13 +19,18 @@ class Migration(migrations.Migration):
     operations = [
         migrations.RenameField(model_name="course", old_name="name", new_name="_name"),
         migrations.AlterField(
-            model_name="course", name="_name", field=models.CharField(max_length=150, blank=True, null=True),
+            model_name="course",
+            name="_name",
+            field=models.CharField(max_length=150, blank=True, null=True),
         ),
         migrations.AddField(
-            model_name="courseoccurrence", name="name", field=models.CharField(max_length=150, default="-"),
+            model_name="courseoccurrence",
+            name="name",
+            field=models.CharField(max_length=150, default="-"),
         ),
         migrations.AlterModelOptions(
-            name="courseoccurrence", options={"ordering": ["course__course_number", "year", "semester"]},
+            name="courseoccurrence",
+            options={"ordering": ["course__course_number", "year", "semester"]},
         ),
         migrations.RunPython(move_names),
     ]

@@ -10,6 +10,7 @@ from django.shortcuts import redirect
 from django.conf import settings
 import json
 
+
 # copied from https://stackoverflow.com/questions/24357907/django-allauth-facebook-redirects-to-signup-when-retrieved-email-matches-an-exis
 
 

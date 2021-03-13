@@ -23,7 +23,10 @@ class Migration(migrations.Migration):
             fields=[
                 ("id", models.AutoField(editable=False, primary_key=True, serialize=False)),
                 ("password", models.CharField(max_length=128, verbose_name="password")),
-                ("last_login", models.DateTimeField(blank=True, null=True, verbose_name="last login"),),
+                (
+                    "last_login",
+                    models.DateTimeField(blank=True, null=True, verbose_name="last login"),
+                ),
                 (
                     "is_superuser",
                     models.BooleanField(
@@ -43,9 +46,18 @@ class Migration(migrations.Migration):
                         verbose_name="username",
                     ),
                 ),
-                ("first_name", models.CharField(blank=True, max_length=30, verbose_name="first name"),),
-                ("last_name", models.CharField(blank=True, max_length=150, verbose_name="last name"),),
-                ("email", models.EmailField(blank=True, max_length=254, verbose_name="email address"),),
+                (
+                    "first_name",
+                    models.CharField(blank=True, max_length=30, verbose_name="first name"),
+                ),
+                (
+                    "last_name",
+                    models.CharField(blank=True, max_length=150, verbose_name="last name"),
+                ),
+                (
+                    "email",
+                    models.EmailField(blank=True, max_length=254, verbose_name="email address"),
+                ),
                 (
                     "is_staff",
                     models.BooleanField(
@@ -62,7 +74,10 @@ class Migration(migrations.Migration):
                         verbose_name="active",
                     ),
                 ),
-                ("date_joined", models.DateTimeField(default=django.utils.timezone.now, verbose_name="date joined"),),
+                (
+                    "date_joined",
+                    models.DateTimeField(default=django.utils.timezone.now, verbose_name="date joined"),
+                ),
                 (
                     "groups",
                     models.ManyToManyField(
@@ -86,8 +101,14 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"verbose_name": "user", "verbose_name_plural": "users", "abstract": False,},
-            managers=[("objects", django.contrib.auth.models.UserManager()),],
+            options={
+                "verbose_name": "user",
+                "verbose_name_plural": "users",
+                "abstract": False,
+            },
+            managers=[
+                ("objects", django.contrib.auth.models.UserManager()),
+            ],
         ),
         migrations.CreateModel(
             name="Course",
@@ -97,7 +118,9 @@ class Migration(migrations.Migration):
                 ("name", models.CharField(max_length=100, unique=True)),
                 ("credits", models.IntegerField(default=0)),
             ],
-            options={"ordering": ["course_number"],},
+            options={
+                "ordering": ["course_number"],
+            },
         ),
         migrations.CreateModel(
             name="StudyBlock",
@@ -107,7 +130,9 @@ class Migration(migrations.Migration):
                 ("min_credits", models.IntegerField()),
                 ("courses", models.ManyToManyField(to="academic_helper.Course")),
             ],
-            options={"abstract": False,},
+            options={
+                "abstract": False,
+            },
         ),
         migrations.CreateModel(
             name="StudyPlan",
@@ -118,15 +143,23 @@ class Migration(migrations.Migration):
                 ("is_public", models.BooleanField(default=True)),
                 ("blocks", models.ManyToManyField(to="academic_helper.StudyBlock")),
             ],
-            options={"abstract": False,},
+            options={
+                "abstract": False,
+            },
         ),
         migrations.CreateModel(
             name="ExtendedRating",
             fields=[
-                ("id", models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID"),),
+                (
+                    "id",
+                    models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID"),
+                ),
                 ("count", models.PositiveIntegerField(default=0)),
                 ("total", models.PositiveIntegerField(default=0)),
-                ("average", models.DecimalField(decimal_places=3, default=Decimal("0"), max_digits=6),),
+                (
+                    "average",
+                    models.DecimalField(decimal_places=3, default=Decimal("0"), max_digits=6),
+                ),
                 ("object_id", models.PositiveIntegerField(blank=True, null=True)),
                 (
                     "content_type",
@@ -138,7 +171,10 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"abstract": False, "unique_together": {("content_type", "object_id")},},
+            options={
+                "abstract": False,
+                "unique_together": {("content_type", "object_id")},
+            },
         ),
         migrations.CreateModel(
             name="CompletedCourse",
@@ -153,8 +189,13 @@ class Migration(migrations.Migration):
                     "course",
                     models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to="academic_helper.Course"),
                 ),
-                ("user", models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),),
+                (
+                    "user",
+                    models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
+                ),
             ],
-            options={"unique_together": {("user", "course")},},
+            options={
+                "unique_together": {("user", "course")},
+            },
         ),
     ]

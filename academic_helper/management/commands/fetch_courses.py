@@ -33,7 +33,10 @@ class Command(BaseCommand):
             "Replaces existing courses (default is False). If set to True, existing courses will be deleted!",
         )
         parser.add_argument(
-            "--shuffle", default=False, action="store_true", help="Run in shuffled order.",
+            "--shuffle",
+            default=False,
+            action="store_true",
+            help="Run in shuffled order.",
         )
 
     def handle(self, *args, **options):

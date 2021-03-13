@@ -2,14 +2,12 @@ import json
 from collections import namedtuple
 from dataclasses import dataclass
 from enum import Enum
-from typing import KeysView, List, Dict, Tuple, Iterable, Set
+from typing import List, Dict, Tuple
 
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
 from django.forms import model_to_dict
 from django.utils.decorators import classproperty
-
-from academic_helper.utils.logger import wrap, log
 
 ReadableEnum = namedtuple("ReadableEnum", ["value", "name"])
 

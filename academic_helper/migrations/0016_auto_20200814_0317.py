@@ -9,5 +9,8 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AlterModelOptions(name="university", options={"verbose_name_plural": "Universities"},),
+        migrations.AlterModelOptions(
+            name="university",
+            options={"verbose_name_plural": "Universities"},
+        ),
     ]

@@ -11,12 +11,18 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AddField(
-            model_name="courseclass", name="notes", field=models.CharField(blank=True, max_length=50, null=True),
+            model_name="courseclass",
+            name="notes",
+            field=models.CharField(blank=True, max_length=50, null=True),
         ),
         migrations.AddField(
-            model_name="courseclass", name="special_occurrence", field=models.DateField(blank=True, null=True),
+            model_name="courseclass",
+            name="special_occurrence",
+            field=models.DateField(blank=True, null=True),
         ),
         migrations.AddField(
-            model_name="courseoccurrence", name="notes", field=models.TextField(blank=True, null=True),
+            model_name="courseoccurrence",
+            name="notes",
+            field=models.TextField(blank=True, null=True),
         ),
     ]
