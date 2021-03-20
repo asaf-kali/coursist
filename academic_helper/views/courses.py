@@ -1,4 +1,7 @@
+import logging
+
 from django.core.handlers.wsgi import WSGIRequest
+from django.core.management import call_command
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.template.defaultfilters import floatformat
@@ -6,8 +9,12 @@ from django.urls import reverse
 from django.views.generic import DetailView, ListView
 
 from academic_helper.logic import courses
+from academic_helper.logic.errors import ShnatonParserError
+from academic_helper.management.commands import fetch_course
 from academic_helper.models import Course, Faculty, Department
 from academic_helper.views.basic import ExtendedViewMixin
+
+log = logging.getLogger(__name__)
 
 
 class CourseDetailsView(DetailView, ExtendedViewMixin):
@@ -57,10 +64,16 @@ class CoursesView(ExtendedViewMixin, ListView):
     def post(self, request: WSGIRequest, *args, **kwargs):
         if not request.is_ajax():
             raise NotImplementedError()
-        text = request.POST["free_text"]
+        text: str = request.POST["free_text"]
         department = request.POST["department"]
         faculty = request.POST["faculty"]
         queryset = courses.search(text, department, faculty)[:40]
+        if len(queryset) == 0 and 4 <= len(text) <= 5 and text.isnumeric():
+            try:
+                result = call_command("fetch_course", text)
+                queryset = Course.objects.filter(id=result)
+            except ShnatonParserError as e:
+                log.debug(e)
         result = [c.as_dict for c in queryset]
         result.sort(key=lambda c: c["score"], reverse=True)
         for course in result:

@@ -54,9 +54,13 @@ class Migration(migrations.Migration):
             ),
         ),
         migrations.AlterField(
-            model_name="courseclass", name="end_time", field=models.TimeField(blank=True, null=True),
+            model_name="courseclass",
+            name="end_time",
+            field=models.TimeField(blank=True, null=True),
         ),
         migrations.AlterField(
-            model_name="courseclass", name="start_time", field=models.TimeField(blank=True, null=True),
+            model_name="courseclass",
+            name="start_time",
+            field=models.TimeField(blank=True, null=True),
         ),
     ]

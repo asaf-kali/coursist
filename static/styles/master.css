@@ -24,8 +24,8 @@ input {
     background-size: cover;
     background-position-y: 50%;
     background-image: url(../images/search-bg.jpeg);
-    min-height: 275px;
-    max-height: 275px;
+    min-height: 285px;
+    max-height: 285px;
     height: 100%;
 }
 

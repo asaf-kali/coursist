@@ -11,5 +11,8 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AlterUniqueTogether(name="ratingdummy", unique_together={("content_type", "object_id", "name")},),
+        migrations.AlterUniqueTogether(
+            name="ratingdummy",
+            unique_together={("content_type", "object_id", "name")},
+        ),
     ]

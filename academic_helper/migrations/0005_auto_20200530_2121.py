@@ -17,7 +17,9 @@ class Migration(migrations.Migration):
                 ("id", models.AutoField(editable=False, primary_key=True, serialize=False)),
                 ("name", models.CharField(max_length=100)),
             ],
-            options={"verbose_name_plural": "campuses",},
+            options={
+                "verbose_name_plural": "campuses",
+            },
         ),
         migrations.CreateModel(
             name="Teacher",
@@ -25,17 +27,43 @@ class Migration(migrations.Migration):
                 ("id", models.AutoField(editable=False, primary_key=True, serialize=False)),
                 ("name", models.CharField(max_length=100)),
             ],
-            options={"abstract": False,},
+            options={
+                "abstract": False,
+            },
         ),
-        migrations.AlterModelOptions(name="courseclass", options={"verbose_name_plural": "course classes"},),
-        migrations.RemoveField(model_name="course", name="credits",),
-        migrations.RemoveField(model_name="courseclass", name="class_type",),
-        migrations.RemoveField(model_name="courseclass", name="course",),
-        migrations.RemoveField(model_name="courseclass", name="hour",),
-        migrations.RemoveField(model_name="courseclass", name="lecturer",),
-        migrations.RemoveField(model_name="courseclass", name="serial_number",),
+        migrations.AlterModelOptions(
+            name="courseclass",
+            options={"verbose_name_plural": "course classes"},
+        ),
+        migrations.RemoveField(
+            model_name="course",
+            name="credits",
+        ),
+        migrations.RemoveField(
+            model_name="courseclass",
+            name="class_type",
+        ),
+        migrations.RemoveField(
+            model_name="courseclass",
+            name="course",
+        ),
+        migrations.RemoveField(
+            model_name="courseclass",
+            name="hour",
+        ),
+        migrations.RemoveField(
+            model_name="courseclass",
+            name="lecturer",
+        ),
+        migrations.RemoveField(
+            model_name="courseclass",
+            name="serial_number",
+        ),
         migrations.AddField(
-            model_name="courseclass", name="end_time", field=models.TimeField(default="12:00"), preserve_default=False,
+            model_name="courseclass",
+            name="end_time",
+            field=models.TimeField(default="12:00"),
+            preserve_default=False,
         ),
         migrations.AddField(
             model_name="courseclass",
@@ -51,10 +79,21 @@ class Migration(migrations.Migration):
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name="courseoccurrence", name="credits", field=models.IntegerField(default=4), preserve_default=False,
+            model_name="courseoccurrence",
+            name="credits",
+            field=models.IntegerField(default=4),
+            preserve_default=False,
         ),
-        migrations.AlterField(model_name="course", name="course_number", field=models.IntegerField(),),
-        migrations.AlterField(model_name="course", name="name", field=models.CharField(max_length=100),),
+        migrations.AlterField(
+            model_name="course",
+            name="course_number",
+            field=models.IntegerField(),
+        ),
+        migrations.AlterField(
+            model_name="course",
+            name="name",
+            field=models.CharField(max_length=100),
+        ),
         migrations.AlterField(
             model_name="courseclass",
             name="day",
@@ -88,7 +127,9 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"abstract": False,},
+            options={
+                "abstract": False,
+            },
         ),
         migrations.CreateModel(
             name="ClassGroup",
@@ -120,7 +161,9 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"abstract": False,},
+            options={
+                "abstract": False,
+            },
         ),
         migrations.AddField(
             model_name="courseclass",

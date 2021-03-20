@@ -11,7 +11,13 @@ UNPARSED_BLOCKS = [
     ("חובת בחירה", 16, [67392, 67829, 67506, 67609, 67392]),
     ("בחירה בחוג", 16, [67625, 67118, 67609, 67629]),
     ("אבני פינה", 8, [72159, 23331]),
-    ("לימודים משלימים", 6, [55904,]),
+    (
+        "לימודים משלימים",
+        6,
+        [
+            55904,
+        ],
+    ),
 ]
 
 
@@ -30,7 +36,10 @@ def create_admin():
 
 def create_james():
     james, created = CoursistUser.objects.get_or_create(
-        username="james", first_name="James", last_name="Johnson", email="james@coursist.xyz",
+        username="james",
+        first_name="James",
+        last_name="Johnson",
+        email="james@coursist.xyz",
     )
     james.set_password("123456")
     james.save()

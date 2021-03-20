@@ -11,7 +11,12 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AddField(
-            model_name="classgroup", name="teachers", field=models.ManyToManyField(to="academic_helper.Teacher"),
+            model_name="classgroup",
+            name="teachers",
+            field=models.ManyToManyField(to="academic_helper.Teacher"),
         ),
-        migrations.AlterUniqueTogether(name="classgroup", unique_together={("occurrence", "class_type", "mark")},),
+        migrations.AlterUniqueTogether(
+            name="classgroup",
+            unique_together={("occurrence", "class_type", "mark")},
+        ),
     ]

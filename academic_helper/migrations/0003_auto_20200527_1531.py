@@ -17,13 +17,18 @@ class Migration(migrations.Migration):
                 ("id", models.AutoField(editable=False, primary_key=True, serialize=False)),
                 ("name", models.CharField(max_length=50)),
             ],
-            options={"verbose_name_plural": "faculties",},
+            options={
+                "verbose_name_plural": "faculties",
+            },
         ),
         migrations.AddField(
             model_name="course",
             name="faculty",
             field=models.ForeignKey(
-                blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to="academic_helper.Faculty",
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                to="academic_helper.Faculty",
             ),
         ),
     ]

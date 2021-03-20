@@ -11,7 +11,10 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RemoveField(model_name="course", name="faculty",),
+        migrations.RemoveField(
+            model_name="course",
+            name="faculty",
+        ),
         migrations.CreateModel(
             name="School",
             fields=[
@@ -22,7 +25,9 @@ class Migration(migrations.Migration):
                     models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to="academic_helper.Faculty"),
                 ),
             ],
-            options={"abstract": False,},
+            options={
+                "abstract": False,
+            },
         ),
         migrations.AddField(
             model_name="course",

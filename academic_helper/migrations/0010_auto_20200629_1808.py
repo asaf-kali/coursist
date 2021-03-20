@@ -23,7 +23,9 @@ class Migration(migrations.Migration):
                 ("is_public", models.BooleanField(default=True)),
                 ("blocks", models.ManyToManyField(to="academic_helper.StudyBlock")),
             ],
-            options={"abstract": False,},
+            options={
+                "abstract": False,
+            },
         ),
         migrations.CreateModel(
             name="UserCourseChoice",
@@ -43,11 +45,27 @@ class Migration(migrations.Migration):
                 ),
                 ("user", models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
-            options={"unique_together": {("user", "course")},},
+            options={
+                "unique_together": {("user", "course")},
+            },
         ),
-        migrations.RenameModel(old_name="School", new_name="Department",),
-        migrations.RemoveField(model_name="studyplan", name="blocks",),
-        migrations.RenameField(model_name="course", old_name="school", new_name="department",),
-        migrations.DeleteModel(name="CompletedCourse",),
-        migrations.DeleteModel(name="StudyPlan",),
+        migrations.RenameModel(
+            old_name="School",
+            new_name="Department",
+        ),
+        migrations.RemoveField(
+            model_name="studyplan",
+            name="blocks",
+        ),
+        migrations.RenameField(
+            model_name="course",
+            old_name="school",
+            new_name="department",
+        ),
+        migrations.DeleteModel(
+            name="CompletedCourse",
+        ),
+        migrations.DeleteModel(
+            name="StudyPlan",
+        ),
     ]

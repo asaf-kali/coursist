@@ -436,7 +436,7 @@ class ShnatonParser:
         return raw_data
 
     @atomic
-    def _fetch_course(self, course_number: int, year: int):
+    def _fetch_course(self, course_number: int, year: int) -> Course:
         log.info(f"Fetch course called for number {wrap(course_number)} and year {wrap(year)}")
         if not isinstance(course_number, int):
             course_number = int(course_number)
@@ -447,11 +447,11 @@ class ShnatonParser:
 
         raw_faculty = raw_data["faculty"].strip(" :\t")
         raw_department = raw_data["department"].strip(" :\t")
-        huji = University.objects.get_or_create(
+        huji, _ = University.objects.get_or_create(
             abbreviation="HUJI", name="האוניברסיטה העברית", english_name="The Hebrew University of Jerusalem"
-        )[0]
-        faculty = Faculty.objects.get_or_create(name=raw_faculty, university=huji)[0]
-        department = Department.objects.get_or_create(name=raw_department, faculty=faculty)[0]
+        )
+        faculty, _ = Faculty.objects.get_or_create(name=raw_faculty, university=huji)
+        department, _ = Department.objects.get_or_create(name=raw_department, faculty=faculty)
 
         raw_course_number = int(raw_data["id"])
         if raw_course_number != course_number:
@@ -461,7 +461,7 @@ class ShnatonParser:
         raw_course_name = raw_data["name"].replace("_", "")
         # if "name_en" in raw_data and len(raw_data["name_en"].replace(" ", "")) > 5:
         #     course_name = raw_data["name_en"]
-        course, created = Course.objects.get_or_create(course_number=course_number, university=huji)
+        course, _ = Course.objects.get_or_create(course_number=course_number, university=huji)
         course.department = department
         course.name = raw_course_name
         course.save()
@@ -473,7 +473,7 @@ class ShnatonParser:
             create_course_groups(course, year, course_semesters, occurrence_credits, raw_data["notes"], raw_group)
         return course
 
-    def fetch_course(self, course_number: int, year: int = None) -> Optional[Course]:
+    def fetch_course(self, course_number: int, year: int = None) -> Course:
         """
         Fetch course from Shnaton, add it to the database and return it.
         :param course_number: The course number to search.
