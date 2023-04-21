@@ -2,7 +2,7 @@ requests==2.23.0
 beautifulsoup4==4.9.1
 Django==3.1.14
 pytz==2020.1
-sqlparse==0.3.1
+sqlparse==0.4.4
 django-star-ratings==0.9.1
 django-allauth==0.42.0
 django-dbbackup==3.3.0
